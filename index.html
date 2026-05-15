@@ -7,43 +7,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<body>
     <div class="container">
         <div id="main-screen">
             <h1>テスト7</h1>
             <div class="status-board">
-                <div style="display: flex; justify-content: space-around;">
-                    <div>浄化Pt: <span id="total-pt-display">0</span></div>
-                    <div>ボスまで: <span id="boss-distance">30</span> pt</div>
                 </div>
-                <div class="progress-container">
-                    <div class="progress-bar" id="purify-bar"></div>
-                </div>
-                <div style="display: flex; justify-content: space-around; font-size: 0.8em; color: #666;">
-                    <div>現在: <span id="current-weight">--</span></div>
-                    <div>目標まで: <span id="weight-diff">--</span></div>
-                </div>
-            </div>
 
-<img src="assets/penguin.png" id="main-penguin-img" style="
-        width: 100%;        /* 枠いっぱいに表示 */
-        height: auto;
-        position: relative;
-    ">
-    
-    <img id="main-hat" src="" style="
-        position: absolute; 
-        width: 70%;         /* 帽子の大きさ（ペンギンの頭のサイズに合わせて調整） */
-        height: auto; 
-        z-index: 2;         /* ペンギンの上に重ねるっピ */
-        
-        /* ここで位置をミリ単位で調整するっピ！ */
-        top: 33%;           /* 上からの位置。もっと深くかぶせるなら数字を大きく(20%とか) */
-        left: 50%;          /* 一旦真ん中に寄せる */
-        transform: translateX(-50%); /* 完全に中央に固定するっピ */
-        
-        pointer-events: none; /* 帽子が邪魔でクリックできないのを防ぐっピ */
-    ">
-</div>
+            <div style="position: relative; width: 100%; max-width: 300px; margin: 0 auto;">
+                <img src="assets/penguin.png" id="main-penguin-img" style="width: 100%; height: auto; position: relative;">
+                <img id="main-hat" src="" style="position: absolute; width: 70%; height: auto; z-index: 2; top: 33%; left: 50%; transform: translateX(-50%); pointer-events: none;">
+            </div>
 
             <p id="message">🐧「今日は何を食べたの？」</p>
             <div id="result"></div>
@@ -58,12 +32,26 @@
             </div>
         </div>
 
-        <div id="closet-screen" style="display: none;">
+        <div id="closet-screen" class="hidden">
             <h2 style="color: #0277bd;">おきがえルーム</h2>
-            <div id="closet-items" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px;"></div>
+            
+            <div style="position: relative; width: 150px; margin: 0 auto 20px;">
+                <img src="assets/penguin.png" id="closet-penguin-img" style="width: 100%; height: auto;">
+                <img id="closet-hat" src="" style="position: absolute; width: 70%; height: auto; z-index: 2; top: 33%; left: 50%; transform: translateX(-50%);">
+            </div>
+
+            <div id="item-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px;"></div>
+            
             <button onclick="toggleScreen('main')" class="btn-blue">決定！</button>
         </div>
     </div>
+
+    <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;">
+
+    <script src="config.js"></script>
+    <script src="ui-controller.js"></script>
+    <script src="app-logic.js"></script>
+</body>
     <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;">
 
 <script src="config.js"></script>

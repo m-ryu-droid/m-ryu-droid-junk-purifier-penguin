@@ -3,33 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V1</title>
+    <title>ペンペン育成 V1</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<body>
     <div class="container">
+        
         <div id="main-screen">
-            <h1>テスト9</h1>
+            <h1>テスト10</h1>
+            
             <div class="status-board">
-    <div style="display: flex; justify-content: space-around; margin-bottom: 5px;">
-        <div style="font-weight: bold;">浄化Pt: <span id="total-pt-display">0</span></div>
-        <div style="font-size: 0.9em; color: #555;">ボスまで: <span id="boss-distance">30</span> pt</div>
-    </div>
-
-    <div class="progress-container" style="background: #e0f2f1; border-radius: 10px; height: 12px; margin: 10px 0; overflow: hidden;">
-        <div class="progress-bar" id="purify-bar" style="background: #4db6ac; width: 0%; height: 100%; transition: width 0.3s ease;"></div>
-    </div>
-
-    <div style="display: flex; justify-content: space-around; font-size: 0.8em; color: #666;">
-        <div>現在: <span id="current-weight">--</span> kg</div>
-        <div>目標まで: <span id="weight-diff">--</span></div>
-    </div>
-</div>
-                
+                <div style="display: flex; justify-content: space-around; margin-bottom: 5px;">
+                    <div style="font-weight: bold;">浄化Pt: <span id="total-pt-display">0</span></div>
+                    <div style="font-size: 0.9em; color: #555;">ボスまで: <span id="boss-distance">30</span> pt</div>
                 </div>
+                <div class="progress-container" style="background: #e0f2f1; border-radius: 10px; height: 12px; margin: 10px 0; overflow: hidden;">
+                    <div class="progress-bar" id="purify-bar" style="background: #4db6ac; width: 0%; height: 100%; transition: width 0.3s ease;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-around; font-size: 0.8em; color: #666;">
+                    <div>現在: <span id="current-weight">--</span> kg</div>
+                    <div>目標まで: <span id="weight-diff">--</span></div>
+                </div>
+            </div>
 
-            <div style="position: relative; width: 100%; max-width: 300px; margin: 0 auto;">
+            <div style="position: relative; width: 100%; max-width: 300px; margin: 20px auto;">
                 <img src="assets/penguin.png" id="main-penguin-img" style="width: 100%; height: auto; position: relative;">
                 <img id="main-hat" src="" style="position: absolute; width: 70%; height: auto; z-index: 2; top: 33%; left: 50%; transform: translateX(-50%); pointer-events: none;">
             </div>
@@ -45,14 +42,8 @@
             <div style="margin-top: 20px;">
                 <button onclick="toggleScreen('closet')" style="background: none; border: 1px solid #ccc; border-radius: 15px; padding: 5px 15px; color: #666; font-size: 0.8em; cursor: pointer;">クローゼットへ行く 👗</button>
             </div>
-        </div>
-
-<div id="closet-screen" class="hidden">
-        <h2 style="color: #0277bd;">おきがえルーム</h2>
-        <div id="item-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-            </div>
-        <button onclick="toggleScreen('main')" class="btn-blue">決定！</button>
-    </div>
+        </div> <div id="closet-screen" class="hidden">
+            <h2 style="color: #0277bd;">おきがえルーム</h2>
             
             <div style="position: relative; width: 150px; margin: 0 auto 20px;">
                 <img src="assets/penguin.png" id="closet-penguin-img" style="width: 100%; height: auto;">
@@ -62,14 +53,10 @@
             <div id="item-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px;"></div>
             
             <button onclick="toggleScreen('main')" class="btn-blue">決定！</button>
-        </div>
-    </div>
-
-    <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;">
+        </div> </div> <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;">
 
     <script src="config.js"></script>
     <script src="ui-controller.js"></script>
     <script src="app-logic.js"></script>
-    
 </body>
 </html>

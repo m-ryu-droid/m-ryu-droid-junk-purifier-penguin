@@ -12,13 +12,19 @@
     <h1>ジャンク世界の浄化者</h1>
     
     <div id="status-board" style="background: rgba(255,255,255,0.8); border-radius: 15px; padding: 15px; margin-bottom: 20px; border: 2px solid #81d4fa;">
-        <div style="display: flex; justify-content: space-around; font-weight: bold;">
-            <div>浄化Pt: <span id="total-pt-display" style="color: #0288d1; font-size: 1.2em;">0</span></div>
-            <div>ボスまで: <span id="boss-distance" style="color: #ef4444;">30</span> pt</div>
-        </div>
-        <div style="width: 100%; height: 10px; background: #eee; border-radius: 5px; margin-top: 10px; overflow: hidden;">
-            <div id="purify-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #4fc3f7, #0288d1); transition: width 0.5s;"></div>
-        </div>
+       <div style="display: flex; justify-content: space-around; font-weight: bold; margin-bottom:10px;">
+        <div>浄化Pt: <span id="total-pt-display">0</span></div>
+        <div>ボスまで: <span id="boss-distance">30</span> pt</div>
+    </div>
+    
+    <div style="display: flex; justify-content: space-around; font-size: 0.9em; border-top: 1px solid #eee; padding-top: 10px;">
+        <div>現在: <span id="current-weight">--</span> kg</div>
+        <div>目標まで: <span id="weight-diff">--</span> kg</div>
+    </div>
+    
+    <div id="progress-container" ...>
+        <div id="purify-bar" ...></div>
+    </div>
     </div>
 
     <div id="penguin-img-container"><img src="penguin.png" alt="ペンペン"></div>

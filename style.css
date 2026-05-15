@@ -1,68 +1,64 @@
-/* アプリ全体のデザイン */
+/* 全体のデザインを整える */
 body {
-    font-family: sans-serif;
-    text-align: center;
-    background-color: #e0f7fa; /* 薄い青色の背景 */
-    color: #01579b;
-    margin: 0;
-    padding: 20px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #e3f2fd;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    margin: 0;
 }
 
-/* 白い枠のデザイン */
 .container {
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    max-width: 400px; /* スマホで見やすい幅 */
-    width: 100%;
+    background-color: white;
+    border-radius: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
 }
 
-/* タイトルのデザイン */
-h1 {
-    font-size: 1.5rem;
-    color: #01579b;
-}
+h1 { color: #0277bd; font-size: 1.8em; margin-bottom: 20px; }
 
-/* 画像全体を制御するコンテナの設定 */
-#penguin-img-container {
-    width: 100px; /* ★ここを小さく！100pxくらいに設定 */
-    height: 100px; /* ★高さも合わせる */
-    margin: 20px auto; /* 中央寄せ */
-    border-radius: 50%; /* 丸くする */
-    overflow: hidden; /* はみ出し防止 */
-    border: 5px solid #81d4fa; /* 水色の枠 */
-}
-
-/* コンテナの中にある画像自体の設定 */
-#penguin-img-container img {
-    width: 100%; /* コンテナの幅に合わせる */
-    height: 100%; /* コンテナの高さに合わせる */
-    object-fit: cover; /* 💡最重要：縦横比を保って枠を埋める。containにすると画像全体が入りますが、余白が出る場合があります。お好みで。 */
-}
-
-/* ステータスエリアのデザイン */
-#status-area {
-    margin: 20px 0;
+/* ステータスボードを1・2枚目のように戻す */
+.status-board {
+    background: #f1f8ff;
+    border: 2px solid #b3e5fc;
+    border-radius: 15px;
     padding: 15px;
-    border: 2px dashed #0288d1;
-    border-radius: 10px;
-    background-color: #f1f8e9;
+    margin-bottom: 20px;
 }
 
-/* ボタンのデザイン */
-#upload-btn {
-    background-color: #0288d1;
-    color: white;
-    padding: 15px 30px;
-    border-radius: 50px;
-    border: none;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+.progress-container {
+    background: #eee;
+    height: 12px;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 10px 0;
 }
+
+.progress-bar {
+    background: #42a5f5;
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s;
+}
+
+/* ボタンを丸く・可愛く戻す */
+.btn-blue, .btn-pink {
+    border: none;
+    border-radius: 25px;
+    padding: 15px 25px;
+    font-size: 1em;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+    transition: transform 0.1s;
+}
+
+.btn-blue { background-color: #42a5f5; }
+.btn-pink { background-color: #ec407a; }
+
+.btn-blue:active, .btn-pink:active { transform: translateY(2px); box-shadow: none; }

@@ -216,3 +216,18 @@ window.resetData = function() {
         location.reload();
     }
 };
+
+window.toggleScreen = function(screenName) {
+    const main = document.getElementById('main-screen');
+    const closet = document.getElementById('closet-screen');
+
+    if (screenName === 'closet') {
+        main.style.display = 'none';
+        closet.style.display = 'block';
+        updateCloset(); // クローゼット画面を開いた時に最新の状態にする
+    } else {
+        main.style.display = 'block';
+        closet.style.display = 'none';
+        updateDisplay(); // メインに戻った時に反映させる
+    }
+};

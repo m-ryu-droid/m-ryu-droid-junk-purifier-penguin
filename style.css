@@ -28,11 +28,21 @@ h1 {
     color: #01579b;
 }
 
+/* 画像全体を制御するコンテナの設定 */
+#penguin-img-container {
+    width: 100px; /* ★ここを小さく！100pxくらいに設定 */
+    height: 100px; /* ★高さも合わせる */
+    margin: 20px auto; /* 中央寄せ */
+    border-radius: 50%; /* 丸くする */
+    overflow: hidden; /* はみ出し防止 */
+    border: 5px solid #81d4fa; /* 水色の枠 */
+}
+
+/* コンテナの中にある画像自体の設定 */
 #penguin-img-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* これで縦横比を保ちつつ枠内に収めます */
-    display: block;      /* 隙間をなくします */
+    width: 100%; /* コンテナの幅に合わせる */
+    height: 100%; /* コンテナの高さに合わせる */
+    object-fit: cover; /* 💡最重要：縦横比を保って枠を埋める。containにすると画像全体が入りますが、余白が出る場合があります。お好みで。 */
 }
 
 /* ステータスエリアのデザイン */

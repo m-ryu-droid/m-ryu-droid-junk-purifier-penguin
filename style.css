@@ -28,26 +28,10 @@ h1 {
     color: #01579b;
 }
 
-/* ペンギン画像のコンテナ（ここ重要！） */
-#penguin-img-container {
-    width: 150px;
-    height: 150px;
-    margin: 20px auto;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 5px solid #81d4fa;
-    display: flex; /* 追加：中身を中央寄せにする */
-    justify-content: center;
-    align-items: center;
-    background: white;
-}
-
 #penguin-img-container img {
-    max-width: 100%; /* 追加：親要素より大きくならない */
-    max-height: 100%; /* 追加 */
-    width: auto;
-    height: auto;
-    object-fit: contain; /* coverからcontainに変更（全体が収まるように） */
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* これで、どんなサイズの画像も枠の中に収まります */
 }
 
 /* ステータスエリアのデザイン */

@@ -72,13 +72,62 @@ function showConfirmation(data) {
     resultArea.innerHTML = html;
 }
 
-// 3. 浄化完了（ポイント加算）の処理
+// 目標ポイント（例：30ptでボス戦）
+const BOSS_GOAL = 30;
+
+// 画面を更新する関数
+function updateDisplay() {
+    const display = document.getElementById('total-pt-display');
+    const distance = document.getElementById('boss-distance');
+    const bar = document.getElementById('purify-bar');
+    
+    display.innerText = totalPoints;
+    
+    // ボスまでの残り
+    let remaining = BOSS_GOAL - totalPoints;
+    if (remaining < 0) remaining = 0;
+    distance.innerText = remaining;
+    
+    // ゲージの長さを計算 (最大100%)
+    let percent = (totalPoints / BOSS_GOAL) * 100;
+    if (percent > 100) percent = 100;
+    bar.style.width = percent + "%";
+}
+
+// 浄化完了処理をアップグレード
 window.completePurify = function(score, story) {
     totalPoints += score;
-    localStorage.setItem('purifyPoints', totalPoints); // 保存
+    localStorage.setItem('purifyPoints', totalPoints); 
     
+    // 画面の数字とゲージを更新
+    updateDisplay();
+    
+    // 完了後のメッセージ
     messageText.innerText = story;
-    resultArea.innerHTML = `<h3>浄化ポイント: ${score}pt (合計: ${totalPoints}pt)</h3>`;
+    
+    // 完了後は「解析結果」を消して、次へ進むボタンを出す
+    resultArea.innerHTML = `
+        <div style="text-align:center; padding:20px;">
+            <div style="font-size:32px; margin-bottom:10px;">✨ ＋${score} pt</div>
+            <button onclick="resetUI()" style="background:#81d4fa; border:none; padding:10px 20px; border-radius:20px; cursor:pointer;">次へ進むっピ！</button>
+        </div>
+    `;
+    
+    // ボス戦解禁のチェック
+    if (totalPoints >= BOSS_GOAL) {
+        messageText.innerText = "浄化完了だっピ！ついに汚染のボスが姿を現したっピ...！";
+        resultArea.innerHTML += `<button onclick="startBossBattle()" style="background:#ef4444; color:white; border:none; padding:15px; width:100%; border-radius:10px; margin-top:10px; font-weight:bold; font-size:1.2em;">🔥 ボスを倒しに行く！</button>`;
+    }
+};
+
+// UIをリセットして次の写真に備える
+window.resetUI = function() {
+    resultArea.innerHTML = "";
+    messageText.innerText = "次のご飯も待ってるっピ！海をどんどん綺麗にするっピよ。";
+};
+
+// 起動時に一度表示を更新しておく
+updateDisplay();
     
     // ゲージの更新（後で実装）
 };

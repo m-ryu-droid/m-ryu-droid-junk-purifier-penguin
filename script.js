@@ -147,26 +147,28 @@ document.addEventListener('DOMContentLoaded', () => {
         uploadBtn.onclick = () => cameraInput.click();
     }
 
-    if (cameraInput) {
+ if (cameraInput) {
         cameraInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
 
-// --- ここからアニメーション開始！ ---
+            // もし前のタイマーが動いてたら一旦止める
+            if (loadingInterval) clearInterval(loadingInterval);
+
+            // アニメーション開始！
             let dots = "";
-            const loadingInterval = setInterval(() => {
-                dots = dots.length >= 3 ? "" : dots + "."; // 「.」「..」「...」「」を繰り返す
+            loadingInterval = setInterval(() => {
+                dots = dots.length >= 3 ? "" : dots + ".";
                 messageText.innerText = `🐧「お食事内容を確認中だよ！」${dots}🔍`;
-            }, 500); // 0.5秒ごとに更新
+            }, 500);
             
             resultArea.innerHTML = ""; 
-            // --- ここまで ---
             
             const reader = new FileReader();
             reader.onload = async () => {
                 const base64Image = reader.result.split(',')[1];
                 try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -179,50 +181,25 @@ document.addEventListener('DOMContentLoaded', () => {
                         })
                     });
 
+                    // 【超重要】ここでタイマーを止めるっピ！
+                    clearInterval(loadingInterval); 
+
                     const data = await response.json();
                     if (data.candidates && data.candidates[0].content.parts[0].text) {
-                        const jsonMatch = data.candidates[0].content.parts[0].text.match(/\{.*\}/s);
-                        if (jsonMatch) showConfirmation(JSON.parse(jsonMatch[0]));
+                        const rawText = data.candidates[0].content.parts[0].text;
+                        const jsonMatch = rawText.match(/\{.*\}/s);
+                        if (jsonMatch) {
+                            showConfirmation(JSON.parse(jsonMatch[0]));
+                        }
                     }
                 } catch (error) {
-                    messageText.innerText = "通信エラー💦";
+                    clearInterval(loadingInterval); // エラーの時も止めるっピ
+                    messageText.innerText = "🐧「通信エラーになっちゃったっピ...」";
                 }
             };
             reader.readAsDataURL(file);
         });
     }
-});
-
-// --- 4. 確認・完了処理（ここを修正！） ---
-
-function showConfirmation(data) {
-    const messageText = document.getElementById('message');
-    const resultArea = document.getElementById('result');
-    
-    // 🔍 解析が終わったので、メッセージを「確認」に変えるっピ！
-    messageText.innerText = "🐧「見つけた食材はこれであってるかな？」";
-    
-    let html = `<div style="background:#fff; padding:15px; border-radius:10px; border:2px solid #81d4fa;">`;
-    data.ingredients.forEach((item, index) => {
-        html += `<div style="margin-bottom:8px; display:flex; align-items:center;">
-                    <input type="checkbox" checked id="check-${index}" style="margin-right:10px;">
-                    <input type="text" value="${item}" id="input-${index}" style="flex:1; border:1px solid #ddd; padding:4px; border-radius:4px;">
-                 </div>`;
-    });
-    const safeStory = data.story ? data.story.replace(/'/g, "\\'") : "浄化完了だっピ！";
-    html += `<button onclick="completePurify(${data.score}, '${safeStory}')" style="background:#0288d1; color:#fff; border:none; padding:12px; width:100%; border-radius:5px; margin-top:10px; font-weight:bold; cursor:pointer;">これで浄化するっピ！✨</button></div>`;
-    resultArea.innerHTML = html;
-}
-
-window.completePurify = function(score, story) {
-    totalPoints += score;
-    localStorage.setItem('purifyPoints', totalPoints);
-    updateDisplay();
-    
-    // 浄化後のストーリーを表示
-    document.getElementById('message').innerText = story;
-    document.getElementById('result').innerHTML = `<button onclick="resetUI()" style="margin-top:10px; padding:10px 25px; border-radius:20px; border:none; background:#81d4fa; color:white; font-weight:bold; cursor:pointer;">次へ進むっピ！</button>`;
-};
 
 // 【重要】ここが2枚目を送るためのリセット処理だっピ！
 window.resetUI = function() {

@@ -1,25 +1,29 @@
-// データは常にlocalStorageから最新を読み込むっピ
-let totalPoints = parseInt(localStorage.getItem('purifyPoints')) || 0;
-let currentWeight = parseFloat(localStorage.getItem('currentWeight')) || null;
-let targetWeight = parseFloat(localStorage.getItem('targetWeight')) || 70;
+// ==========================================
+// ui-controller.js: 画面表示・着せ替え・更新担当
+// ==========================================
 
+/**
+ * 1. 画面全体の表示を最新状態に更新する
+ */
 function updateDisplay() {
-    // 数値の表示更新
-    if (document.getElementById('total-pt-display')) {
-        document.getElementById('total-pt-display').innerText = totalPoints;
+    // スコア表示の更新
+    const ptDisp = document.getElementById('total-pt-display');
+    if (ptDisp) ptDisp.innerText = totalPoints;
+
+    // ボスまでの残りポイント
+    const bossDisp = document.getElementById('boss-distance');
+    if (bossDisp) {
+        let remaining = BOSS_GOAL - totalPoints;
+        bossDisp.innerText = (remaining < 0 ? 0 : remaining);
     }
-    
-    let remaining = BOSS_GOAL - totalPoints;
-    if (document.getElementById('boss-distance')) {
-        document.getElementById('boss-distance').innerText = (remaining < 0 ? 0 : remaining);
-    }
-    
+
+    // 浄化バー（進捗バー）の更新
     const bar = document.getElementById('purify-bar');
     if (bar) {
         let percent = (totalPoints / BOSS_GOAL) * 100;
         bar.style.width = (percent > 100 ? 100 : percent) + "%";
     }
-    
+
     // 体重情報の更新
     const weightDisp = document.getElementById('current-weight');
     const diffDisp = document.getElementById('weight-diff');
@@ -29,38 +33,93 @@ function updateDisplay() {
         diffDisp.innerText = diff <= 0 ? "目標達成！✨" : "あと " + diff.toFixed(1) + "kg";
     }
 
-    // 見た目（着替え）の更新
+    // 着せ替え状態を反映
     loadEquipped();
 }
 
-// 【注意】items の img の設定を変えるっピ！
-const items = [
-    // 麦わら帽子を選んだら、その帽子をかぶったペンギン画像にする
-    { name: '麦わら帽子', pt: 10, img: 'penguin_straw.png', type: 'hat' }, 
-    // ニット帽なら今回の画像にする
-    { name: 'ニット帽', pt: 30, img: 'penguin.png', type: 'hat' }, // 今の画像をニット帽用にする
-    // 勇者のマントならマントをつけたペンギン画像にする
-    { name: '勇者のマント', pt: 50, img: 'penguin_mantle.png', type: 'body' }
-];
-
-// loadEquipped 関数を、画像を差し替える方式に直す
+/**
+ * 2. 装備（着せ替え）を画像に反映する
+ */
 function loadEquipped() {
     const mainEl = document.getElementById('main-penguin-img');
-    const closetEl = document.getElementById('closet-penguin-img'); // クローゼット側もIDを合わせる
+    const closetEl = document.getElementById('closet-penguin-img');
     
-    // 装備に合わせて画像を差し替えるロジックを入れる
+    // localStorage から今の装備を取得
     let hat = localStorage.getItem('equipped-hat');
     let body = localStorage.getItem('equipped-body');
 
-    // 例えば、何も装備していなければ「裸のペンギン」画像
-    let imgSrc = "penguin_naked.png"; 
+    // 基本は「何も着ていないペンギン」
+    let imgSrc = "assets/penguin_naked.png"; 
 
-    // ニット帽なら今回作った画像
-    if (hat === 'penguin.png') imgSrc = "penguin.png"; 
-    
-    // マントならマント画像、など
-    // ... (この辺りはアイテムが増えたらまた教えるっピ！)
+    // 装備に応じて画像を切り替える（画像パスは自分の環境に合わせてだっピ）
+    if (hat === 'assets/hat_straw.png') {
+        imgSrc = "assets/penguin_straw.png"; // 麦わら帽子をかぶったペンギン画像
+    } else if (hat === 'assets/hat_knit.png' || hat === 'penguin.png') {
+        imgSrc = "assets/penguin.png";       // ニット帽をかぶったペンギン画像
+    } else if (body === 'assets/mantle.png') {
+        imgSrc = "assets/penguin_mantle.png"; // マントをつけたペンギン画像
+    }
 
+    // メイン画面とクローゼット画面の両方のペンギンを更新
     if (mainEl) mainEl.src = imgSrc;
     if (closetEl) closetEl.src = imgSrc;
 }
+
+/**
+ * 3. 画面の切り替え（メイン ↔ クローゼット）
+ */
+window.toggleScreen = function(screenName) {
+    const mainScreen = document.getElementById('main-screen');
+    const closetScreen = document.getElementById('closet-screen');
+
+    if (screenName === 'closet') {
+        mainScreen.classList.add('hidden');
+        closetScreen.classList.remove('hidden');
+        // クローゼットを開いた時も画面を更新
+        updateDisplay();
+    } else {
+        closetScreen.classList.add('hidden');
+        mainScreen.classList.remove('hidden');
+        updateDisplay();
+    }
+};
+
+/**
+ * 4. クローゼットにアイテムを並べる（初期化用）
+ */
+function initCloset() {
+    const grid = document.getElementById('item-grid');
+    if (!grid) return;
+
+    grid.innerHTML = ""; // 一旦空にする
+    items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'item-card';
+        div.innerHTML = `
+            <img src="${item.img}" style="width:50px;">
+            <p style="font-size:12px; margin:5px 0;">${item.name}</p>
+            <button onclick="equipItem('${item.type}', '${item.img}', ${item.pt})" 
+                    style="font-size:10px; padding:5px; cursor:pointer;">
+                ${item.pt}ptで着替える
+            </button>
+        `;
+        grid.appendChild(div);
+    });
+}
+
+/**
+ * 5. アイテムを装備する
+ */
+window.equipItem = function(type, imgPath, requiredPt) {
+    if (totalPoints < requiredPt) {
+        alert("ポイントが足りないっピ！ご飯を食べて浄化してだっピ。");
+        return;
+    }
+    // localStorageに保存
+    localStorage.setItem('equipped-' + type, imgPath);
+    alert(type === 'hat' ? "帽子をかぶったっピ！" : "お洋服を着たっピ！");
+    updateDisplay();
+};
+
+// ページ読み込み時にクローゼットを準備しておく
+document.addEventListener('DOMContentLoaded', initCloset);

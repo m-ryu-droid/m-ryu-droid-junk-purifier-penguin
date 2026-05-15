@@ -3,67 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>浄化者</title>
+    <title>ジャンク世界の浄化者</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <body>
     <div class="container">
         <div id="main-screen">
             <h1>ジャンク世界の浄化者</h1>
-            
             <div class="status-board">
-                <div style="display: flex; justify-content: space-around; margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-around;">
                     <div>浄化Pt: <span id="total-pt-display">0</span></div>
                     <div>ボスまで: <span id="boss-distance">30</span> pt</div>
                 </div>
-                <div style="display: flex; justify-content: space-around; font-size: 0.8em; color: #0288d1; margin-bottom: 5px;">
+                <div class="progress-container">
+                    <div class="progress-bar" id="purify-bar"></div>
+                </div>
+                <div style="display: flex; justify-content: space-around; font-size: 0.8em; color: #666;">
                     <div>現在: <span id="current-weight">--</span></div>
                     <div>目標まで: <span id="weight-diff">--</span></div>
                 </div>
-                <div class="progress-container">
-                    <div class="progress-bar" id="purify-bar">
-                        <span class="boss-icon" id="boss-icon">👾</span>
-                    </div>
-                </div>
-                <div style="text-align: center; font-size: 0.7em; color: #666; margin-top: 5px;">
-                    ボス襲来まであと少しだっピ！
-                </div>
             </div>
 
-            <div id="main-penguin-stage" style="position: relative; width: 160px; height: 160px; margin: 20px auto; background: white; border-radius: 50%; border: 4px solid #b3e5fc; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                <img src="penguin.png" style="width: 80%; position: relative; z-index: 1;">
-                <img id="main-hat" src="" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none;">
-                <img id="main-body" src="" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none;">
+            <div style="position: relative; width: 160px; height: 160px; margin: 20px auto; border-radius: 50%; border: 4px solid #b3e5fc; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                <img src="penguin.png" style="width: 80%;">
+                <img id="main-hat" src="" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
+                <img id="main-body" src="" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
             </div>
 
             <p id="message">ご飯の写真を撮って、海を浄化するっピ！</p>
             <div id="result"></div>
 
-            <div class="button-group" style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
-                <button id="upload-btn" class="btn-blue" style="flex: 1; max-width: 200px;">写真を撮る</button>
-                <button onclick="openWeightInput()" class="btn-pink" style="flex: 1; max-width: 120px;">⚖️ 体重</button>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button id="upload-btn" class="btn-blue" style="flex: 2;">写真を撮る</button>
+                <button onclick="openWeightInput()" class="btn-pink" style="flex: 1;">⚖️ 体重</button>
             </div>
             
-            <div style="text-align: center; margin-top: 20px;">
-                <button onclick="toggleScreen('closet')" style="background: white; border: 1px solid #ccc; padding: 5px 15px; border-radius: 20px; color: #666; font-size: 0.8em; cursor: pointer;">
-                    クローゼットへ行く 👗
-                </button>
+            <div style="margin-top: 20px;">
+                <button onclick="toggleScreen('closet')" style="background: none; border: 1px solid #ccc; border-radius: 15px; padding: 5px 15px; color: #666; font-size: 0.8em; cursor: pointer;">クローゼットへ行く 👗</button>
             </div>
         </div>
 
-        <div id="closet-screen" style="display: none; text-align: center;">
-            <h2 style="color: #0288d1; margin-bottom: 20px;">おきがえルーム</h2>
-            <div id="closet-penguin-stage" style="position: relative; width: 200px; height: 200px; margin: 0 auto 20px; background: #e3f2fd; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                <img src="penguin.png" style="width: 80%;">
-                <img id="closet-hat" src="" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
-                <img id="closet-body" src="" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;">
-            </div>
-            <div id="closet-items" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px; min-height: 50px;">
-                </div>
-            <button onclick="toggleScreen('main')" class="btn-blue" style="width: auto; padding: 10px 40px;">決定！</button>
+        <div id="closet-screen" style="display: none;">
+            <h2 style="color: #0277bd;">おきがえルーム</h2>
+            <div id="closet-items" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px;"></div>
+            <button onclick="toggleScreen('main')" class="btn-blue">決定！</button>
         </div>
     </div>
     <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;">
-</body></body>
+    <script src="script.js"></script>
+</body>
 </html>

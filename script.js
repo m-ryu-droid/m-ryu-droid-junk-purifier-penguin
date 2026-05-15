@@ -88,7 +88,7 @@ function updateClosetButtons() {
             const isEquipped = (currentImg === item.img);
 
             // ボタンの見た目を「選択中」か「未選択」で変える
-            btn.innerText = isEquipped ? `【選択中】${item.name}` : item.name;
+            btn.innerText = isEquipped ? `●${item.name}` : item.name;
             btn.style = `padding: 10px 15px; border-radius: 20px; cursor: pointer; margin: 5px; font-weight: bold;
                         border: 2px solid #81d4fa; 
                         background: ${isEquipped ? '#b3e5fc' : 'white'}; 

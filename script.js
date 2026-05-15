@@ -122,14 +122,18 @@ window.completePurify = function(score, story) {
 };
 
 window.openWeightInput = function() {
-    let w = window.prompt("今の体重を教えてほしい！(kg)", currentWeight || "");
+    // ↓ この「 」の中の文字を自由に変えてだっピ！
+    let w = window.prompt("今の体重を教えて〜！(kg)", currentWeight || "");
+    
     if (!w) return;
 
     currentWeight = parseFloat(w);
     localStorage.setItem('currentWeight', currentWeight);
 
-    let changeTarget = window.confirm(`今の目標は ${targetWeight}kg だっピ。目標も変更する？`);
+    // ↓ 目標変更の確認メッセージもここだっピ！
+    let changeTarget = window.confirm(`今の目標は ${targetWeight}kg！目標も変更する？`);
     if (changeTarget) {
+        // ↓ 目標入力の時の文字もここだっピ！
         let t = window.prompt("新しい目標体重は？(kg)", targetWeight);
         if (t) {
             targetWeight = parseFloat(t);

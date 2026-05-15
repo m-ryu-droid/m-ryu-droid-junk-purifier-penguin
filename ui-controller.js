@@ -119,38 +119,92 @@ function initCloset() {
 /**
  * 5. アイテムを装備する
  */
-window.equipItem = function(type, imgPath, requiredPt) {
-    if (totalPoints < requiredPt) {
-        alert("ポイントが足りないっピ！ご飯を食べて浄化してだっピ。");
+/**
+ * 5. アイテムを装備・購入・脱ぐ処理
+ */
+window.equipItem = function(type, imgPath, requiredPt, itemName) {
+    // 持ち物リストを読み込む (例: "麦わら帽子,サングラス")
+    let ownedItems = localStorage.getItem('owned-items') || "";
+    let ownedArray = ownedItems.split(',').filter(x => x);
+
+    // 現在の装備を確認
+    let currentEquipped = localStorage.getItem('equipped-' + type);
+
+    // 【脱ぐ処理】すでに装備しているものをもう一度選んだ場合
+    if (currentEquipped === imgPath) {
+        localStorage.removeItem('equipped-' + type);
+        alert(itemName + "を脱いだっピ！");
+        updateDisplay();
+        initCloset(); // ボタンの文字を更新するために再描画
         return;
     }
-    // localStorageに保存
-    localStorage.setItem('equipped-' + type, imgPath);
-    alert(type === 'hat' ? "帽子をかぶったっピ！" : "お洋服を着たっピ！");
-    updateDisplay();
-};
 
-// ページ読み込み時にクローゼットを準備しておく
-document.addEventListener('DOMContentLoaded', initCloset);
+    // 【購入・着替え処理】
+    if (ownedArray.includes(itemName)) {
+        // すでに持っているならそのまま着替える
+        localStorage.setItem('equipped-' + type, imgPath);
+        alert(itemName + "に着替えたっピ！");
+    } else {
+        // 持っていないならポイントを消費して購入
+        if (totalPoints < requiredPt) {
+            alert("ポイントが足りないっピ！");
+            return;
+        }
+        totalPoints -= requiredPt; // ポイントを引く
+        localStorage.setItem('purifyPoints', totalPoints);
+        
+        // 持ち物リストに追加
+        ownedArray.push(itemName);
+        localStorage.setItem('owned-items', ownedArray.join(','));
+        
+        // 装備する
+        localStorage.setItem('equipped-' + type, imgPath);
+        alert(itemName + "をゲットして着替えたっピ！✨");
+    }
+
+    updateDisplay();
+    initCloset(); // ボタンの文字を「着替える」や「脱ぐ」に変えるために再描画
+};
 
 /**
- * 6. 初期化処理をまとめる
+ * 4. クローゼットのボタン表示をリッチにする
  */
-function initAllUI() {
-    console.log("UI初期化開始だっピ！");
-    initCloset();    // クローゼットの中身を作る
-    updateDisplay(); // 数値や着せ替えを最新にする
-}
+function initCloset() {
+    const grid = document.getElementById('item-grid');
+    if (!grid) return;
 
-// ページ読み込み時に実行（他のファイルと競合しにくい書き方だっピ）
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAllUI);
-} else {
-    initAllUI();
-}
+    let ownedItems = localStorage.getItem('owned-items') || "";
+    let ownedArray = ownedItems.split(',').filter(x => x);
 
-// ページが読み込まれた時に、クローゼットを準備する
-window.onload = function() {
-    initCloset();    // クローゼットのボタンを生成
-    updateDisplay(); // 画面の数値を更新
-};
+    grid.innerHTML = "";
+    items.forEach(item => {
+        let isOwned = ownedArray.includes(item.name);
+        let isEquipped = localStorage.getItem('equipped-' + item.type) === item.img;
+        
+        let buttonText = "";
+        let buttonStyle = "";
+
+        if (isEquipped) {
+            buttonText = "脱ぐ";
+            buttonStyle = "background: #ef5350; color: white;"; // 赤色
+        } else if (isOwned) {
+            buttonText = "着替える";
+            buttonStyle = "background: #4caf50; color: white;"; // 緑色
+        } else {
+            buttonText = item.pt + "ptでゲット";
+            buttonStyle = "background: #0288d1; color: white;"; // 青色
+        }
+
+        const div = document.createElement('div');
+        div.className = 'item-card';
+        div.innerHTML = `
+            <img src="${item.img}" style="width:50px; height:50px; object-fit: contain;">
+            <p style="font-size:12px; margin:5px 0;">${item.name}</p>
+            <button onclick="equipItem('${item.type}', '${item.img}', ${item.pt}, '${item.name}')" 
+                    style="font-size:10px; padding:8px; cursor:pointer; border:none; border-radius:5px; ${buttonStyle}">
+                ${buttonText}
+            </button>
+        `;
+        grid.appendChild(div);
+    });
+}

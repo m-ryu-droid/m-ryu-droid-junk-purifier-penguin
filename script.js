@@ -217,6 +217,7 @@ window.resetData = function() {
     }
 };
 
+// 画面切り替え関数
 window.toggleScreen = function(screenName) {
     const main = document.getElementById('main-screen');
     const closet = document.getElementById('closet-screen');
@@ -224,10 +225,52 @@ window.toggleScreen = function(screenName) {
     if (screenName === 'closet') {
         main.style.display = 'none';
         closet.style.display = 'block';
-        updateCloset(); // クローゼット画面を開いた時に最新の状態にする
+        updateClosetButtons(); // クローゼットの中身を更新
     } else {
         main.style.display = 'block';
         closet.style.display = 'none';
-        updateDisplay(); // メインに戻った時に反映させる
+        // メインに戻るときに、最新の装備を反映させる
+        loadEquipped();
     }
 };
+
+// クローゼット内のボタンを生成する関数
+function updateClosetButtons() {
+    const closetItems = document.getElementById('closet-items');
+    if (!closetItems) return;
+    closetItems.innerHTML = "";
+
+    items.forEach(item => {
+        if (totalPoints >= item.pt) {
+            let btn = document.createElement('button');
+            btn.innerText = item.name;
+            btn.style = "padding: 8px 15px; border-radius: 20px; border: 2px solid #81d4fa; background: white; cursor: pointer;";
+            
+            btn.onclick = () => {
+                // クローゼット内とメイン両方の画像パスを更新
+                const currentImg = localStorage.getItem('equipped-' + item.type);
+                if (currentImg === item.img) {
+                    // 脱ぐ
+                    localStorage.removeItem('equipped-' + item.type);
+                } else {
+                    // 着る
+                    localStorage.setItem('equipped-' + item.type, item.img);
+                }
+                loadEquipped(); // 見た目を更新
+            };
+            closetItems.appendChild(btn);
+        }
+    });
+}
+
+// 装備を画面に反映させる関数（メインとクローゼット両方）
+function loadEquipped() {
+    ['hat', 'body'].forEach(type => {
+        const savedImg = localStorage.getItem('equipped-' + type);
+        const mainEl = document.getElementById('main-' + type);
+        const closetEl = document.getElementById('closet-' + type);
+        
+        if (mainEl) mainEl.src = savedImg || "";
+        if (closetEl) closetEl.src = savedImg || "";
+    });
+}

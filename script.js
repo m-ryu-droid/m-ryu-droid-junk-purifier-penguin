@@ -18,6 +18,31 @@ function updateDisplay() {
     const bossIcon = document.getElementById('boss-icon');
     const remainingInline = document.getElementById('remaining-pt-inline');
 
+    const items = [
+    { name: '麦わら帽子', pt: 10, img: 'hat_straw.png', type: 'hat' },
+    { name: 'サングラス', pt: 30, img: 'glasses.png', type: 'hat' },
+    { name: 'マント', pt: 50, img: 'mantle.png', type: 'body' }
+];
+
+function updateCloset() {
+    const closet = document.getElementById('closet');
+    closet.innerHTML = ""; // 一旦リセット
+
+    items.forEach(item => {
+        if (totalPoints >= item.pt) {
+            // ポイントが足りていればボタンを表示！
+            let btn = document.createElement('button');
+            btn.innerText = item.name;
+            btn.style = "font-size: 0.7em; padding: 5px; border-radius: 10px; border: 1px solid #81d4fa; background: white;";
+            btn.onclick = () => {
+                document.getElementById('current-' + item.type).src = item.img;
+                localStorage.setItem('equipped-' + item.type, item.img); // 装備を保存！
+            };
+            closet.appendChild(btn);
+        }
+    });
+}
+
     if (ptDisp) ptDisp.innerText = totalPoints;
     
     let remaining = BOSS_GOAL - totalPoints;

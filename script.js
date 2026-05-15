@@ -8,6 +8,13 @@ let totalPoints = localStorage.getItem('purifyPoints') ? parseInt(localStorage.g
 let currentWeight = localStorage.getItem('currentWeight') ? parseFloat(localStorage.getItem('currentWeight')) : null;
 let targetWeight = localStorage.getItem('targetWeight') ? parseFloat(localStorage.getItem('targetWeight')) : 70;
 
+// --- 追加要素：装備データ ---
+const items = [
+    { name: '麦わら帽子', pt: 10, img: 'hat_straw.png', type: 'hat' },
+    { name: 'サングラス', pt: 30, img: 'glasses.png', type: 'hat' },
+    { name: '勇者のマント', pt: 50, img: 'mantle.png', type: 'body' }
+];
+
 // --- 2. 画面更新の命令 ---
 function updateDisplay() {
     const ptDisp = document.getElementById('total-pt-display');
@@ -18,30 +25,9 @@ function updateDisplay() {
     const bossIcon = document.getElementById('boss-icon');
     const remainingInline = document.getElementById('remaining-pt-inline');
 
-    const items = [
-    { name: '麦わら帽子', pt: 10, img: 'hat_straw.png', type: 'hat' },
-    { name: 'サングラス', pt: 30, img: 'glasses.png', type: 'hat' },
-    { name: 'マント', pt: 50, img: 'mantle.png', type: 'body' }
-];
-
-function updateCloset() {
-    const closet = document.getElementById('closet');
-    closet.innerHTML = ""; // 一旦リセット
-
-    items.forEach(item => {
-        if (totalPoints >= item.pt) {
-            // ポイントが足りていればボタンを表示！
-            let btn = document.createElement('button');
-            btn.innerText = item.name;
-            btn.style = "font-size: 0.7em; padding: 5px; border-radius: 10px; border: 1px solid #81d4fa; background: white;";
-            btn.onclick = () => {
-                document.getElementById('current-' + item.type).src = item.img;
-                localStorage.setItem('equipped-' + item.type, item.img); // 装備を保存！
-            };
-            closet.appendChild(btn);
-        }
-    });
-}
+    // クローゼットと装備の更新を呼ぶ
+    updateCloset();
+    loadEquipped();
 
     if (ptDisp) ptDisp.innerText = totalPoints;
     
@@ -77,6 +63,46 @@ function updateCloset() {
         bossMsg.innerHTML = "<strong>ジャンク王を撃破したっピ！🎉</strong><br>この調子で海を守り抜くっピ！";
         bossMsg.style.color = "#d32f2f";
     }
+}
+
+// クローゼットを更新する関数
+function updateCloset() {
+    const closet = document.getElementById('closet');
+    if (!closet) return;
+    closet.innerHTML = ""; 
+
+    items.forEach(item => {
+        if (totalPoints >= item.pt) {
+            let btn = document.createElement('button');
+            btn.innerText = item.name;
+            btn.style = "font-size: 0.75em; padding: 5px 10px; border-radius: 12px; border: 2px solid #81d4fa; background: white; cursor: pointer;";
+            
+            btn.onclick = () => {
+                const imgElement = document.getElementById('current-' + item.type);
+                if (imgElement) {
+                    if (imgElement.src.includes(item.img)) {
+                        imgElement.src = ""; 
+                        localStorage.removeItem('equipped-' + item.type);
+                    } else {
+                        imgElement.src = item.img;
+                        localStorage.setItem('equipped-' + item.type, item.img);
+                    }
+                }
+            };
+            closet.appendChild(btn);
+        }
+    });
+}
+
+// 装備をロードする関数
+function loadEquipped() {
+    ['hat', 'body'].forEach(type => {
+        const saved = localStorage.getItem('equipped-' + type);
+        if (saved) {
+            const el = document.getElementById('current-' + type);
+            if (el && !el.src.includes(saved)) el.src = saved;
+        }
+    });
 }
 
 // --- 3. メインの処理（DOM準備完了後） ---

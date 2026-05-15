@@ -1,8 +1,9 @@
+/* アプリ全体のデザイン */
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: sans-serif;
     text-align: center;
-    background-color: #e1f5fe;
-    color: #0277bd;
+    background-color: #e0f7fa; /* 薄い青色の背景 */
+    color: #01579b;
     margin: 0;
     padding: 20px;
     display: flex;
@@ -11,77 +12,57 @@ body {
     min-height: 100vh;
 }
 
+/* 白い枠のデザイン */
 .container {
     background: white;
-    border-radius: 25px;
-    padding: 30px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    max-width: 400px;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    max-width: 400px; /* スマホで見やすい幅 */
     width: 100%;
 }
 
+/* タイトルのデザイン */
 h1 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
+    font-size: 1.5rem;
     color: #01579b;
 }
 
+/* ペンギン画像のコンテナ（ここ重要！） */
 #penguin-img-container {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 20px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 5px solid #81d4fa;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f1f8e9; /* 画像がない時の背景 */
+    width: 150px; /* 画像の幅を150pxに固定 */
+    height: 150px; /* 高さを150pxに固定 */
+    margin: 0 auto; /* 真ん中に寄せる */
+    border-radius: 50%; /* 丸い枠にする */
+    overflow: hidden; /* 枠からはみ出した部分を隠す */
+    border: 5px solid #81d4fa; /* 水色の丸枠 */
 }
 
+/* コンテナの中にある画像自体の設定 */
 #penguin-img-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 画像を枠いっぱいに綺麗に収める */
+    width: 100%; /* コンテナの幅いっぱいまで広げる */
+    height: 100%; /* コンテナの高さいっぱいまで広げる */
+    object-fit: cover; /* 画像を歪ませずに綺麗に収める */
 }
 
+/* ステータスエリアのデザイン */
 #status-area {
-    background-color: #f1f8e9;
     margin: 20px 0;
-    padding: 20px;
-    border-radius: 15px;
-    border: 2px solid #aed581;
+    padding: 15px;
+    border: 2px dashed #0288d1;
+    border-radius: 10px;
+    background-color: #f1f8e9;
 }
 
-#status-area p {
-    margin: 5px 0;
-    font-size: 1.1rem;
-}
-
-#status-area strong {
-    font-size: 1.3rem;
-    color: #33691e;
-}
-
-#message {
-    color: #558b2f;
-    font-style: italic;
-}
-
+/* ボタンのデザイン */
 #upload-btn {
     background-color: #0288d1;
     color: white;
-    padding: 18px 35px;
+    padding: 15px 30px;
     border-radius: 50px;
     border: none;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(2, 136, 209, 0.3);
-    transition: transform 0.1s;
-}
-
-#upload-btn:active {
-    transform: scale(0.97); /* 押した時に少し沈む演出 */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
 }

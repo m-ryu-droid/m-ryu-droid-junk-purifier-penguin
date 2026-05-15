@@ -124,7 +124,21 @@ window.equipItem = function(type, imgPath, requiredPt) {
 // ページ読み込み時にクローゼットを準備しておく
 document.addEventListener('DOMContentLoaded', initCloset);
 
-// ui-controller.js の一番下
+/**
+ * 6. 初期化処理をまとめる
+ */
+function initAllUI() {
+    console.log("UI初期化開始だっピ！");
+    initCloset();    // クローゼットの中身を作る
+    updateDisplay(); // 数値や着せ替えを最新にする
+}
+
+// ページ読み込み時に実行（他のファイルと競合しにくい書き方だっピ）
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAllUI);
+} else {
+    initAllUI();
+}
 
 // ページが読み込まれた時に、クローゼットを準備する
 window.onload = function() {

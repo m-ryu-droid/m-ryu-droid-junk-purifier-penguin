@@ -29,7 +29,7 @@ function updateDisplay() {
     if (currentWeight && weightDisp && diffDisp) {
         weightDisp.innerText = currentWeight.toFixed(1) + "kg";
         let diff = currentWeight - targetWeight;
-        diffDisp.innerText = (diff > 0 ? "+" : "") + diff.toFixed(1) + "kg";
+        diffDisp.innerText = (diff > 0 ? "あと" : "") + diff.toFixed(1) + "kg";
     }
 }
 

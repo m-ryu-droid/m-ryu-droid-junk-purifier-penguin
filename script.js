@@ -80,5 +80,77 @@ if (uploadBtn && cameraInput) {
     };
 }
 
+// --- [ここから追加してだっピ！] ---
+
+// 画面が全部読み込まれてから繋ぐっピ
+document.addEventListener('DOMContentLoaded', () => {
+    // 改めてHTMLの部品を取得し直すっピ
+    const cameraInput = document.getElementById('camera-input');
+    const messageText = document.getElementById('message');
+    
+    // 【最重要】写真が選ばれた時の命令をここに繋ぎ直すっピ！
+    if (cameraInput) {
+        cameraInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // ここから解析スタートだっピ！
+            messageText.innerText = "ペンペンが食材をスキャン中だっピ...🔍";
+            const resultArea = document.getElementById('result');
+            if(resultArea) resultArea.innerHTML = ""; 
+            
+            const reader = new FileReader();
+            reader.onload = async () => {
+                const base64Image = reader.result.split(',')[1];
+                
+                try {
+                    // Gemini 2.5 Flash に送信だっピ
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [
+                                    { text: `写真の食材をリストアップして、最後に【JSON】形式で結果を出力してだっピ。
+                                    形式: {"ingredients": ["食材1", "食材2"], "score": 浄化ポイント(-10〜10), "story": "短い物語"} 
+                                    健康ならプラス、ジャンクならマイナスだっピ。` },
+                                    { inline_data: { mime_type: file.type, data: base64Image } }
+                                ]
+                            }]
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    // エラーチェックだっピ
+                    if (data.error) {
+                        messageText.innerText = "エラーだっピ： " + data.error.message;
+                        return;
+                    }
+
+                    const rawText = data.candidates[0].content.parts[0].text;
+                    
+                    // JSON部分を抽出して解析
+                    const jsonMatch = rawText.match(/\{.*\}/s);
+                    if (jsonMatch) {
+                        const result = JSON.parse(jsonMatch[0]);
+                        showConfirmation(result); // 確認画面へ
+                    } else {
+                        messageText.innerText = "スキャンに失敗したっピ...もう一度撮ってほしいっピ。";
+                    }
+                    
+                } catch (error) {
+                    console.error(error);
+                    messageText.innerText = "エラーだっピ。APIキーかネットが怪しいっピ。";
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    // 起動時の表示更新
+    updateDisplay();
+});
+
 // 起動時に実行
 updateDisplay();

@@ -34,54 +34,52 @@ function updateDisplay() {
 }
 
 // --- 3. メインの処理（写真が選ばれた時） ---
-document.addEventListener('DOMContentLoaded', () => {
-    const cameraInput = document.getElementById('camera-input');
+cameraInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // 表示をスキャン中に変更
     const messageText = document.getElementById('message');
+    if (messageText) messageText.innerText = "ペンペンが食材をスキャン中だっピ...🔍";
+    
     const resultArea = document.getElementById('result');
+    if (resultArea) resultArea.innerHTML = ""; 
+    
+    const reader = new FileReader();
+    reader.onload = async () => {
+        const base64Image = reader.result.split(',')[1];
+        try {
+            // URLが正しいか、API_KEYが正しく結合されているか再確認
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [
+                            { text: "写真の食材をリストアップして、最後に以下のJSON形式だけで出力して。形式: {\"ingredients\": [\"食材1\", \"食材2\"], \"score\": 10, \"story\": \"物語\"}" },
+                            { inline_data: { mime_type: file.type, data: base64Image } }
+                        ]
+                    }]
+                })
+            });
 
-    if (cameraInput) {
-        cameraInput.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            messageText.innerText = "ペンペンが食材をスキャン中だっピ...🔍";
-            resultArea.innerHTML = ""; 
-            
-            const reader = new FileReader();
-            reader.onload = async () => {
-                const base64Image = reader.result.split(',')[1];
-                try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{
-                                parts: [
-                                    { text: "写真の食材をリストアップして、最後に以下のJSON形式だけで出力してだっピ。余計な解説は不要だっピ。形式: {\"ingredients\": [\"食材1\", \"食材2\"], \"score\": 浄化ポイント(-10〜10), \"story\": \"短いストーリー\"}" },
-                                    { inline_data: { mime_type: file.type, data: base64Image } }
-                                ]
-                            }]
-                        })
-                    });
-
-                    const data = await response.json();
-                    const rawText = data.candidates[0].content.parts[0].text;
-                    const jsonMatch = rawText.match(/\{.*\}/s);
-                    
-                    if (jsonMatch) {
-                        const result = JSON.parse(jsonMatch[0]);
-                        showConfirmation(result);
-                    } else {
-                        messageText.innerText = "スキャンに失敗したっピ...もう一度撮ってほしいっピ。";
-                    }
-                } catch (error) {
-                    messageText.innerText = "エラーだっピ。APIキーかネットが怪しいっピ。";
+            const data = await response.json();
+            // data.candidates が存在するかチェック
+            if (data.candidates && data.candidates[0].content.parts[0].text) {
+                const rawText = data.candidates[0].content.parts[0].text;
+                const jsonMatch = rawText.match(/\{.*\}/s);
+                if (jsonMatch) {
+                    showConfirmation(JSON.parse(jsonMatch[0]));
                 }
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-    updateDisplay(); // 起動時にステータスを表示
+            } else {
+                if (messageText) messageText.innerText = "解析に失敗したっピ。もう一度試してほしいっピ。";
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            if (messageText) messageText.innerText = "通信エラーだっピ。";
+        }
+    };
+    reader.readAsDataURL(file);
 });
 
 // --- 4. サブの機能（確認画面・体重入力） ---
@@ -111,19 +109,37 @@ window.completePurify = function(score, story) {
 };
 
 window.openWeightInput = function() {
+    // 現在の体重を入力
     let w = window.prompt("今の体重を教えてほしいっピ！(kg)", currentWeight || "");
-    if (w) {
-        currentWeight = parseFloat(w);
-        localStorage.setItem('currentWeight', currentWeight);
-        if (!localStorage.getItem('targetWeight')) {
-            let t = window.prompt("目標体重は？", "65");
-            if (t) { targetWeight = parseFloat(t); localStorage.setItem('targetWeight', targetWeight); }
+    if (!w) return; // キャンセルなら終了
+
+    currentWeight = parseFloat(w);
+    localStorage.setItem('currentWeight', currentWeight);
+
+    // ★目標体重も書き換えられるように修正
+    let changeTarget = window.confirm(`今の目標は ${targetWeight}kg だっピ。目標も変更するっピ？`);
+    if (changeTarget) {
+        let t = window.prompt("新しい目標体重は？(kg)", targetWeight);
+        if (t) {
+            targetWeight = parseFloat(t);
+            localStorage.setItem('targetWeight', targetWeight);
         }
-        updateDisplay();
     }
+
+    updateDisplay(); // 画面を更新
 };
 
 window.resetUI = function() {
     document.getElementById('result').innerHTML = "";
     document.getElementById('message').innerText = "海が綺麗になってきてるっピ！";
 };
+
+// 画面の準備ができたらボタンを動くようにする
+document.addEventListener('DOMContentLoaded', () => {
+    updateDisplay(); // 起動時に数字を出す
+    const uploadBtn = document.getElementById('upload-btn');
+    const cameraInput = document.getElementById('camera-input');
+    if (uploadBtn && cameraInput) {
+        uploadBtn.onclick = () => cameraInput.click();
+    }
+});

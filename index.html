@@ -26,31 +26,37 @@
 
 <div id="main-penguin-stage" style="
     position: relative; 
-    width: 200px;           /* 160pxから200pxに大きくする */
-    height: 200px;          /* 四角にする */
+    width: 250px;           /* 枠をさらに少し大きくしたっピ */
+    height: 250px; 
     margin: 20px auto; 
     background: white; 
-    border-radius: 20px;    /* 完全な丸(50%)から、少し角の丸い四角(20px)にする */
+    border-radius: 20px; 
     border: 4px solid #b3e5fc; 
-    display: flex; 
-    align-items: flex-end;  /* ペンギンを下に配置する */
-    justify-content: center; 
-    overflow: hidden;       /* ステージからはみ出た部分（例えば帽子の下部）を隠す */
+    overflow: hidden;       /* 枠からはみ出た部分をカットするっピ */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;  /* ペンギンを枠の底にピタッとくっつけるっピ */
 ">
     <img src="penguin.png" style="
-        width: 100%;        /* 80%から100%にして、枠いっぱいに表示する */
-        position: relative; 
-        z-index: 1;
+        width: 90%;         /* 少しだけ余白を残して大きく表示するっピ */
+        height: auto;
+        position: relative;
+        z-index: 1;         /* 下側に配置 */
+        margin-bottom: 5px; /* 足元に少しだけ隙間を作るっピ */
     ">
     
     <img id="main-hat" src="" style="
         position: absolute; 
-        width: 70%;         /* 幅を調整（帽子の形に合わせて微調整してだっピ） */
+        width: 65%;         /* 帽子の大きさ（ペンギンの頭のサイズに合わせて調整） */
         height: auto; 
-        top: 10px;          /* ステージの上端から少し下に配置する */
-        left: 15%;          /* 真ん中に来るように調整 (100% - 70%) / 2 */
-        z-index: 2;         /* ペンギンの上に表示する */
-        pointer-events: none;
+        z-index: 2;         /* ペンギンの上に重ねるっピ */
+        
+        /* ここで位置をミリ単位で調整するっピ！ */
+        top: 15%;           /* 上からの位置。もっと深くかぶせるなら数字を大きく(20%とか) */
+        left: 50%;          /* 一旦真ん中に寄せる */
+        transform: translateX(-50%); /* 完全に中央に固定するっピ */
+        
+        pointer-events: none; /* 帽子が邪魔でクリックできないのを防ぐっピ */
     ">
 </div>
 

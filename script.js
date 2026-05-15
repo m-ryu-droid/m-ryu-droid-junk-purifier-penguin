@@ -15,6 +15,7 @@ function updateDisplay() {
     const bar = document.getElementById('purify-bar');
     const weightDisp = document.getElementById('current-weight');
     const diffDisp = document.getElementById('weight-diff');
+    const bossIcon = document.getElementById('boss-icon');
 
     if (ptDisp) ptDisp.innerText = totalPoints;
     
@@ -24,12 +25,27 @@ function updateDisplay() {
     if (bar) {
         let percent = (totalPoints / BOSS_GOAL) * 100;
         bar.style.width = (percent > 100 ? 100 : percent) + "%";
+        
+        // 100%超えたらボスを倒した風にする演出
+        if (percent >= 100 && bossIcon) {
+            bossIcon.innerText = "💥"; // ボスが爆発！
+            bar.style.background = "linear-gradient(90deg, #ffd700, #ff8c00)"; // ゲージが金に！
+        } else if (bossIcon) {
+            bossIcon.innerText = "👾"; // 通常時はボス
+        }
     }
     
     if (currentWeight && weightDisp && diffDisp) {
+        // 「kg」の重複を避けるため、ここでは数値だけに修正
         weightDisp.innerText = currentWeight.toFixed(1) + "kg";
+        
         let diff = currentWeight - targetWeight;
-        diffDisp.innerText = (diff > 0 ? "あと" : "") + diff.toFixed(1) + "kg";
+        // 分かりやすく「目標まで」という言葉を添える
+        if (diff <= 0) {
+            diffDisp.innerText = "目標達成！ (" + diff.toFixed(1) + "kg)";
+        } else {
+            diffDisp.innerText = "目標まで あと " + diff.toFixed(1) + "kg";
+        }
     }
 }
 

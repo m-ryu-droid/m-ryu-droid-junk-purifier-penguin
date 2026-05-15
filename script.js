@@ -193,18 +193,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// --- 4. 確認・完了処理（ここを修正！） ---
+
 function showConfirmation(data) {
     const messageText = document.getElementById('message');
     const resultArea = document.getElementById('result');
-    messageText.innerText = "🐧「見つけた食材はこれであってる？」";
+    
+    // 🔍 解析が終わったので、メッセージを「確認」に変えるっピ！
+    messageText.innerText = "🐧「見つけた食材はこれであってるかな？」";
     
     let html = `<div style="background:#fff; padding:15px; border-radius:10px; border:2px solid #81d4fa;">`;
     data.ingredients.forEach((item, index) => {
-        html += `<div style="margin-bottom:8px;"><input type="text" value="${item}" style="width:80%; padding:5px; border-radius:5px; border:1px solid #ddd;"></div>`;
+        html += `<div style="margin-bottom:8px; display:flex; align-items:center;">
+                    <input type="checkbox" checked id="check-${index}" style="margin-right:10px;">
+                    <input type="text" value="${item}" id="input-${index}" style="flex:1; border:1px solid #ddd; padding:4px; border-radius:4px;">
+                 </div>`;
     });
-    html += `<button onclick="completePurify(${data.score}, '${data.story.replace(/'/g, "\\'")}')" style="background:#0288d1; color:#fff; border:none; padding:10px; width:100%; border-radius:5px; cursor:pointer;">これで浄化！✨</button></div>`;
+    const safeStory = data.story ? data.story.replace(/'/g, "\\'") : "浄化完了だっピ！";
+    html += `<button onclick="completePurify(${data.score}, '${safeStory}')" style="background:#0288d1; color:#fff; border:none; padding:12px; width:100%; border-radius:5px; margin-top:10px; font-weight:bold; cursor:pointer;">これで浄化するっピ！✨</button></div>`;
     resultArea.innerHTML = html;
 }
+
+window.completePurify = function(score, story) {
+    totalPoints += score;
+    localStorage.setItem('purifyPoints', totalPoints);
+    updateDisplay();
+    
+    // 浄化後のストーリーを表示
+    document.getElementById('message').innerText = story;
+    document.getElementById('result').innerHTML = `<button onclick="resetUI()" style="margin-top:10px; padding:10px 25px; border-radius:20px; border:none; background:#81d4fa; color:white; font-weight:bold; cursor:pointer;">次へ進むっピ！</button>`;
+};
+
+// 【重要】ここが2枚目を送るためのリセット処理だっピ！
+window.resetUI = function() {
+    const messageText = document.getElementById('message');
+    const resultArea = document.getElementById('result');
+    const cameraInput = document.getElementById('camera-input');
+
+    // 1. メッセージを最初に戻す
+    messageText.innerText = "ご飯の写真を撮って、海を浄化するっピ！";
+    
+    // 2. 確認ボタンや入力フォームを消す
+    resultArea.innerHTML = "";
+    
+    // 3. 【超重要】カメラの入力を空にする（これをしないと同じ写真を連続で選んだ時に反応しないっピ）
+    if (cameraInput) {
+        cameraInput.value = "";
+    }
+    
+    console.log("リセット完了！2枚目の準備OKだっピ！");
+};
 
 window.completePurify = function(score, story) {
     totalPoints += score;

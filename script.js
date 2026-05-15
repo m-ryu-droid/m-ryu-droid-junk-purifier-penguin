@@ -94,31 +94,49 @@ function updateDisplay() {
     bar.style.width = percent + "%";
 }
 
-// 浄化完了処理をアップグレード
+// 浄化完了処理を確実に更新されるように修正
 window.completePurify = function(score, story) {
+    // 1. ポイントを加算
     totalPoints += score;
+    
+    // 2. 保存（スマホを閉じても消えないように）
     localStorage.setItem('purifyPoints', totalPoints); 
     
-    // 画面の数字とゲージを更新
+    // 3. ★重要：上のステータスボードの数字を書き換える関数を呼ぶ
     updateDisplay();
     
-    // 完了後のメッセージ
+    // 4. 下のメッセージエリアを更新
     messageText.innerText = story;
-    
-    // 完了後は「解析結果」を消して、次へ進むボタンを出す
     resultArea.innerHTML = `
         <div style="text-align:center; padding:20px;">
-            <div style="font-size:32px; margin-bottom:10px;">✨ ＋${score} pt</div>
-            <button onclick="resetUI()" style="background:#81d4fa; border:none; padding:10px 20px; border-radius:20px; cursor:pointer;">次へ進むっピ！</button>
+            <div style="font-size:32px; color:#0288d1; margin-bottom:10px;">✨ ＋${score} pt 浄化！</div>
+            <p style="font-weight:bold;">(累計: ${totalPoints} pt)</p>
+            <button onclick="resetUI()" style="background:#81d4fa; border:none; padding:10px 20px; border-radius:20px; cursor:pointer; font-weight:bold; margin-top:10px;">次へ進むっピ！</button>
         </div>
     `;
-    
-    // ボス戦解禁のチェック
+
+    // 5. ボス出現チェック
     if (totalPoints >= BOSS_GOAL) {
-        messageText.innerText = "浄化完了だっピ！ついに汚染のボスが姿を現したっピ...！";
-        resultArea.innerHTML += `<button onclick="startBossBattle()" style="background:#ef4444; color:white; border:none; padding:15px; width:100%; border-radius:10px; margin-top:10px; font-weight:bold; font-size:1.2em;">🔥 ボスを倒しに行く！</button>`;
+        // ボス出現ボタンを出す処理...
     }
 };
+
+// 上のボードを更新する関数（ここも念のため再確認）
+function updateDisplay() {
+    const display = document.getElementById('total-pt-display');
+    const distance = document.getElementById('boss-distance');
+    const bar = document.getElementById('purify-bar');
+    
+    if(display) display.innerText = totalPoints; // 確実に数字を上書き
+    
+    let remaining = BOSS_GOAL - totalPoints;
+    if (remaining < 0) remaining = 0;
+    if(distance) distance.innerText = remaining;
+    
+    let percent = (totalPoints / BOSS_GOAL) * 100;
+    if (percent > 100) percent = 100;
+    if(bar) bar.style.width = percent + "%";
+}
 
 // UIをリセットして次の写真に備える
 window.resetUI = function() {

@@ -12,6 +12,21 @@
         <div id="main-screen">
             <h1>テスト8</h1>
             <div class="status-board">
+    <div style="display: flex; justify-content: space-around; margin-bottom: 5px;">
+        <div style="font-weight: bold;">浄化Pt: <span id="total-pt-display">0</span></div>
+        <div style="font-size: 0.9em; color: #555;">ボスまで: <span id="boss-distance">30</span> pt</div>
+    </div>
+
+    <div class="progress-container" style="background: #e0f2f1; border-radius: 10px; height: 12px; margin: 10px 0; overflow: hidden;">
+        <div class="progress-bar" id="purify-bar" style="background: #4db6ac; width: 0%; height: 100%; transition: width 0.3s ease;"></div>
+    </div>
+
+    <div style="display: flex; justify-content: space-around; font-size: 0.8em; color: #666;">
+        <div>現在: <span id="current-weight">--</span> kg</div>
+        <div>目標まで: <span id="weight-diff">--</span></div>
+    </div>
+</div>
+                
                 </div>
 
             <div style="position: relative; width: 100%; max-width: 300px; margin: 0 auto;">

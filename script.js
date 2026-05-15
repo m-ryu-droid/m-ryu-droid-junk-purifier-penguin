@@ -1,4 +1,8 @@
-const API_KEY = 'AIzaSyDeck035jJZSr2ZoBS_7i-axS_ssQB6OCg';
+// GitHubに直接書くとまた消されるので、空にしておきます
+const API_KEY = window.prompt("APIキーを入力してほしいっピ！"); 
+
+const cameraInput = document.getElementById('camera-input');
+// ...（以下のコードはそのまま）
 const cameraInput = document.getElementById('camera-input');
 const messageText = document.getElementById('message');
 

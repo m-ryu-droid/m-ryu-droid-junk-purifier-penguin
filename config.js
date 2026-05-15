@@ -2,10 +2,10 @@
 // config.js: アプリの基本設定とデータ管理
 // ==========================================
 
-// 1. APIキーの設定
-const part1 = "AIza"; 
-const part2 = "SyCVm1ZdSOBR5q8gnDJl9RFB15b_cwq4dJU"; 
-const API_KEY = part1 + part2;
+window.API_KEY = "AIza..." + "SyCVm1ZdSOBR5q8gnDJl9RFB15b_cwq4dJU"; // 自分のキーを合体させてだっピ
+window.totalPoints = parseInt(localStorage.getItem('purifyPoints')) || 0;
+window.currentWeight = parseFloat(localStorage.getItem('currentWeight')) || null;
+window.targetWeight = parseFloat(localStorage.getItem('targetWeight')) || 70;
 
 // 2. 目標値の設定
 const BOSS_GOAL = 30;

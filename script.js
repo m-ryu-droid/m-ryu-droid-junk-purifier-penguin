@@ -8,7 +8,7 @@ let totalPoints = localStorage.getItem('purifyPoints') ? parseInt(localStorage.g
 let currentWeight = localStorage.getItem('currentWeight') ? parseFloat(localStorage.getItem('currentWeight')) : null;
 let targetWeight = localStorage.getItem('targetWeight') ? parseFloat(localStorage.getItem('targetWeight')) : 70;
 
-// --- 2. 画面更新の命令（ステータスボード用） ---
+// --- 2. 画面更新の命令 ---
 function updateDisplay() {
     const ptDisp = document.getElementById('total-pt-display');
     const bossDisp = document.getElementById('boss-distance');
@@ -16,37 +16,30 @@ function updateDisplay() {
     const weightDisp = document.getElementById('current-weight');
     const diffDisp = document.getElementById('weight-diff');
     const bossIcon = document.getElementById('boss-icon');
+    const remainingInline = document.getElementById('remaining-pt-inline');
 
     if (ptDisp) ptDisp.innerText = totalPoints;
     
     let remaining = BOSS_GOAL - totalPoints;
     if (bossDisp) bossDisp.innerText = (remaining < 0 ? 0 : remaining);
+    if (remainingInline) remainingInline.innerText = (remaining < 0 ? 0 : remaining);
     
     if (bar) {
         let percent = (totalPoints / BOSS_GOAL) * 100;
         bar.style.width = (percent > 100 ? 100 : percent) + "%";
         
-        // 100%超えたらボスを倒した風にする演出
         if (percent >= 100 && bossIcon) {
-            bossIcon.innerText = "💥"; // ボスが爆発！
-            bar.style.background = "linear-gradient(90deg, #ffd700, #ff8c00)"; // ゲージが金に！
+            bossIcon.innerText = "💥";
+            bar.style.background = "linear-gradient(90deg, #ffd700, #ff8c00)";
         } else if (bossIcon) {
-            bossIcon.innerText = "👾"; // 通常時はボス
+            bossIcon.innerText = "👾";
+            bar.style.background = "linear-gradient(90deg, #4fc3f7, #0288d1)";
         }
     }
     
     if (currentWeight && weightDisp && diffDisp) {
-        // 「kg」の重複を避けるため、ここでは数値だけに修正
         weightDisp.innerText = currentWeight.toFixed(1) + "kg";
-        
         let diff = currentWeight - targetWeight;
-        // 分かりやすく「目標まで」という言葉を添える
-        if (diff <= 0) {
-            if (currentWeight && weightDisp && diffDisp) {
-        weightDisp.innerText = currentWeight.toFixed(1) + "kg";
-        
-        let diff = currentWeight - targetWeight;
-        // 「目標まで：」が重複しないようにスッキリさせたっピ！
         if (diff <= 0) {
             diffDisp.innerText = "目標達成！✨";
         } else {
@@ -54,30 +47,25 @@ function updateDisplay() {
         }
     }
 
-    // ★おまけ：ボスを倒した後のメッセージを豪華にするっピ！
     const bossMsg = document.querySelector('div[style*="text-align: center; font-size: 0.7em;"]');
     if (bossMsg && totalPoints >= BOSS_GOAL) {
         bossMsg.innerHTML = "<strong>ジャンク王を撃破したっピ！🎉</strong><br>この調子で海を守り抜くっピ！";
-        bossMsg.style.color = "#d32f2f"; // 文字を赤くして目立たせる
-    }
+        bossMsg.style.color = "#d32f2f";
     }
 }
 
-// --- 3. メインの処理（画面の準備ができたら実行） ---
+// --- 3. メインの処理（DOM準備完了後） ---
 document.addEventListener('DOMContentLoaded', () => {
-    updateDisplay(); // 起動時に数字を出す
-    
+    updateDisplay();
     const uploadBtn = document.getElementById('upload-btn');
     const cameraInput = document.getElementById('camera-input');
     const messageText = document.getElementById('message');
     const resultArea = document.getElementById('result');
 
-    // 写真ボタンと隠し入力を繋ぐ
     if (uploadBtn && cameraInput) {
         uploadBtn.onclick = () => cameraInput.click();
     }
 
-    // 写真が選ばれた時の処理（ここに入れたっピ！）
     if (cameraInput) {
         cameraInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
@@ -124,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // --- 4. サブの機能 ---
-
 function showConfirmation(data) {
     const messageText = document.getElementById('message');
     const resultArea = document.getElementById('result');
@@ -137,7 +124,6 @@ function showConfirmation(data) {
                     <input type="text" value="${item}" id="input-${index}" style="flex:1; border:1px solid #ddd; padding:4px; border-radius:4px;">
                  </div>`;
     });
-    // storyが空の場合の対策
     const safeStory = data.story ? data.story.replace(/'/g, "\\'") : "浄化完了だっピ！";
     html += `<button onclick="completePurify(${data.score}, '${safeStory}')" style="background:#0288d1; color:#fff; border:none; padding:12px; width:100%; border-radius:5px; margin-top:10px; font-weight:bold; cursor:pointer;">これで浄化するっピ！✨</button></div>`;
     resultArea.innerHTML = html;
@@ -152,18 +138,13 @@ window.completePurify = function(score, story) {
 };
 
 window.openWeightInput = function() {
-    // ↓ この「 」の中の文字を自由に変えてだっピ！
     let w = window.prompt("今の体重を教えて〜！(kg)", currentWeight || "");
-    
     if (!w) return;
-
     currentWeight = parseFloat(w);
     localStorage.setItem('currentWeight', currentWeight);
 
-    // ↓ 目標変更の確認メッセージもここだっピ！
     let changeTarget = window.confirm(`今の目標は ${targetWeight}kg！目標も変更する？`);
     if (changeTarget) {
-        // ↓ 目標入力の時の文字もここだっピ！
         let t = window.prompt("新しい目標体重は？(kg)", targetWeight);
         if (t) {
             targetWeight = parseFloat(t);
@@ -178,7 +159,6 @@ window.resetUI = function() {
     document.getElementById('message').innerText = "海が綺麗になってきてるっピ！";
 };
 
-// データリセット用
 window.resetData = function() {
     if (window.confirm("全データをリセットするっピ？")) {
         localStorage.clear();

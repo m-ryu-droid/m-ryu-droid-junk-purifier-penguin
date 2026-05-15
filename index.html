@@ -24,25 +24,10 @@
                 </div>
             </div>
 
-<div id="main-penguin-stage" style="
-    position: relative; 
-    width: 250px;           /* 枠をさらに少し大きくしたっピ */
-    height: 250px; 
-    margin: 20px auto; 
-    background: white; 
-    border-radius: 20px; 
-    border: 4px solid #b3e5fc; 
-    overflow: hidden;       /* 枠からはみ出た部分をカットするっピ */
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;  /* ペンギンを枠の底にピタッとくっつけるっピ */
-">
-    <img src="penguin.png" style="
-        width: 90%;         /* 少しだけ余白を残して大きく表示するっピ */
+<img src="penguin.png" id="main-penguin-img" style="
+        width: 100%;        /* 枠いっぱいに表示 */
         height: auto;
         position: relative;
-        z-index: 1;         /* 下側に配置 */
-        margin-bottom: 5px; /* 足元に少しだけ隙間を作るっピ */
     ">
     
     <img id="main-hat" src="" style="

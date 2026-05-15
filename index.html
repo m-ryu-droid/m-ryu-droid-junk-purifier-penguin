@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ジャンク世界の浄化者</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background-color: #e0f7fa; color: #01579b; margin: 0; padding: 20px; }
+        .container { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { font-size: 1.5rem; }
+        #penguin-img { width: 150px; height: auto; }
+        #status-area { margin: 20px 0; padding: 15px; border: 2px dashed #0288d1; border-radius: 10px; }
+        #upload-btn { background-color: #0288d1; color: white; padding: 15px 30px; border-radius: 50px; border: none; font-size: 1rem; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ペンペン救出大作戦</h1>
+        <div id="penguin-img">🐧</div>
+        
+        <div id="status-area">
+            <p>現在の浄化状況: <strong>0 / 30 人</strong></p>
+            <p id="message">ご飯の写真を撮って、海を浄化するっピ！</p>
+        </div>
+
+        <input type="file" id="camera-input" accept="image/*" capture="camera" style="display:none;">
+        <button id="upload-btn" onclick="document.getElementById('camera-input').click()">📷 写真を撮る</button>
+        
+        <div id="result" style="margin-top:20px; font-weight:bold;"></div>
+    </div>
+</body>
+</html>

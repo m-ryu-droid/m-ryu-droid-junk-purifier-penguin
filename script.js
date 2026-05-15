@@ -8,7 +8,6 @@ let totalPoints = localStorage.getItem('purifyPoints') ? parseInt(localStorage.g
 let currentWeight = localStorage.getItem('currentWeight') ? parseFloat(localStorage.getItem('currentWeight')) : null;
 let targetWeight = localStorage.getItem('targetWeight') ? parseFloat(localStorage.getItem('targetWeight')) : 70;
 
-// --- 追加要素：装備データ ---
 const items = [
     { name: '麦わら帽子', pt: 10, img: 'hat_straw.png', type: 'hat' },
     { name: 'サングラス', pt: 30, img: 'glasses.png', type: 'hat' },
@@ -23,87 +22,91 @@ function updateDisplay() {
     const weightDisp = document.getElementById('current-weight');
     const diffDisp = document.getElementById('weight-diff');
     const bossIcon = document.getElementById('boss-icon');
-    const remainingInline = document.getElementById('remaining-pt-inline');
 
-    // クローゼットと装備の更新を呼ぶ
-    updateCloset();
+    // 装備の見た目を更新
     loadEquipped();
 
     if (ptDisp) ptDisp.innerText = totalPoints;
     
     let remaining = BOSS_GOAL - totalPoints;
     if (bossDisp) bossDisp.innerText = (remaining < 0 ? 0 : remaining);
-    if (remainingInline) remainingInline.innerText = (remaining < 0 ? 0 : remaining);
     
     if (bar) {
         let percent = (totalPoints / BOSS_GOAL) * 100;
         bar.style.width = (percent > 100 ? 100 : percent) + "%";
-        
         if (percent >= 100 && bossIcon) {
             bossIcon.innerText = "💥";
             bar.style.background = "linear-gradient(90deg, #ffd700, #ff8c00)";
-        } else if (bossIcon) {
-            bossIcon.innerText = "👾";
-            bar.style.background = "linear-gradient(90deg, #4fc3f7, #0288d1)";
         }
     }
     
     if (currentWeight && weightDisp && diffDisp) {
         weightDisp.innerText = currentWeight.toFixed(1) + "kg";
         let diff = currentWeight - targetWeight;
-        if (diff <= 0) {
-            diffDisp.innerText = "目標達成！✨";
-        } else {
-            diffDisp.innerText = "あと " + diff.toFixed(1) + "kg";
-        }
-    }
-
-    const bossMsg = document.querySelector('div[style*="text-align: center; font-size: 0.7em;"]');
-    if (bossMsg && totalPoints >= BOSS_GOAL) {
-        bossMsg.innerHTML = "<strong>ジャンク王を撃破したっピ！🎉</strong><br>この調子で海を守り抜くっピ！";
-        bossMsg.style.color = "#d32f2f";
+        diffDisp.innerText = diff <= 0 ? "目標達成！✨" : "あと " + diff.toFixed(1) + "kg";
     }
 }
 
-// クローゼットを更新する関数
-function updateCloset() {
-    const closet = document.getElementById('closet');
-    if (!closet) return;
-    closet.innerHTML = ""; 
+// 装備を画面に反映させる（メインとクローゼット両方）
+function loadEquipped() {
+    ['hat', 'body'].forEach(type => {
+        const savedImg = localStorage.getItem('equipped-' + type);
+        // HTML側のIDが main-hat, main-body / closet-hat, closet-body になっているか確認！
+        const mainEl = document.getElementById('main-' + type);
+        const closetEl = document.getElementById('closet-' + type);
+        
+        const imgSrc = savedImg ? savedImg : "";
+        if (mainEl) mainEl.src = imgSrc;
+        if (closetEl) closetEl.src = imgSrc;
+    });
+}
+
+// 画面切り替え
+window.toggleScreen = function(screenName) {
+    const main = document.getElementById('main-screen');
+    const closet = document.getElementById('closet-screen');
+
+    if (screenName === 'closet') {
+        main.style.display = 'none';
+        closet.style.display = 'block';
+        updateClosetButtons(); 
+    } else {
+        main.style.display = 'block';
+        closet.style.display = 'none';
+        updateDisplay();
+    }
+};
+
+function updateClosetButtons() {
+    const closetItems = document.getElementById('closet-items');
+    if (!closetItems) return;
+    closetItems.innerHTML = "";
 
     items.forEach(item => {
         if (totalPoints >= item.pt) {
             let btn = document.createElement('button');
             btn.innerText = item.name;
-            btn.style = "font-size: 0.75em; padding: 5px 10px; border-radius: 12px; border: 2px solid #81d4fa; background: white; cursor: pointer;";
+            btn.style = "padding: 8px 15px; border-radius: 20px; border: 2px solid #81d4fa; background: white; cursor: pointer;";
             
             btn.onclick = () => {
-                const imgElement = document.getElementById('current-' + item.type);
-                if (imgElement) {
-                    if (imgElement.src.includes(item.img)) {
-                        imgElement.src = ""; 
-                        localStorage.removeItem('equipped-' + item.type);
-                    } else {
-                        imgElement.src = item.img;
-                        localStorage.setItem('equipped-' + item.type, item.img);
-                    }
+                const currentImg = localStorage.getItem('equipped-' + item.type);
+                if (currentImg === item.img) {
+                    localStorage.removeItem('equipped-' + item.type);
+                } else {
+                    localStorage.setItem('equipped-' + item.type, item.img);
                 }
+                loadEquipped();
             };
-            closet.appendChild(btn);
+            closetItems.appendChild(btn);
         }
     });
 }
 
-// 装備をロードする関数
-function loadEquipped() {
-    ['hat', 'body'].forEach(type => {
-        const saved = localStorage.getItem('equipped-' + type);
-        if (saved) {
-            const el = document.getElementById('current-' + type);
-            if (el && !el.src.includes(saved)) el.src = saved;
-        }
-    });
-}
+// --- 3. メインの処理 ---
+document.addEventListener('DOMContentLoaded', () => {
+    updateDisplay();
+    // ...（カメラ機能などの残りのコード）
+});
 
 // --- 3. メインの処理（DOM準備完了後） ---
 document.addEventListener('DOMContentLoaded', () => {

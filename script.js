@@ -13,9 +13,9 @@ let currentWeight = parseFloat(localStorage.getItem('currentWeight')) || null;
 let targetWeight = parseFloat(localStorage.getItem('targetWeight')) || 70;
 
 const items = [
-    { name: '麦わら帽子', pt: 10, img: 'hat_straw.png', type: 'hat' },
-    { name: 'サングラス', pt: 30, img: 'glasses.png', type: 'hat' },
-    { name: '勇者のマント', pt: 50, img: 'mantle.png', type: 'body' }
+    { name: '麦わら帽子', pt: 10, img: 'assets/hat_straw.png', type: 'hat' },
+    { name: 'サングラス', pt: 30, img: 'assets/glasses.png', type: 'hat' },
+    { name: '勇者のマント', pt: 50, img: 'assets/mantle.png', type: 'body' }
 ];
 
 // ==========================================

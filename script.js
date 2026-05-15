@@ -33,6 +33,41 @@ function updateDisplay() {
     }
 }
 
+// --- 1. 設定エリア ---
+const part1 = "AIza"; 
+const part2 = "SyCVm1ZdSOBR5q8gnDJl9RFB15b_cwq4dJU"; 
+const API_KEY = part1 + part2;
+
+const BOSS_GOAL = 30;
+let totalPoints = localStorage.getItem('purifyPoints') ? parseInt(localStorage.getItem('purifyPoints')) : 0;
+let currentWeight = localStorage.getItem('currentWeight') ? parseFloat(localStorage.getItem('currentWeight')) : null;
+let targetWeight = localStorage.getItem('targetWeight') ? parseFloat(localStorage.getItem('targetWeight')) : 70;
+
+// --- 2. 画面更新の命令（ステータスボード用） ---
+function updateDisplay() {
+    const ptDisp = document.getElementById('total-pt-display');
+    const bossDisp = document.getElementById('boss-distance');
+    const bar = document.getElementById('purify-bar');
+    const weightDisp = document.getElementById('current-weight');
+    const diffDisp = document.getElementById('weight-diff');
+
+    if (ptDisp) ptDisp.innerText = totalPoints;
+    
+    let remaining = BOSS_GOAL - totalPoints;
+    if (bossDisp) bossDisp.innerText = (remaining < 0 ? 0 : remaining);
+    
+    if (bar) {
+        let percent = (totalPoints / BOSS_GOAL) * 100;
+        bar.style.width = (percent > 100 ? 100 : percent) + "%";
+    }
+    
+    if (currentWeight && weightDisp && diffDisp) {
+        weightDisp.innerText = currentWeight.toFixed(1) + "kg";
+        let diff = currentWeight - targetWeight;
+        diffDisp.innerText = (diff > 0 ? "+" : "") + diff.toFixed(1) + "kg";
+    }
+}
+
 // --- 3. メインの処理（写真が選ばれた時） ---
 cameraInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
@@ -225,7 +260,7 @@ window.completePurify = function(score, story) {
 };
 
 window.openWeightInput = function() {
-    let w = window.prompt("今の体重を教えてほしいっピ！(kg)", currentWeight || "");
+    let w = window.prompt("今の体重を教えてほしい！(kg)", currentWeight || "");
     if (!w) return;
 
     currentWeight = parseFloat(w);

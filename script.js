@@ -42,10 +42,24 @@ function updateDisplay() {
         let diff = currentWeight - targetWeight;
         // 分かりやすく「目標まで」という言葉を添える
         if (diff <= 0) {
-            diffDisp.innerText = "目標達成！ (" + diff.toFixed(1) + "kg)";
+            if (currentWeight && weightDisp && diffDisp) {
+        weightDisp.innerText = currentWeight.toFixed(1) + "kg";
+        
+        let diff = currentWeight - targetWeight;
+        // 「目標まで：」が重複しないようにスッキリさせたっピ！
+        if (diff <= 0) {
+            diffDisp.innerText = "目標達成！✨";
         } else {
-            diffDisp.innerText = "目標まで あと " + diff.toFixed(1) + "kg";
+            diffDisp.innerText = "あと " + diff.toFixed(1) + "kg";
         }
+    }
+
+    // ★おまけ：ボスを倒した後のメッセージを豪華にするっピ！
+    const bossMsg = document.querySelector('div[style*="text-align: center; font-size: 0.7em;"]');
+    if (bossMsg && totalPoints >= BOSS_GOAL) {
+        bossMsg.innerHTML = "<strong>ジャンク王を撃破したっピ！🎉</strong><br>この調子で海を守り抜くっピ！";
+        bossMsg.style.color = "#d32f2f"; // 文字を赤くして目立たせる
+    }
     }
 }
 

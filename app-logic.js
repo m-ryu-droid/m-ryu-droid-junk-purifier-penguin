@@ -1,9 +1,17 @@
-let loadingInterval = null;
+// ==========================================
+// app-logic.js: 計算・AI解析・入力担当
+// ==========================================
 
-// 体重と目標の入力 //
+// アニメーション用のタイマー変数（1つだけ宣言するっピ）
+let loadingInterval = null; 
+
+/**
+ * 1. 体重と目標の入力処理
+ */
 window.openWeightInput = function() {
     let w = window.prompt("今の体重を教えて〜！(kg)", currentWeight || "");
     if (!w) return;
+    
     currentWeight = parseFloat(w);
     localStorage.setItem('currentWeight', currentWeight);
 
@@ -15,16 +23,16 @@ window.openWeightInput = function() {
             localStorage.setItem('targetWeight', targetWeight);
         }
     }
-    updateDisplay();
+    // ui-controller.js にある更新関数を呼ぶっピ
+    if (typeof updateDisplay === 'function') updateDisplay();
 };
 
-
-// カメラの設定・AI //
-
-let loadingInterval = null; // アニメーション用の変数を宣言しておくっピ
-
+/**
+ * 2. カメラ起動とGemini AIによる画像解析
+ */
 document.addEventListener('DOMContentLoaded', () => {
-    updateDisplay();
+    // 起動時に画面を一度更新
+    if (typeof updateDisplay === 'function') updateDisplay();
 
     const uploadBtn = document.getElementById('upload-btn');
     const cameraInput = document.getElementById('camera-input');
@@ -40,10 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const file = e.target.files[0];
             if (!file) return;
 
-            // 前のタイマーが動いてたら一旦止める
+            // 前のタイマーが動いてたら止める
             if (loadingInterval) clearInterval(loadingInterval);
 
-            // 🐧「確認中」アニメーション開始！
+            // 🐧「確認中」アニメーション開始
             let dots = "";
             loadingInterval = setInterval(() => {
                 dots = dots.length >= 3 ? "" : dots + ".";
@@ -56,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.onload = async () => {
                 const base64Image = reader.result.split(',')[1];
                 try {
+                    // API_KEY は config.js から読み込まれるっピ
                     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -83,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch (error) {
                     clearInterval(loadingInterval);
                     messageText.innerText = "🐧「通信エラーになっちゃったっピ...」";
+                    console.error("Gemini Error:", error);
                 }
             };
             reader.readAsDataURL(file);
@@ -90,7 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// 食材確認画面を出す
+/**
+ * 3. 食材確認画面の表示
+ */
 function showConfirmation(data) {
     const messageText = document.getElementById('message');
     const resultArea = document.getElementById('result');
@@ -109,17 +121,22 @@ function showConfirmation(data) {
     resultArea.innerHTML = html;
 }
 
-// 浄化完了！
+/**
+ * 4. 浄化完了処理
+ */
 window.completePurify = function(score, story) {
+    // totalPoints は ui-controller.js か config.js で宣言されている想定だっピ
     totalPoints += score;
     localStorage.setItem('purifyPoints', totalPoints);
-    updateDisplay();
+    if (typeof updateDisplay === 'function') updateDisplay();
     
     document.getElementById('message').innerText = story;
     document.getElementById('result').innerHTML = `<button onclick="resetUI()" style="margin-top:10px; padding:10px 25px; border-radius:20px; border:none; background:#81d4fa; color:white; font-weight:bold; cursor:pointer;">次へ進むっピ！</button>`;
 };
 
-// 全てをリセットして最初に戻る
+/**
+ * 5. 全てをリセットして最初に戻る
+ */
 window.resetUI = function() {
     const messageText = document.getElementById('message');
     const resultArea = document.getElementById('result');

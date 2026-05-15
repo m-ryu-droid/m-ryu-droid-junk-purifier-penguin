@@ -48,23 +48,41 @@ function loadEquipped() {
     let hat = localStorage.getItem('equipped-hat');
     let body = localStorage.getItem('equipped-body');
 
-    // 基本は「何も着ていないペンギン」
-    let imgSrc = "assets/penguinc.png"; 
+    // ui-controller.js 内の loadEquipped 関数の中身
 
-    // 装備に応じて画像を切り替える（画像パスは自分の環境に合わせてだっピ）
+function loadEquipped() {
+    const mainEl = document.getElementById('main-penguin-img');
+    const closetEl = document.getElementById('closet-penguin-img');
+    
+    // localStorage から今の装備を取得（ここには単品の画像パスが入ってるっピ）
+    let hat = localStorage.getItem('equipped-hat');
+    let body = localStorage.getItem('equipped-body');
+
+    // 1. 基本は「何も着ていないペンギン」
+    let imgSrc = "assets/penguin.png"; 
+
+    // 2. 装備に応じて「帽子をかぶったペンギン」の画像パスに差し替える
     if (hat === 'assets/hat_straw.png') {
-        imgSrc = "assets/penguin_straw.png"; // 麦わら帽子をかぶったペンギン画像
-    } else if (hat === 'assets/hat_knit.png' || hat === 'penguin.png') {
-        imgSrc = "assets/penguin.png";       // ニット帽をかぶったペンギン画像
-    } else if (body === 'assets/mantle.png') {
-        imgSrc = "assets/penguin_mantle.png"; // マントをつけたペンギン画像
+        // 👒 麦わら帽子の単品を選んでいるなら、用意したこの画像を表示！
+        imgSrc = "assets/hat_straw.png"; 
+    } 
+    else if (hat === 'assets/hat_knit.png' || hat === 'penguin.png') {
+        // 🧶 ニット帽をかぶったペンギン画像
+        imgSrc = "assets/penguin.png"; 
+    } 
+    else if (body === 'assets/mantle.png') {
+        // 🦸 マントをつけたペンギン画像
+        imgSrc = "assets/penguin_mantle.png";
     }
 
-    // メイン画面とクローゼット画面の両方のペンギンを更新
+    // 3. 画像を反映（帽子単品の重ね着タグは非表示にするっピ）
     if (mainEl) mainEl.src = imgSrc;
     if (closetEl) closetEl.src = imgSrc;
-}
 
+    // 【重要】画像自体に帽子が含まれているので、HTMLの「重ねる用の帽子タグ」は隠すっピ！
+    const mainHatTag = document.getElementById('main-hat');
+    if (mainHatTag) mainHatTag.style.display = "none";
+}
 /**
  * 3. 画面の切り替え（メイン ↔ クローゼット）
  */

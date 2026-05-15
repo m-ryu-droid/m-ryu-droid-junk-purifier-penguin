@@ -7,8 +7,8 @@ window.totalPoints = parseInt(localStorage.getItem('purifyPoints')) || 0;
 window.currentWeight = parseFloat(localStorage.getItem('currentWeight')) || null;
 window.targetWeight = parseFloat(localStorage.getItem('targetWeight')) || 70;
 
-// 2. 目標値の設定
-const BOSS_GOAL = 30;
+window.BOSS_GOAL = 30;
+
 
 // 3. ユーザーデータの初期化（localStorageから読み込む）
 // 他のファイルでも使うので、ここで一括管理するっピ！

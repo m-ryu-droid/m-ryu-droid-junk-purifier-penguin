@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const file = e.target.files[0];
             if (!file) return;
 
-            messageText.innerText = "ペンペンが食材をスキャン中だっピ...🔍";
+            messageText.innerText = "🐧「お食事内容を確認中だよ！」...🔍";
             resultArea.innerHTML = ""; 
             
             const reader = new FileReader();
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (jsonMatch) showConfirmation(JSON.parse(jsonMatch[0]));
                     }
                 } catch (error) {
-                    messageText.innerText = "通信エラーだっピ。";
+                    messageText.innerText = "通信エラー💦";
                 }
             };
             reader.readAsDataURL(file);
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function showConfirmation(data) {
     const messageText = document.getElementById('message');
     const resultArea = document.getElementById('result');
-    messageText.innerText = "見つけた食材はこれであってるっピ？";
+    messageText.innerText = "🐧「見つけた食材はこれであってる？」";
     
     let html = `<div style="background:#fff; padding:15px; border-radius:10px; border:2px solid #81d4fa;">`;
     data.ingredients.forEach((item, index) => {

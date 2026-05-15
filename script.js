@@ -1,5 +1,5 @@
 // ここに取得したAPIキーを貼り付けます
-const API_KEY = 'あなたのAPIキーをここに貼り付け';
+const API_KEY = 'AIzaSyDeck035jJZSr2ZoBS_7i-axS_ssQB6OCg';
 
 const cameraInput = document.getElementById('camera-input');
 const messageText = document.getElementById('message');

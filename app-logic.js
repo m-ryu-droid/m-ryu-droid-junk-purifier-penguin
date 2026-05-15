@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /**
  * 3. 食材確認画面の表示
  */
-function showConfirmation(data) {
+window.showConfirmation = function(data) {
     const messageText = document.getElementById('message');
     const resultArea = document.getElementById('result');
     

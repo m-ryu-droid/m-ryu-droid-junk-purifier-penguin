@@ -6,23 +6,31 @@
  * 1. 画面全体の表示を最新状態に更新する
  */
 function updateDisplay() {
+    // 💡【重要】ここで「最新のデータ」をグローバルから、あるいはlocalStorageから取得し直すっピ！
+    // もし config.js で window.totalPoints と書いているならこれだけでOK
+    
     // スコア表示の更新
     const ptDisp = document.getElementById('total-pt-display');
     if (ptDisp) ptDisp.innerText = totalPoints;
 
-    // ボスまでの残りポイント
+    // ボスまでの残りポイント（BOSS_GOALが見つからないとここでエラーになるっピ）
     const bossDisp = document.getElementById('boss-distance');
     if (bossDisp) {
-        let remaining = BOSS_GOAL - totalPoints;
+        // もし BOSS_GOAL が undefined なら 30 を使う、という安全策
+        const goal = (typeof BOSS_GOAL !== 'undefined') ? BOSS_GOAL : 30;
+        let remaining = goal - totalPoints;
         bossDisp.innerText = (remaining < 0 ? 0 : remaining);
     }
 
     // 浄化バー（進捗バー）の更新
     const bar = document.getElementById('purify-bar');
     if (bar) {
-        let percent = (totalPoints / BOSS_GOAL) * 100;
+        const goal = (typeof BOSS_GOAL !== 'undefined') ? BOSS_GOAL : 30;
+        let percent = (totalPoints / goal) * 100;
         bar.style.width = (percent > 100 ? 100 : percent) + "%";
     }
+    
+}
 
     // 体重情報の更新
     const weightDisp = document.getElementById('current-weight');

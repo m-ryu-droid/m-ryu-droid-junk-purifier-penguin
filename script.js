@@ -24,9 +24,8 @@ function updateDisplay() {
     
     // 体重表示
     if (currentWeight) {
-        document.getElementById('current-weight').innerText = currentWeight.toFixed(1);
-        let diff = currentWeight - targetWeight;
-        document.getElementById('weight-diff').innerText = (diff > 0 ? "+" : "") + diff.toFixed(1);
+       // 減った時はマイナス、増えた時はプラスが自動で付くようにするっピ！
+    document.getElementById('weight-diff').innerText = (diff > 0 ? "+" : "") + diff.toFixed(1);
     }
 }
 
@@ -70,6 +69,16 @@ window.resetUI = function() {
     document.getElementById('result').innerHTML = "";
     document.getElementById('message').innerText = "海が少しずつ綺麗になっているっピ！";
 };
+
+// HTMLのボタンと入力をプログラムで繋ぐっピ！
+const uploadBtn = document.getElementById('upload-btn');
+const cameraInput = document.getElementById('camera-input');
+
+if (uploadBtn && cameraInput) {
+    uploadBtn.onclick = () => {
+        cameraInput.click(); // ボタンを押したらカメラ（ファイル選択）を起動！
+    };
+}
 
 // 起動時に実行
 updateDisplay();

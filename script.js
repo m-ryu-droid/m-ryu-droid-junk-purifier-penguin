@@ -152,8 +152,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const file = e.target.files[0];
             if (!file) return;
 
-            messageText.innerText = "🐧「お食事内容を確認中だよ！」...🔍";
+// --- ここからアニメーション開始！ ---
+            let dots = "";
+            const loadingInterval = setInterval(() => {
+                dots = dots.length >= 3 ? "" : dots + "."; // 「.」「..」「...」「」を繰り返す
+                messageText.innerText = `🐧「お食事内容を確認中だよ！」${dots}🔍`;
+            }, 500); // 0.5秒ごとに更新
+            
             resultArea.innerHTML = ""; 
+            // --- ここまで ---
             
             const reader = new FileReader();
             reader.onload = async () => {

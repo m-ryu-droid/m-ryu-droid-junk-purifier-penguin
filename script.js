@@ -69,19 +69,35 @@ function updateClosetButtons() {
     const closetItems = document.getElementById('closet-items');
     if (!closetItems) return;
     closetItems.innerHTML = "";
+
     items.forEach(item => {
+        // 所持ポイントが足りている場合のみボタンを表示
         if (totalPoints >= item.pt) {
             let btn = document.createElement('button');
-            btn.innerText = item.name;
-            btn.style = "padding: 8px 15px; border-radius: 20px; border: 2px solid #81d4fa; background: white; cursor: pointer; margin: 5px;";
+            
+            // 現在装備中かどうかをチェック
+            const currentImg = localStorage.getItem('equipped-' + item.type);
+            const isEquipped = (currentImg === item.img);
+
+            // ボタンの見た目を「選択中」か「未選択」で変える
+            btn.innerText = isEquipped ? `【選択中】${item.name}` : item.name;
+            btn.style = `padding: 10px 15px; border-radius: 20px; cursor: pointer; margin: 5px; font-weight: bold;
+                        border: 2px solid #81d4fa; 
+                        background: ${isEquipped ? '#b3e5fc' : 'white'}; 
+                        color: ${isEquipped ? '#01579b' : '#666'};`;
+            
             btn.onclick = () => {
-                const currentImg = localStorage.getItem('equipped-' + item.type);
-                if (currentImg === item.img) {
+                if (isEquipped) {
+                    // すでに着ていたら脱ぐ
                     localStorage.removeItem('equipped-' + item.type);
                 } else {
+                    // 着ていなかったら着る
                     localStorage.setItem('equipped-' + item.type, item.img);
                 }
-                loadEquipped();
+                
+                // 【重要】見た目を即座に更新する命令を全部呼ぶ！
+                loadEquipped();      // ペンペンの見た目更新
+                updateClosetButtons(); // 自分（ボタン）の見た目も更新
             };
             closetItems.appendChild(btn);
         }

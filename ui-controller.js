@@ -82,7 +82,8 @@ function loadEquipped() {
     // 【重要】画像自体に帽子が含まれているので、HTMLの「重ねる用の帽子タグ」は隠すっピ！
     const mainHatTag = document.getElementById('main-hat');
     if (mainHatTag) mainHatTag.style.display = "none";
-}
+};
+    
 /**
  * 3. 画面の切り替え（メイン ↔ クローゼット）
  */

@@ -43,11 +43,19 @@ function updateDisplay() {
 
 function loadEquipped() {
     ['hat', 'body'].forEach(type => {
+        // 保存されている画像名（hat_straw.png など）を取得
         const savedImg = localStorage.getItem('equipped-' + type);
+        
+        // HTMLの ID ("main-hat" や "main-body") を探す
         const mainEl = document.getElementById('main-' + type);
         const closetEl = document.getElementById('closet-' + type);
+        
+        // 画像があれば表示、なければ空にする
         if (mainEl) mainEl.src = savedImg || "";
         if (closetEl) closetEl.src = savedImg || "";
+        
+        // デバッグ用：動かない時はブラウザのコンソールでこれを見てだっピ！
+        console.log(`${type} を更新しました: ${savedImg}`);
     });
 }
 

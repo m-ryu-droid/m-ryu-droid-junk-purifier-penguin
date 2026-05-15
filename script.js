@@ -133,8 +133,10 @@ function updateClosetButtons() {
 }
 
 // ==========================================
-// 4. カメラ・AI解析（消えちゃった部分）
+// 4. カメラ・AI解析 & 完了・リセット処理
 // ==========================================
+let loadingInterval = null; // アニメーション用の変数を宣言しておくっピ
+
 document.addEventListener('DOMContentLoaded', () => {
     updateDisplay();
 
@@ -147,15 +149,15 @@ document.addEventListener('DOMContentLoaded', () => {
         uploadBtn.onclick = () => cameraInput.click();
     }
 
- if (cameraInput) {
+    if (cameraInput) {
         cameraInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
 
-            // もし前のタイマーが動いてたら一旦止める
+            // 前のタイマーが動いてたら一旦止める
             if (loadingInterval) clearInterval(loadingInterval);
 
-            // アニメーション開始！
+            // 🐧「確認中」アニメーション開始！
             let dots = "";
             loadingInterval = setInterval(() => {
                 dots = dots.length >= 3 ? "" : dots + ".";
@@ -181,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         })
                     });
 
-                    // 【超重要】ここでタイマーを止めるっピ！
+                    // 解析が終わったらタイマーを止める
                     clearInterval(loadingInterval); 
 
                     const data = await response.json();
@@ -193,43 +195,54 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 } catch (error) {
-                    clearInterval(loadingInterval); // エラーの時も止めるっピ
+                    clearInterval(loadingInterval);
                     messageText.innerText = "🐧「通信エラーになっちゃったっピ...」";
                 }
             };
             reader.readAsDataURL(file);
         });
     }
+});
 
-// 【重要】ここが2枚目を送るためのリセット処理だっピ！
+// 食材確認画面を出す
+function showConfirmation(data) {
+    const messageText = document.getElementById('message');
+    const resultArea = document.getElementById('result');
+    
+    messageText.innerText = "🐧「見つけた食材はこれであってるかな？」";
+    
+    let html = `<div style="background:#fff; padding:15px; border-radius:10px; border:2px solid #81d4fa;">`;
+    data.ingredients.forEach((item, index) => {
+        html += `<div style="margin-bottom:8px; display:flex; align-items:center;">
+                    <input type="checkbox" checked id="check-${index}" style="margin-right:10px;">
+                    <input type="text" value="${item}" style="flex:1; border:1px solid #ddd; padding:4px; border-radius:4px;">
+                 </div>`;
+    });
+    const safeStory = data.story ? data.story.replace(/'/g, "\\'") : "浄化完了だっピ！";
+    html += `<button onclick="completePurify(${data.score}, '${safeStory}')" style="background:#0288d1; color:#fff; border:none; padding:12px; width:100%; border-radius:5px; margin-top:10px; font-weight:bold; cursor:pointer;">これで浄化するっピ！✨</button></div>`;
+    resultArea.innerHTML = html;
+}
+
+// 浄化完了！
+window.completePurify = function(score, story) {
+    totalPoints += score;
+    localStorage.setItem('purifyPoints', totalPoints);
+    updateDisplay();
+    
+    document.getElementById('message').innerText = story;
+    document.getElementById('result').innerHTML = `<button onclick="resetUI()" style="margin-top:10px; padding:10px 25px; border-radius:20px; border:none; background:#81d4fa; color:white; font-weight:bold; cursor:pointer;">次へ進むっピ！</button>`;
+};
+
+// 全てをリセットして最初に戻る
 window.resetUI = function() {
     const messageText = document.getElementById('message');
     const resultArea = document.getElementById('result');
     const cameraInput = document.getElementById('camera-input');
 
-    // 1. メッセージを最初に戻す
     messageText.innerText = "ご飯の写真を撮って、海を浄化するっピ！";
-    
-    // 2. 確認ボタンや入力フォームを消す
     resultArea.innerHTML = "";
-    
-    // 3. 【超重要】カメラの入力を空にする（これをしないと同じ写真を連続で選んだ時に反応しないっピ）
     if (cameraInput) {
         cameraInput.value = "";
     }
-    
-    console.log("リセット完了！2枚目の準備OKだっピ！");
-};
-
-window.completePurify = function(score, story) {
-    totalPoints += score;
-    localStorage.setItem('purifyPoints', totalPoints);
-    updateDisplay();
-    document.getElementById('message').innerText = story;
-    document.getElementById('result').innerHTML = `<button onclick="resetUI()" style="margin-top:10px; padding:8px 20px; border-radius:20px; border:none; background:#eee; cursor:pointer;">次へ</button>`;
-};
-
-window.resetUI = function() {
-    document.getElementById('result').innerHTML = "";
-    document.getElementById('message').innerText = "海が綺麗になってきてるっピ！";
+    console.log("リセット完了！");
 };

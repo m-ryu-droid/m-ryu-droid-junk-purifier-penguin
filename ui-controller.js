@@ -44,16 +44,6 @@ function loadEquipped() {
     const mainEl = document.getElementById('main-penguin-img');
     const closetEl = document.getElementById('closet-penguin-img');
     
-    // localStorage から今の装備を取得
-    let hat = localStorage.getItem('equipped-hat');
-    let body = localStorage.getItem('equipped-body');
-
-    // ui-controller.js 内の loadEquipped 関数の中身
-
-function loadEquipped() {
-    const mainEl = document.getElementById('main-penguin-img');
-    const closetEl = document.getElementById('closet-penguin-img');
-    
     // localStorage から今の装備を取得（ここには単品の画像パスが入ってるっピ）
     let hat = localStorage.getItem('equipped-hat');
     let body = localStorage.getItem('equipped-body');

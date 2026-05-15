@@ -2,8 +2,6 @@
 const API_KEY = window.prompt("APIキーを入力してほしいっピ！"); 
 
 const cameraInput = document.getElementById('camera-input');
-// ...（以下のコードはそのまま）
-const cameraInput = document.getElementById('camera-input');
 const messageText = document.getElementById('message');
 
 cameraInput.addEventListener('change', async (e) => {

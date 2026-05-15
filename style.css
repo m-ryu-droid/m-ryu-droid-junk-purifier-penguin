@@ -62,3 +62,7 @@ h1 { color: #0277bd; font-size: 1.8em; margin-bottom: 20px; }
 .btn-pink { background-color: #ec407a; }
 
 .btn-blue:active, .btn-pink:active { transform: translateY(2px); box-shadow: none; }
+
+.hidden {
+    display: none !important;
+}

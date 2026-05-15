@@ -11,15 +11,19 @@
         <h1>食生活改善</h1>
         <div id="penguin-img-container"><img src="penguin.png" alt="ペンペン"></div>
         
-        <div id="status-area">
-            <p>現在の浄化状況: <strong>0 / 30 人</strong></p>
-            <p id="message">ご飯の写真を撮って、海を浄化するっピ！</p>
-        </div>
+<div id="status-area">
+    <p>現在の浄化状況: <strong id="total-pt-display">0</strong> pt</p>
+    <p id="message">ご飯の写真を撮って、海を浄化するっピ！</p>
+</div>
+
+<div id="result"></div>
 
         <input type="file" id="camera-input" accept="image/*" capture="camera" style="display:none;">
         <button id="upload-btn" onclick="document.getElementById('camera-input').click()">📷 写真を撮る</button>
         
         <div id="result" style="margin-top:20px; font-weight:bold;"></div>
+
+        
     </div>
     <script src="script.js"></script>
 </body>

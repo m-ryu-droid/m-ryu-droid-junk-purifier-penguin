@@ -1,0 +1,87 @@
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    text-align: center;
+    background-color: #e1f5fe;
+    color: #0277bd;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    background: white;
+    border-radius: 25px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    color: #01579b;
+}
+
+#penguin-img-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid #81d4fa;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1f8e9; /* 画像がない時の背景 */
+}
+
+#penguin-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 画像を枠いっぱいに綺麗に収める */
+}
+
+#status-area {
+    background-color: #f1f8e9;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid #aed581;
+}
+
+#status-area p {
+    margin: 5px 0;
+    font-size: 1.1rem;
+}
+
+#status-area strong {
+    font-size: 1.3rem;
+    color: #33691e;
+}
+
+#message {
+    color: #558b2f;
+    font-style: italic;
+}
+
+#upload-btn {
+    background-color: #0288d1;
+    color: white;
+    padding: 18px 35px;
+    border-radius: 50px;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(2, 136, 209, 0.3);
+    transition: transform 0.1s;
+}
+
+#upload-btn:active {
+    transform: scale(0.97); /* 押した時に少し沈む演出 */
+}

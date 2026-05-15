@@ -24,16 +24,34 @@
                 </div>
             </div>
 
-<div style="position: relative; width: 160px; height: 160px; margin: 20px auto; border-radius: 50%; border: 4px solid #b3e5fc; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-    <img src="penguin.png" style="width: 80%;">
-    <img id="closet-hat" src="" style="
-    position: absolute; 
-    width: 60%;         /* 幅を少し小さくしてペンペンが見えるようにする */
-    height: 30%;       /* 高さは自動調整 */
-    top: 0px;         /* 少し上に浮かせて頭に乗せる */
-    left: 20%;          /* 真ん中に来るように調整 */
+<div id="main-penguin-stage" style="
+    position: relative; 
+    width: 200px;           /* 160pxから200pxに大きくする */
+    height: 200px;          /* 四角にする */
+    margin: 20px auto; 
+    background: white; 
+    border-radius: 20px;    /* 完全な丸(50%)から、少し角の丸い四角(20px)にする */
+    border: 4px solid #b3e5fc; 
+    display: flex; 
+    align-items: flex-end;  /* ペンギンを下に配置する */
+    justify-content: center; 
+    overflow: hidden;       /* ステージからはみ出た部分（例えば帽子の下部）を隠す */
 ">
-    <img id="closet-body" src="" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;">
+    <img src="penguin.png" style="
+        width: 100%;        /* 80%から100%にして、枠いっぱいに表示する */
+        position: relative; 
+        z-index: 1;
+    ">
+    
+    <img id="clodet-hat" src="" style="
+        position: absolute; 
+        width: 70%;         /* 幅を調整（帽子の形に合わせて微調整してだっピ） */
+        height: auto; 
+        top: 10px;          /* ステージの上端から少し下に配置する */
+        left: 15%;          /* 真ん中に来るように調整 (100% - 70%) / 2 */
+        z-index: 2;         /* ペンギンの上に表示する */
+        pointer-events: none;
+    ">
 </div>
 
             <p id="message">🐧「今日は何を食べたの？」</p>

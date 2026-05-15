@@ -14,7 +14,7 @@ const items = [
     { name: '勇者のマント', pt: 50, img: 'mantle.png', type: 'body' }
 ];
 
-// --- 2. 画面更新の命令 ---
+// --- 2. 画面更新の共通命令 ---
 function updateDisplay() {
     const ptDisp = document.getElementById('total-pt-display');
     const bossDisp = document.getElementById('boss-distance');
@@ -47,11 +47,10 @@ function updateDisplay() {
     }
 }
 
-// 装備を画面に反映させる（メインとクローゼット両方）
+// 装備を画面に反映（メインとクローゼット両方）
 function loadEquipped() {
     ['hat', 'body'].forEach(type => {
         const savedImg = localStorage.getItem('equipped-' + type);
-        // HTML側のIDが main-hat, main-body / closet-hat, closet-body になっているか確認！
         const mainEl = document.getElementById('main-' + type);
         const closetEl = document.getElementById('closet-' + type);
         
@@ -77,6 +76,7 @@ window.toggleScreen = function(screenName) {
     }
 };
 
+// クローゼットのボタン生成
 function updateClosetButtons() {
     const closetItems = document.getElementById('closet-items');
     if (!closetItems) return;
@@ -86,7 +86,7 @@ function updateClosetButtons() {
         if (totalPoints >= item.pt) {
             let btn = document.createElement('button');
             btn.innerText = item.name;
-            btn.style = "padding: 8px 15px; border-radius: 20px; border: 2px solid #81d4fa; background: white; cursor: pointer;";
+            btn.style = "padding: 8px 15px; border-radius: 20px; border: 2px solid #81d4fa; background: white; cursor: pointer; font-size: 0.8em;";
             
             btn.onclick = () => {
                 const currentImg = localStorage.getItem('equipped-' + item.type);
@@ -102,15 +102,10 @@ function updateClosetButtons() {
     });
 }
 
-// --- 3. メインの処理 ---
+// --- 3. メインの処理（起動時） ---
 document.addEventListener('DOMContentLoaded', () => {
     updateDisplay();
-    // ...（カメラ機能などの残りのコード）
-});
 
-// --- 3. メインの処理（DOM準備完了後） ---
-document.addEventListener('DOMContentLoaded', () => {
-    updateDisplay();
     const uploadBtn = document.getElementById('upload-btn');
     const cameraInput = document.getElementById('camera-input');
     const messageText = document.getElementById('message');
@@ -125,14 +120,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const file = e.target.files[0];
             if (!file) return;
 
-            if (messageText) messageText.innerText = "ペンペンが食材をスキャン中だっピ...🔍";
-            if (resultArea) resultArea.innerHTML = ""; 
+            messageText.innerText = "ペンペンが食材をスキャン中だっピ...🔍";
+            resultArea.innerHTML = ""; 
             
             const reader = new FileReader();
             reader.onload = async () => {
                 const base64Image = reader.result.split(',')[1];
                 try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -153,11 +148,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             showConfirmation(JSON.parse(jsonMatch[0]));
                         }
                     } else {
-                        if (messageText) messageText.innerText = "解析に失敗したっピ。もう一度試してほしいっピ。";
+                        messageText.innerText = "解析に失敗したっピ。もう一度試してほしいっピ。";
                     }
                 } catch (error) {
                     console.error("Error:", error);
-                    if (messageText) messageText.innerText = "通信エラーだっピ。";
+                    messageText.innerText = "通信エラーだっピ。";
                 }
             };
             reader.readAsDataURL(file);
@@ -165,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// --- 4. サブの機能 ---
+// --- 4. その他の機能 ---
 function showConfirmation(data) {
     const messageText = document.getElementById('message');
     const resultArea = document.getElementById('result');
@@ -212,68 +207,3 @@ window.resetUI = function() {
     document.getElementById('result').innerHTML = "";
     document.getElementById('message').innerText = "海が綺麗になってきてるっピ！";
 };
-
-window.resetData = function() {
-    if (window.confirm("全データをリセットするっピ？")) {
-        localStorage.clear();
-        location.reload();
-    }
-};
-
-// 画面切り替え関数
-window.toggleScreen = function(screenName) {
-    const main = document.getElementById('main-screen');
-    const closet = document.getElementById('closet-screen');
-
-    if (screenName === 'closet') {
-        main.style.display = 'none';
-        closet.style.display = 'block';
-        updateClosetButtons(); // クローゼットの中身を更新
-    } else {
-        main.style.display = 'block';
-        closet.style.display = 'none';
-        // メインに戻るときに、最新の装備を反映させる
-        loadEquipped();
-    }
-};
-
-// クローゼット内のボタンを生成する関数
-function updateClosetButtons() {
-    const closetItems = document.getElementById('closet-items');
-    if (!closetItems) return;
-    closetItems.innerHTML = "";
-
-    items.forEach(item => {
-        if (totalPoints >= item.pt) {
-            let btn = document.createElement('button');
-            btn.innerText = item.name;
-            btn.style = "padding: 8px 15px; border-radius: 20px; border: 2px solid #81d4fa; background: white; cursor: pointer;";
-            
-            btn.onclick = () => {
-                // クローゼット内とメイン両方の画像パスを更新
-                const currentImg = localStorage.getItem('equipped-' + item.type);
-                if (currentImg === item.img) {
-                    // 脱ぐ
-                    localStorage.removeItem('equipped-' + item.type);
-                } else {
-                    // 着る
-                    localStorage.setItem('equipped-' + item.type, item.img);
-                }
-                loadEquipped(); // 見た目を更新
-            };
-            closetItems.appendChild(btn);
-        }
-    });
-}
-
-// 装備を画面に反映させる関数（メインとクローゼット両方）
-function loadEquipped() {
-    ['hat', 'body'].forEach(type => {
-        const savedImg = localStorage.getItem('equipped-' + type);
-        const mainEl = document.getElementById('main-' + type);
-        const closetEl = document.getElementById('closet-' + type);
-        
-        if (mainEl) mainEl.src = savedImg || "";
-        if (closetEl) closetEl.src = savedImg || "";
-    });
-}

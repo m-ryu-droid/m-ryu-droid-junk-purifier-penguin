@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const base64Image = reader.result.split(',')[1];
                 try {
                     // API_KEY は config.js から読み込まれるっピ
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({

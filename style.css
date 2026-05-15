@@ -31,7 +31,8 @@ h1 {
 #penguin-img-container img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* これで、どんなサイズの画像も枠の中に収まります */
+    object-fit: contain; /* これで縦横比を保ちつつ枠内に収めます */
+    display: block;      /* 隙間をなくします */
 }
 
 /* ステータスエリアのデザイン */

@@ -49,7 +49,7 @@ function loadEquipped() {
     let body = localStorage.getItem('equipped-body');
 
     // 基本は「何も着ていないペンギン」
-    let imgSrc = "assets/penguin_naked.png"; 
+    let imgSrc = "assets/penguinc.png"; 
 
     // 装備に応じて画像を切り替える（画像パスは自分の環境に合わせてだっピ）
     if (hat === 'assets/hat_straw.png') {

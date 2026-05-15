@@ -123,3 +123,11 @@ window.equipItem = function(type, imgPath, requiredPt) {
 
 // ページ読み込み時にクローゼットを準備しておく
 document.addEventListener('DOMContentLoaded', initCloset);
+
+// ui-controller.js の一番下
+
+// ページが読み込まれた時に、クローゼットを準備する
+window.onload = function() {
+    initCloset();    // クローゼットのボタンを生成
+    updateDisplay(); // 画面の数値を更新
+};

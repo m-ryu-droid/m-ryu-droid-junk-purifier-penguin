@@ -30,19 +30,24 @@ h1 {
 
 /* ペンギン画像のコンテナ（ここ重要！） */
 #penguin-img-container {
-    width: 150px; /* 画像の幅を150pxに固定 */
-    height: 150px; /* 高さを150pxに固定 */
-    margin: 0 auto; /* 真ん中に寄せる */
-    border-radius: 50%; /* 丸い枠にする */
-    overflow: hidden; /* 枠からはみ出した部分を隠す */
-    border: 5px solid #81d4fa; /* 水色の丸枠 */
+    width: 150px;
+    height: 150px;
+    margin: 20px auto;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid #81d4fa;
+    display: flex; /* 追加：中身を中央寄せにする */
+    justify-content: center;
+    align-items: center;
+    background: white;
 }
 
-/* コンテナの中にある画像自体の設定 */
 #penguin-img-container img {
-    width: 100%; /* コンテナの幅いっぱいまで広げる */
-    height: 100%; /* コンテナの高さいっぱいまで広げる */
-    object-fit: cover; /* 画像を歪ませずに綺麗に収める */
+    max-width: 100%; /* 追加：親要素より大きくならない */
+    max-height: 100%; /* 追加 */
+    width: auto;
+    height: auto;
+    object-fit: contain; /* coverからcontainに変更（全体が収まるように） */
 }
 
 /* ステータスエリアのデザイン */

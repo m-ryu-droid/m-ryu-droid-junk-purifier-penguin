@@ -86,15 +86,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     // 解析が終わったらタイマーを止める
                     clearInterval(loadingInterval); 
 
-                    const data = await response.json();
-                    console.log("AIからの生の返事だっピ:", data); // 🌟念のため開発者ツールで見れるように
+                  const data = await response.json();
+                    console.log("AIからの生の返事だっピ:", data);
+
+                    // 🌟【大復活】解析が終わったので、まず真っ先にタイマーアニメーションを止める！
+                    if (loadingInterval) clearInterval(loadingInterval); 
 
                     // 💡 AIの返事の形が多少ズレてても、執念深くテキストを探し出す処理
                     let rawText = "";
                     try {
                         if (data.candidates && data.candidates[0]) {
                             const cand = data.candidates[0];
-                            // content だったり、メッセージ直下だったり、あり得るルートを全部探索！
                             if (cand.content && cand.content.parts && cand.content.parts[0]) {
                                 rawText = cand.content.parts[0].text;
                             } else if (cand.text) {
@@ -116,8 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             messageText.innerText = "🐧「AIの返事からデータがうまく読めなかったっピ…」";
                         }
                     } else {
-                        // もしこれでもダメなら、AIの返事全体の文字をそのまま出してみる
-                        messageText.innerText = "🐧「データ構造が違ったっピ…今度こそ確認してみて！」";
+                        messageText.innerText = "🐧「データ構造が違ったっピ…コンソールを確認してみて！」";
                         console.error("想定外のデータ構造:", data);
                     }
             };

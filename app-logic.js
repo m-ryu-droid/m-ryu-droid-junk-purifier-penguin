@@ -106,13 +106,30 @@ document.addEventListener('DOMContentLoaded', () => {
                         console.log("テキスト抽出失敗", e);
                     }
 
-                    // 🌟 テキストが見つかったら、JSONを引っこ抜く！
+// 🌟 テキストが見つかったら、あらゆるノイズ（```json等）を削ぎ落としてJSONを引っこ抜く！
                     if (rawText) {
-                        const jsonMatch = rawText.match(/\{.*\}/s);
-                        if (jsonMatch) {
-                            showConfirmation(JSON.parse(jsonMatch[0]));
+                        // 前後の余計な空白や、AIが勝手につける「```json」や「```」を徹底的にトリミングするっピ！
+                        let cleanedText = rawText.trim();
+                        cleanedText = cleanedText.replace(/^```json\s*/i, ''); // 先頭の ```json を消す
+                        cleanedText = cleanedText.replace(/^```\s*/, '');     // 先頭の ``` を消す
+                        cleanedText = cleanedText.replace(/```$/, '');         // 末尾の ``` を消す
+                        cleanedText = cleanedText.trim();
+
+                        // それでもダメな時のために、一番外側の { } を力づくで見つけるっピ
+                        const firstBracket = cleanedText.indexOf('{');
+                        const lastBracket = cleanedText.lastIndexOf('}');
+
+                        if (firstBracket !== -1 && lastBracket !== -1 && lastBracket > firstBracket) {
+                            const jsonString = cleanedText.substring(firstBracket, lastBracket + 1);
+                            try {
+                                showConfirmation(JSON.parse(jsonString));
+                            } catch (parseError) {
+                                console.error("JSONパース失敗:", parseError, "対象文字列:", jsonString);
+                                messageText.innerText = "🐧「データの形が壊れていて読めなかったっピ…」";
+                            }
                         } else {
-                            messageText.innerText = "🐧「AIの返事からデータがうまく読めなかったっピ…」";
+                            messageText.innerText = "🐧「返事の中にデータが見つからなかったっピ…」";
+                            console.log("パースできなかった生テキスト:", rawText);
                         }
                     } else {
                         messageText.innerText = "🐧「データ構造が違ったっピ…コンソールを確認してみて！」";

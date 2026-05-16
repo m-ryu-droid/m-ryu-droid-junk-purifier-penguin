@@ -24,8 +24,6 @@ body {
     
     /* 🚨 ここが重要！ */
     min-height: 580px; /* 縦幅の最低サイズをガッチリ固定して潰れを防ぐっピ！ */
-    display: flex;
-    flex-direction: column;
     justify-content: flex-start; /* 中身を上詰めで綺麗に並べる */
     box-sizing: border-box;
     box-shadow: 0 15px 35px rgba(2, 119, 189, 0.1); 

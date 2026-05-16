@@ -85,8 +85,8 @@ h1 {
     transition: all 0.2s ease;
 }
 
-/* 決定ボタン（クローゼット内のボタン）のデザイン調整 */
-button[onclick*="toggleScreen"] { 
+/* 決定ボタン（クローゼット内のボタンだけを狙い撃ち！） */
+#closet-screen .btn-blue { 
     background: rgba(255, 255, 255, 0.95) !important;
     border: 2px solid #b3e5fc !important;
     color: #0277bd !important;

@@ -9,6 +9,10 @@ let loadingInterval = null;
  * 1. 体重と目標の入力処理
  */
 window.openWeightInput = function() {
+    // 🌟 グローバルまたはLocalStorageから安全に現在の値を取得して初期化
+    let currentWeight = parseFloat(localStorage.getItem('currentWeight')) || 60.0;
+    let targetWeight = parseFloat(localStorage.getItem('targetWeight')) || 55.0;
+
     let w = window.prompt("今の体重を教えて〜！(kg)", currentWeight || "");
     if (!w) return;
     
@@ -65,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const base64Image = reader.result.split(',')[1];
                 try {
                     // API_KEY は config.js から読み込まれるっピ
+                    // 🌟 Gemini 2.5 の最新画像リクエスト形式に美しく修正したっピ！
                     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -72,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             contents: [{
                                 parts: [
                                     { text: "写真の食材をリストアップして、最後に以下のJSON形式だけで出力して。形式: {\"ingredients\": [\"食材1\"], \"score\": 10, \"story\": \"物語\"}" },
-                                    { inline_data: { mime_type: file.type, data: base64Image } }
+                                    { inlineData: { mimeType: file.type, data: base64Image } } // 🌟 inline_data から inlineData へ修正！
                                 ]
                             }]
                         })
@@ -87,7 +92,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         const jsonMatch = rawText.match(/\{.*\}/s);
                         if (jsonMatch) {
                             showConfirmation(JSON.parse(jsonMatch[0]));
+                        } else {
+                            messageText.innerText = "🐧「AIの返事からデータがうまく読めなかったっピ…」";
                         }
+                    } else {
+                        messageText.innerText = "🐧「AIからの返事が空っぽだったっピ…」";
                     }
                 } catch (error) {
                     clearInterval(loadingInterval);
@@ -125,7 +134,8 @@ window.showConfirmation = function(data) {
  * 4. 浄化完了処理
  */
 window.completePurify = function(score, story) {
-    // totalPoints は ui-controller.js か config.js で宣言されている想定だっピ
+    // 🌟 ui-controller.js から安全に現在のポイントを読み込む
+    let totalPoints = parseInt(localStorage.getItem('purifyPoints')) || 0;
     totalPoints += score;
     localStorage.setItem('purifyPoints', totalPoints);
     if (typeof updateDisplay === 'function') updateDisplay();

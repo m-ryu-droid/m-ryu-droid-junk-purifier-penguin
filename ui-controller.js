@@ -92,7 +92,7 @@ function loadEquipped() {
 }
 
 /**
- * 3. 画面の切り替え
+ * 3. 画面の切り替え（修正版だっピ！）
  */
 window.toggleScreen = function(screenName) {
     const mainScreen = document.getElementById('main-screen');
@@ -101,10 +101,16 @@ window.toggleScreen = function(screenName) {
     if (screenName === 'closet') {
         mainScreen.classList.add('hidden');
         closetScreen.classList.remove('hidden');
+        if (typeof loadEquipped === 'function') loadEquipped(); // クローゼットを開いた時も一応読み直す
         updateDisplay();
     } else {
+        // 👗 クローゼットからメイン画面に戻るとき
         closetScreen.classList.add('hidden');
         mainScreen.classList.remove('hidden');
+        
+        // 🌟【超重要】メイン画面に戻った瞬間に、最新の服を重ね着させるっピ！
+        if (typeof loadEquipped === 'function') loadEquipped(); 
+        
         updateDisplay();
     }
 };

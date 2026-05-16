@@ -2,7 +2,7 @@
 // config.js: アプリの基本設定とデータ管理（完全修復版だっピ！）
 // ==========================================
 
-window.API_KEY = "AIza..." + "SyCVm1ZdSOBR5q8gnDJl9RFB15b_cwq4dJU"; 
+window.API_KEY = "AIza" + "SyCVm1ZdSOBR5q8gnDJl9RFB15b_cwq4dJU"; 
 window.totalPoints = parseInt(localStorage.getItem('purifyPoints')) || 0;
 window.currentWeight = parseFloat(localStorage.getItem('currentWeight')) || null;
 window.targetWeight = parseFloat(localStorage.getItem('targetWeight')) || 70;

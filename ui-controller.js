@@ -26,9 +26,7 @@ function updateDisplay() {
         bar.style.width = (percent > 100 ? 100 : percent) + "%";
     }
 
-    
-    
-    // 体重情報の更新（ここが関数の外に出ちゃってたのを直したっピ！）
+    // 体重情報の更新
     const weightDisp = document.getElementById('current-weight');
     const diffDisp = document.getElementById('weight-diff');
     if (currentWeight && weightDisp && diffDisp) {
@@ -39,12 +37,12 @@ function updateDisplay() {
 
     // 着せ替え状態を反映
     loadEquipped();
-}
 
-// updateDisplay() の一番最後にこれを追加するだけ！
-if (typeof updateAppBackground === 'function') {
-    updateAppBackground();
-}
+    // 🌟【ここが正しい位置！】関数の「内側」で背景を呼び出すっピ！
+    if (typeof updateAppBackground === 'function') {
+        updateAppBackground();
+    }
+} // 👈 ちゃんと最後をここで閉じるっピ！
 
 /**
  * 2. 装備（着せ替え）を正しく画面に反映する

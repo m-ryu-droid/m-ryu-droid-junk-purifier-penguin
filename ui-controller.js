@@ -119,6 +119,8 @@ window.toggleScreen = function(screenName) {
         
         // 🌟【超重要】メイン画面に戻った瞬間に、最新の服を重ね着させるっピ！
         if (typeof loadEquipped === 'function') loadEquipped(); 
+
+        loadEquipped();
         
         updateDisplay();
     }

@@ -21,4 +21,17 @@ const items = [
     { name: '麦わら帽子', pt: 10, img: 'assets/hat_straw.png', type: 'hat' },
     { name: 'サングラス', pt: 30, img: 'assets/glasses.png', type: 'hat' },
     { name: '勇者のマント', pt: 50, img: 'assets/mantle.png', type: 'body' }
+{
+        name: "ピカピカの王冠",
+        type: "hat",          // 👈 帽子パーツなら「hat」にする
+        img: "assets/hat_crown.png", // 👈 用意した画像パス
+        pt: 20                // 👈 ゲットするのに必要なポイント
+    },
+    {
+        name: "かっこいい緑の服",
+        type: "body",         // 👈 体のパーツなら「body」にする
+        img: "assets/body_greencloth01.png",
+        pt: 25
+    }
+    
 ];

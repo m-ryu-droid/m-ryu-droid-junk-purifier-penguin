@@ -49,6 +49,9 @@ function updateDisplay() {
  * 帽子：土台の画像そのものを差し替える
  * 服　：土台の上に重ねて表示する
  */
+/**
+ * 2. 装備（着せ替え）を正しく画面に反映する
+ */
 function loadEquipped() {
     const mainImg = document.getElementById('main-penguin-img');
     const mainBody = document.getElementById('main-body');
@@ -56,22 +59,23 @@ function loadEquipped() {
     const closetImg = document.getElementById('closet-penguin-img');
     const closetBody = document.getElementById('closet-body');
     
-    // localStorage から今の装備を取得
+    // localStorage から今の装備をしっかり取得
     let hat = localStorage.getItem('equipped-hat');   // 例: 'assets/hat_straw.png'
     let body = localStorage.getItem('equipped-body'); // 例: 'assets/mantle.png'
 
     // ------------------------------------------
     // 👒 【帽子・土台の処理】
     // ------------------------------------------
-    // 基本は裸のペンギン
+    // 基本は裸のペンギン（assets/penguin.png）
     let baseSrc = "assets/penguin.png"; 
 
-    // 帽子を装備しているなら、その「帽子をかぶったペンギン画像」を土台にするっピ！
+    // 💡 ここが超重要！帽子を装備しているときだけ、土台を「帽子つき画像」にする
+    // 帽子を脱いでいたら（hat が空なら）自動的に上の「裸のペンギン」が使われるっピ！
     if (hat) {
         baseSrc = hat; 
     }
 
-    // 画面に土台を反映
+    // 画面の土台（ペンギン自身）の画像を最新状態に塗り替える
     if (mainImg) mainImg.src = baseSrc;
     if (closetImg) closetImg.src = baseSrc;
 
@@ -79,7 +83,7 @@ function loadEquipped() {
     // ------------------------------------------
     // 👗 【服・重ね着の処理】
     // ------------------------------------------
-    // 服（マントなど）を装備している場合
+    // 服（マントなど）を装備している場合は、土台の上に重ねて表示
     if (body) {
         if (mainBody) { mainBody.src = body; mainBody.style.display = "block"; }
         if (closetBody) { closetBody.src = body; closetBody.style.display = "block"; }
@@ -89,7 +93,7 @@ function loadEquipped() {
         if (closetBody) closetBody.style.display = "none";
     }
 
-    // 💡【補足】HTMLに残っている古い「main-hat」タグはもう使わないので非表示で固定
+    // 💡【補足】HTMLに残っている古い「main-hat」タグは非表示で固定
     const mainHatTag = document.getElementById('main-hat');
     if (mainHatTag) mainHatTag.style.display = "none";
     const closetHatTag = document.getElementById('closet-hat');

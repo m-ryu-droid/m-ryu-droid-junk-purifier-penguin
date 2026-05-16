@@ -1,4 +1,6 @@
-/* 全体のデザインを整える */
+/* ==========================================
+   全体のデザインを整える
+   ========================================== */
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     background-color: #e3f2fd;
@@ -10,7 +12,7 @@ body {
 }
 
 .container {
-    background-color: white;
+    /* 背景画像を反映させるため、ここの「background-color: white;」は消去したっピ！ */
     border-radius: 30px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     padding: 30px;
@@ -19,15 +21,24 @@ body {
     text-align: center;
 }
 
-h1 { color: #0277bd; font-size: 1.8em; margin-bottom: 20px; }
+h1 { 
+    color: #0277bd; 
+    font-size: 1.8em; 
+    margin-bottom: 20px; 
+}
 
-/* ステータスボードを1・2枚目のように戻す */
+/* ==========================================
+   1. ステータスボード（2つの記述を綺麗に合体！）
+   ========================================== */
 .status-board {
-    background: #f1f8ff;
+    background: rgba(255, 255, 255, 0.95) !important; /* 白を濃いめに透けさせて背景と分離 */
     border: 2px solid #b3e5fc;
     border-radius: 15px;
     padding: 15px;
     margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* 軽い影でボードを浮かせる */
+    color: #2c3e50; /* 高級感のある濃いネイビーグレー */
+    font-weight: bold; /* 🌟 中の文字を太くして視認性を爆上げ！ */
 }
 
 .progress-container {
@@ -45,7 +56,23 @@ h1 { color: #0277bd; font-size: 1.8em; margin-bottom: 20px; }
     transition: width 0.5s;
 }
 
-/* ボタンを丸く・可愛く戻す */
+/* ==========================================
+   2. ペンペンのセリフ（ゲームウィンドウ風）
+   ========================================== */
+/* 💡 もしHTML側でセリフのタグに別のクラスやID（pタグ等）が使われていたら、その名前に変えてね！ */
+.serif-text-element, #main-serif, .main-screen p { 
+    background: rgba(0, 0, 0, 0.5) !important; /* 黒を50%透けさせて文字を浮かせる */
+    color: #ffffff !important; /* 文字を真っ白にしてクッキリ！ */
+    padding: 8px 18px;
+    border-radius: 20px; /* 可愛いカプセル型 */
+    display: inline-block;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+/* ==========================================
+   3. ボタンのデザイン（丸く・可愛く）
+   ========================================== */
 .btn-blue, .btn-pink {
     border: none;
     border-radius: 25px;
@@ -61,35 +88,29 @@ h1 { color: #0277bd; font-size: 1.8em; margin-bottom: 20px; }
 .btn-blue { background-color: #42a5f5; }
 .btn-pink { background-color: #ec407a; }
 
-.btn-blue:active, .btn-pink:active { transform: translateY(2px); box-shadow: none; }
+.btn-blue:active, .btn-pink:active { 
+    transform: translateY(2px); 
+    box-shadow: none; 
+}
 
+/* 💡 クローゼットへ行くボタンのデザイン（背景に負けないように調整！） */
+/* ※HTML側の名前が「.closet-button」や「#to-closet-btn」など、何になっているか確認してね！ */
+.closet-button, #to-closet-btn, button[onclick*="toggleScreen"] { 
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid #b3e5fc !important;
+    color: #0277bd !important;
+    font-weight: bold;
+    padding: 10px 24px;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* ==========================================
+   画面の切り替えと透過処理
+   ========================================== */
 .hidden {
     display: none !important;
-}
-
-/* 1. ステータスボードをクッキリさせる */
-.status-board {
-    background: rgba(255, 255, 255, 0.95) !important; /* 白を限界まで濃くする */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* 下に薄い影をつけて立体感を出す */
-    color: #2c3e50; /* 文字を高級感のある濃いネイビーグレーに */
-}
-
-/* 2. ペンペンのセリフをゲームのウィンドウ風にする */
-.serif-text-element { /* お手元のセリフのクラス名やID名に合わせてね */
-    background: rgba(0, 0, 0, 0.5); /* 黒を50%透けさせた背景を敷く */
-    color: #ffffff !important; /* 文字を真っ白にする */
-    padding: 6px 16px;
-    border-radius: 20px; /* 丸角カプセル型にする */
-    display: inline-block;
-}
-
-/* 3. クローゼットボタンを押しやすくする */
-.closet-button { /* お手元のクローゼットのボタンに合わせてね */
-    background: rgba(255, 255, 255, 0.8) !important;
-    border: 1px solid #ccc !important;
-    color: #333 !important;
-    font-weight: bold;
-    padding: 10px 24px; /* 少し大きめにして押しやすくする */
 }
 
 #main-screen, #closet-screen {

@@ -69,18 +69,26 @@ h1 {
 }
 
 /* ==========================================
-   ペンペンスピーチバルーン風
+   ペンペンスピーチバルーン風（左側吹き出し化！）
    ========================================== */
 .serif-text-element { 
-    background: rgba(44, 62, 80, 0.85) !important; /* 少し優しいダークグレーに */
+    background: rgba(44, 62, 80, 0.85) !important; 
     color: #ffffff !important; 
-    padding: 8px 16px;
+    padding: 10px 14px;
     border-radius: 16px; 
-    display: inline-block;
+    display: block; /* 横長指定を解除っピ */
     font-weight: bold;
-    margin: 12px 0;
-    font-size: 0.9em;
+    font-size: 0.85em; /* 文字を少しだけ小さくして収まりを良く */
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+    /* 🌟 ここからが左側に吹き出しを浮かせる魔法の設定だっピ！ */
+    position: absolute;
+    left: 20px;         /* 画面の左端からの距離 */
+    top: 240px;         /* 上からの位置（ペンギンの胸あたりの高さに調整） */
+    width: 110px;       /* 横幅を細くして、ペンギンに被らないように固定！ */
+    word-break: break-all; /* ボックスの端で綺麗に自動改行させる */
+    text-align: left;   /* 文字を左詰めに */
+    z-index: 10;        /* ペンギンより手前に表示 */
 }
 
 /* ==========================================

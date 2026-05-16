@@ -131,22 +131,64 @@ h1 {
    ========================================== */
 #closet-screen h2 {
     color: #0277bd;
-    font-size: 1.6em;
-    margin: 10px 0 20px;
+    font-size: 1.5em;
+    margin: 5px 0 10px; /* 余白をギュッと縮めてスペースを確保！ */
     font-weight: bold;
 }
 
-/* 「決定！」ボタンが巨大化するのを防ぐ */
+/* 🌟 衣装カード一覧エリア（ここが潰れないように最優先にするっピ！） */
+#item-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin: 10px 0;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.7); /* 薄い白背景を敷いて衣装を見やすく */
+    border-radius: 15px;
+    max-height: 160px; /* 縦幅を適度なサイズに固定 */
+    overflow-y: auto; /* 衣装が増えてもここでスクロールできるようにするっピ！ */
+    flex-shrink: 0; /* 👈 これが重要！絶対に周りに潰されないようにする設定だっピ */
+}
+
+/* 衣装カード自体のデザイン */
+.item-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #e0f2f1;
+    border-radius: 12px;
+    padding: 6px;
+    width: 75px; /* 少しだけコンパクトにして並びやすく */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75em;
+    font-weight: bold;
+}
+
+/* 衣装カードの中の「着替える」「脱ぐ」ボタン */
+.item-card button {
+    font-weight: bold;
+    border-radius: 8px !important;
+    padding: 4px 6px;
+    margin-top: 5px;
+    width: 100%;
+    font-size: 0.8em;
+    border: none;
+    cursor: pointer;
+}
+
+/* 🌟 「決定！」ボタンのデザイン（小さくして最下部に収める） */
 #closet-screen .btn-blue { 
     background: #0288d1 !important;
     color: white !important;
     font-weight: bold;
-    padding: 12px 50px !important; 
+    padding: 10px 40px !important; 
     border-radius: 25px;
-    box-shadow: 0 5px 15px rgba(2, 136, 209, 0.3);
+    box-shadow: 0 4px 10px rgba(2, 136, 209, 0.3);
     width: auto !important; 
     display: inline-block;
-    margin-top: 20px;
+    margin: 10px 0 0 0; /* 無駄な余白をカット */
 }
 
 /* 衣装カード一覧エリア */
@@ -158,33 +200,6 @@ h1 {
     margin: 20px 0;
     max-height: 220px; 
     overflow-y: auto; 
-}
-
-/* 衣装カード自体のデザイン */
-.item-card {
-    background: rgba(255, 255, 255, 0.95);
-    border: 2px solid #e0f2f1;
-    border-radius: 16px;
-    padding: 10px;
-    width: 85px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 0.8em;
-    font-weight: bold;
-}
-
-.item-card button {
-    font-weight: bold;
-    border-radius: 10px !important;
-    padding: 6px 8px;
-    margin-top: 8px;
-    width: 100%;
-    font-size: 0.85em;
-    border: none;
-    color: white;
-    cursor: pointer;
 }
 
 /* ==========================================

@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             contents: [{
                                 parts: [
                                     { text: "写真の食材をリストアップして、最後に以下のJSON形式だけで出力して。形式: {\"ingredients\": [\"食材1\"], \"score\": 10, \"story\": \"物語\"}" },
-                                    { inlineData: { mime_Type: file.type, data: base64Image } } // 🌟 inline_data から inlineData へ修正！
+                                    { inline_data: { mime_type: file.type, data: base64Image } }
                                 ]
                             }]
                         })

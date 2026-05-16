@@ -27,30 +27,30 @@
                 </div>
             </div>
 
-<div style="position: relative; width: 200px; margin: 0 auto 20px;">
-    <img src="assets/penguin.png" id="main-penguin-img" style="width: 100%; height: auto; position: relative; z-index: 1;">
-    
-    <img id="main-body" src="" style="position: absolute; width: 100%; height: auto; z-index: 2; top: 0; left: 0; pointer-events: none; display: none;">
-    
-    <img id="main-hat" src="" style="position: absolute; width: 70%; height: auto; z-index: 3; top: 33%; left: 50%; transform: translateX(-50%); pointer-events: none; display: none;">
-</div>
+<div style="position: relative; width: 220px; margin: 0 auto 20px;">
+                <img src="assets/penguin.png" id="main-penguin-img" style="width: 100%; height: auto; position: relative; z-index: 1;">
+                
+                <img id="main-body" src="" style="position: absolute; width: 100%; height: auto; z-index: 2; top: 0; left: 0; pointer-events: none; display: none;">
+                
+                <img id="main-hat" src="" style="position: absolute; width: 70%; height: auto; z-index: 3; top: 33%; left: 50%; transform: translateX(-50%); pointer-events: none; display: none;">
+            </div>
+
             <p id="message" class="serif-text-element">🐧「今日は何を食べたの？」</p>
             <div id="result"></div>
 
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button id="upload-btn" class="btn-blue" style="flex: 2;">写真を撮る</button>
-                <button onclick="openWeightInput()" class="btn-pink" style="flex: 1;">⚖️ 体重</button>
+            <div class="main-action-group">
+                <button id="upload-btn" class="btn-blue">📸 写真を撮って海を浄化する</button>
+                <button onclick="openWeightInput()" class="btn-pink">⚖️ 体重を記録する</button>
             </div>
             
-            <div style="margin-top: 20px;">
-                <button onclick="toggleScreen('closet')" class="closet-button">クローゼットへ行く 👗</button>
+            <div style="margin-top: 15px;">
+                <button onclick="toggleScreen('closet')" class="closet-button">👗 クローゼットでおきがえ</button>
             </div>
-        </div> 
 
         <div id="closet-screen" class="hidden">
             <h2 style="color: #0277bd;">おきがえルーム</h2>
             
-            <div style="position: relative; width: 150px; margin: 0 auto 20px;">
+            <div style="position: relative; width: 220px; margin: 0 auto 20px;">
                 <img src="assets/penguin.png" id="closet-penguin-img" style="width: 100%; height: auto; position: relative; z-index: 1;">
                 
                 <img id="closet-body" src="" style="position: absolute; width: 100%; height: auto; z-index: 2; top: 0; left: 0; pointer-events: none; display: none;">

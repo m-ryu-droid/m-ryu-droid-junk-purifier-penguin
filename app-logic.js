@@ -83,10 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         })
                     });
 
-                    // 解析が終わったらタイマーを止める
-                    clearInterval(loadingInterval); 
-
-                  const data = await response.json();
+                    const data = await response.json();
                     console.log("AIからの生の返事だっピ:", data);
 
                     // 🌟【大復活】解析が終わったので、まず真っ先にタイマーアニメーションを止める！
@@ -121,6 +118,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         messageText.innerText = "🐧「データ構造が違ったっピ…コンソールを確認してみて！」";
                         console.error("想定外のデータ構造:", data);
                     }
+
+                } catch (error) {
+                    // 🌟【修復】消えてしまっていたエラーキャッチ処理を完全復活！
+                    if (loadingInterval) clearInterval(loadingInterval);
+                    messageText.innerText = "🐧「通信エラーになっちゃったっピ...」";
+                    console.error("Gemini Error:", error);
+                }
             };
             reader.readAsDataURL(file);
         });
@@ -146,7 +150,7 @@ window.showConfirmation = function(data) {
     const safeStory = data.story ? data.story.replace(/'/g, "\\'") : "浄化完了だっピ！";
     html += `<button onclick="completePurify(${data.score}, '${safeStory}')" style="background:#0288d1; color:#fff; border:none; padding:12px; width:100%; border-radius:5px; margin-top:10px; font-weight:bold; cursor:pointer;">これで浄化するっピ！✨</button></div>`;
     resultArea.innerHTML = html;
-}
+};
 
 /**
  * 4. 浄化完了処理

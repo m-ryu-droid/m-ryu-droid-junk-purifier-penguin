@@ -25,6 +25,8 @@ function updateDisplay() {
         let percent = (totalPoints / goal) * 100;
         bar.style.width = (percent > 100 ? 100 : percent) + "%";
     }
+
+    
     
     // 体重情報の更新（ここが関数の外に出ちゃってたのを直したっピ！）
     const weightDisp = document.getElementById('current-weight');
@@ -37,6 +39,11 @@ function updateDisplay() {
 
     // 着せ替え状態を反映
     loadEquipped();
+}
+
+// updateDisplay() の一番最後にこれを追加するだけ！
+if (typeof updateAppBackground === 'function') {
+    updateAppBackground();
 }
 
 /**

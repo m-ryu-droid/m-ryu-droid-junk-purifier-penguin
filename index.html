@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V1</title>
+    <title>ペンギン浄化アプリ</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div class="container">
         
         <div id="main-screen">
-            <h1>テスト15</h1>
+            <h1>テスト16</h1>
             
             <div class="status-board">
                 <div style="display: flex; justify-content: space-around; margin-bottom: 5px;">
@@ -21,17 +22,20 @@
                     <div class="progress-bar" id="purify-bar" style="background: #4db6ac; width: 0%; height: 100%; transition: width 0.3s ease;"></div>
                 </div>
                 <div style="display: flex; justify-content: space-around; font-size: 0.8em; color: #666;">
-                    <div>現在: <span id="current-weight">--</span> kg</div>
+                    <div>現在: <span id="current-weight">--</span></div>
                     <div>目標まで: <span id="weight-diff">--</span></div>
                 </div>
             </div>
 
-            <div style="position: relative; width: 100%; max-width: 300px; margin: 20px auto;">
-                <img src="assets/penguin.png" id="main-penguin-img" style="width: 100%; height: auto; position: relative;">
-                <img id="main-hat" src="" style="position: absolute; width: 70%; height: auto; z-index: 2; top: 33%; left: 50%; transform: translateX(-50%); pointer-events: none;">
+            <div style="position: relative; width: 150px; margin: 0 auto 20px;">
+                <img src="assets/penguin.png" id="main-penguin-img" style="width: 100%; height: auto; position: relative; z-index: 1;">
+                
+                <img id="main-body" src="" style="position: absolute; width: 100%; height: auto; z-index: 2; top: 0; left: 0; pointer-events: none; display: none;">
+                
+                <img id="main-hat" src="" style="position: absolute; width: 70%; height: auto; z-index: 3; top: 33%; left: 50%; transform: translateX(-50%); pointer-events: none; display: none;">
             </div>
 
-            <p id="message">🐧「今日は何を食べたの？」</p>
+            <p id="message" class="serif-text-element">🐧「今日は何を食べたの？」</p>
             <div id="result"></div>
 
             <div style="display: flex; gap: 10px; margin-top: 20px;">
@@ -40,34 +44,32 @@
             </div>
             
             <div style="margin-top: 20px;">
-                <button onclick="toggleScreen('closet')" style="background: none; border: 1px solid #ccc; border-radius: 15px; padding: 5px 15px; color: #666; font-size: 0.8em; cursor: pointer;">クローゼットへ行く 👗</button>
+                <button onclick="toggleScreen('closet')" class="closet-button">クローゼットへ行く 👗</button>
             </div>
-        </div> <div id="closet-screen" class="hidden">
+        </div> 
+
+        <div id="closet-screen" class="hidden">
             <h2 style="color: #0277bd;">おきがえルーム</h2>
             
-<div style="position: relative; width: 150px; margin: 0 auto 20px;">
-    <img src="assets/penguin.png" id="closet-penguin-img" style="width: 100%; height: auto; position: relative; z-index: 1;">
-    
-    <img id="closet-body" src="" style="position: absolute; width: 100%; height: auto; z-index: 2; top: 0; left: 0; pointer-events: none; display: none;">
-    
-    <img id="closet-hat" src="" style="position: absolute; width: 70%; height: auto; z-index: 3; top: 33%; left: 50%; transform: translateX(-50%);">
-</div>
+            <div style="position: relative; width: 150px; margin: 0 auto 20px;">
+                <img src="assets/penguin.png" id="closet-penguin-img" style="width: 100%; height: auto; position: relative; z-index: 1;">
+                
+                <img id="closet-body" src="" style="position: absolute; width: 100%; height: auto; z-index: 2; top: 0; left: 0; pointer-events: none; display: none;">
+                
+                <img id="closet-hat" src="" style="position: absolute; width: 70%; height: auto; z-index: 3; top: 33%; left: 50%; transform: translateX(-50%); pointer-events: none; display: none;">
+            </div>
 
             <div id="item-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px;"></div>
             
             <button onclick="toggleScreen('main')" class="btn-blue">決定！</button>
-        </div> </div> <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;">
+        </div> 
 
-<script src="config.js"></script>
-    
+    </div> <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;">
+
+    <script src="config.js"></script>
     <script src="background-controller.js"></script> 
-    
     <script src="ui-controller.js"></script>
     <script src="app-logic.js"></script>
 
-
-</body>
-</html>
-    
 </body>
 </html>

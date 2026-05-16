@@ -47,32 +47,25 @@ function updateDisplay() {
 }
 
 /**
- * 2. 装備（着せ替え）を正しく画面に反映する
- * 帽子：土台の画像そのものを差し替える
- * 服　：土台の上に重ねて表示する
- */
-/**
- * 2. 装備（着せ替え）を正しく画面に反映する
+ * 2. 装備（着せ替え）を正しく画面に反映する（真・完全修正版だっピ！）
  */
 function loadEquipped() {
-    const mainImg = document.getElementById('main-penguin-img');
-    const mainBody = document.getElementById('main-body');
+    // 💡【ここを修正！】HTMLの実際のID名（main-penguin-img, main-mantle など）に合わせて二段構えで取得するっピ！
+    const mainImg = document.getElementById('main-penguin-img') || document.getElementById('penguin-img');
+    const mainBody = document.getElementById('main-body') || document.getElementById('main-mantle');
     
     const closetImg = document.getElementById('closet-penguin-img');
-    const closetBody = document.getElementById('closet-body');
+    const closetBody = document.getElementById('closet-body') || document.getElementById('closet-mantle');
     
     // localStorage から今の装備をしっかり取得
-    let hat = localStorage.getItem('equipped-hat');   // 例: 'assets/hat_straw.png'
-    let body = localStorage.getItem('equipped-body'); // 例: 'assets/mantle.png'
+    let hat = localStorage.getItem('equipped-hat');   
+    let body = localStorage.getItem('equipped-body'); 
 
     // ------------------------------------------
     // 👒 【帽子・土台の処理】
     // ------------------------------------------
-    // 基本は裸のペンギン（assets/penguin.png）
     let baseSrc = "assets/penguin.png"; 
 
-    // 💡 ここが超重要！帽子を装備しているときだけ、土台を「帽子つき画像」にする
-    // 帽子を脱いでいたら（hat が空なら）自動的に上の「裸のペンギン」が使われるっピ！
     if (hat) {
         baseSrc = hat; 
     }
@@ -81,12 +74,11 @@ function loadEquipped() {
     if (mainImg) mainImg.src = baseSrc;
     if (closetImg) closetImg.src = baseSrc;
 
-
     // ------------------------------------------
     // 👗 【服・重ね着の処理】
     // ------------------------------------------
-    // 服（マントなど）を装備している場合は、土台の上に重ねて表示
     if (body) {
+        // 見つかった服のタグに、しっかり画像を流し込んで表示（block）にするっピ！
         if (mainBody) { mainBody.src = body; mainBody.style.display = "block"; }
         if (closetBody) { closetBody.src = body; closetBody.style.display = "block"; }
     } else {
@@ -95,7 +87,7 @@ function loadEquipped() {
         if (closetBody) closetBody.style.display = "none";
     }
 
-    // 💡【補足】HTMLに残っている古い「main-hat」タグは非表示で固定
+    // 💡【補足】古い不要なタグは非表示で固定
     const mainHatTag = document.getElementById('main-hat');
     if (mainHatTag) mainHatTag.style.display = "none";
     const closetHatTag = document.getElementById('closet-hat');

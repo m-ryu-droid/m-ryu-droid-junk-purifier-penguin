@@ -11,7 +11,7 @@
     <div class="container">
         
         <div id="main-screen">
-            <h1>テスト16</h1>
+            <h1>テスト17</h1>
             
             <div class="status-board">
                 <div style="display: flex; justify-content: space-around; margin-bottom: 5px;">
@@ -27,7 +27,7 @@
                 </div>
             </div>
 
-<div style="position: relative; width: 320px; margin: -10 auto 10px;">
+            <div style="position: relative; width: 320px; margin: -10px auto 10px;">
                 <img src="assets/penguin.png" id="main-penguin-img" style="width: 100%; height: auto; position: relative; z-index: 1;">
                 
                 <img id="main-body" src="" style="position: absolute; width: 100%; height: auto; z-index: 2; top: 0; left: 0; pointer-events: none; display: none;">
@@ -46,8 +46,7 @@
             <div style="margin-top: 15px;">
                 <button onclick="toggleScreen('closet')" class="closet-button">👗 クローゼットでおきがえ</button>
             </div>
-
-        <div id="closet-screen" class="hidden">
+        </div> <div id="closet-screen" class="hidden">
             <h2 style="color: #0277bd;">おきがえルーム</h2>
             
             <div style="position: relative; width: 220px; margin: 0 auto 20px;">
@@ -63,7 +62,9 @@
             <button onclick="toggleScreen('main')" class="btn-blue">決定！</button>
         </div> 
 
-    </div> <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;">
+    </div> 
+    
+    <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;">
 
     <script src="config.js"></script>
     <script src="background-controller.js"></script> 

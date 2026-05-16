@@ -1,9 +1,12 @@
+// ==========================================
+// ui-controller.js: 画面表示・着せ替え・更新担当
+// ==========================================
+
 /**
- * 1. 画面全体の表示を最新状態に更新する（完全修正版だっピ！）
+ * 1. 画面全体の表示を最新状態に更新する
  */
 function updateDisplay() {
-    // 🌟【超重要】行方不明になっていた変数を、ここでLocalStorageからしっかり救出するっピ！
-    // お手元の変数名（'purifyPoints'など）や初期値に合わせて調整してね！
+    // 🌟LocalStorageから安全に変数を取得
     const totalPoints = parseInt(localStorage.getItem('purifyPoints')) || 0;
     const currentWeight = parseFloat(localStorage.getItem('currentWeight')) || 60.0;
     const targetWeight = parseFloat(localStorage.getItem('targetWeight')) || 55.0;
@@ -37,7 +40,7 @@ function updateDisplay() {
         diffDisp.innerText = diff <= 0 ? "目標達成！✨" : "あと " + diff.toFixed(1) + "kg";
     }
 
-    // 👗 着せ替え状態を反映（これで途切れることなく電気が届くっピ！）
+    // 👗 着せ替え状態を反映
     loadEquipped();
 
     // 🌌 背景を呼び出す
@@ -47,47 +50,38 @@ function updateDisplay() {
 }
 
 /**
- * 2. 装備（着せ替え）を正しく画面に反映する（真・完全修正版だっピ！）
+ * 2. 装備（着せ替え）を正しく画面に反映する（超・網羅版！）
  */
 function loadEquipped() {
-    // 💡【ここを修正！】HTMLの実際のID名（main-penguin-img, main-mantle など）に合わせて二段構えで取得するっピ！
+    // 💡 メイン画面のペンギン本体と服のタグを、あり得る名前すべてで探すっピ！
     const mainImg = document.getElementById('main-penguin-img') || document.getElementById('penguin-img');
-    const mainBody = document.getElementById('main-body') || document.getElementById('main-mantle');
+    const mainBody = document.getElementById('main-body') || document.getElementById('main-mantle') || document.getElementById('penguin-body');
     
     const closetImg = document.getElementById('closet-penguin-img');
     const closetBody = document.getElementById('closet-body') || document.getElementById('closet-mantle');
     
-    // localStorage から今の装備をしっかり取得
+    // localStorage から今の装備を取得
     let hat = localStorage.getItem('equipped-hat');   
     let body = localStorage.getItem('equipped-body'); 
 
-    // ------------------------------------------
-    // 👒 【帽子・土台の処理】
-    // ------------------------------------------
+    // --- 👒 帽子・土台の処理 ---
     let baseSrc = "assets/penguin.png"; 
-
     if (hat) {
         baseSrc = hat; 
     }
-
-    // 画面の土台（ペンギン自身）の画像を最新状態に塗り替える
     if (mainImg) mainImg.src = baseSrc;
     if (closetImg) closetImg.src = baseSrc;
 
-    // ------------------------------------------
-    // 👗 【服・重ね着の処理】
-    // ------------------------------------------
+    // --- 👗 服・重ね着の処理 ---
     if (body) {
-        // 見つかった服のタグに、しっかり画像を流し込んで表示（block）にするっピ！
         if (mainBody) { mainBody.src = body; mainBody.style.display = "block"; }
         if (closetBody) { closetBody.src = body; closetBody.style.display = "block"; }
     } else {
-        // 何も着ていないときは非表示にするっピ
         if (mainBody) mainBody.style.display = "none";
         if (closetBody) closetBody.style.display = "none";
     }
 
-    // 💡【補足】古い不要なタグは非表示で固定
+    // 古い不要なタグは非表示で固定
     const mainHatTag = document.getElementById('main-hat');
     if (mainHatTag) mainHatTag.style.display = "none";
     const closetHatTag = document.getElementById('closet-hat');
@@ -95,7 +89,7 @@ function loadEquipped() {
 }
 
 /**
- * 3. 画面の切り替え（修正版だっピ！）
+ * 3. 画面の切り替え
  */
 window.toggleScreen = function(screenName) {
     const mainScreen = document.getElementById('main-screen');
@@ -104,18 +98,13 @@ window.toggleScreen = function(screenName) {
     if (screenName === 'closet') {
         mainScreen.classList.add('hidden');
         closetScreen.classList.remove('hidden');
-        if (typeof loadEquipped === 'function') loadEquipped(); // クローゼットを開いた時も一応読み直す
+        if (typeof loadEquipped === 'function') loadEquipped();
         updateDisplay();
     } else {
-        // 👗 クローゼットからメイン画面に戻るとき
         closetScreen.classList.add('hidden');
         mainScreen.classList.remove('hidden');
         
-        // 🌟【超重要】メイン画面に戻った瞬間に、最新の服を重ね着させるっピ！
         if (typeof loadEquipped === 'function') loadEquipped(); 
-
-        loadEquipped();
-        
         updateDisplay();
     }
 };
@@ -164,21 +153,19 @@ function initCloset() {
 }
 
 /**
- * 5. アイテムの購入・着替え処理（追加・修正）
+ * 5. アイテムの購入・着替え処理
  */
 window.equipItem = function(type, img, pt, name) {
     let ownedItems = localStorage.getItem('owned-items') || "";
     let ownedArray = ownedItems.split(',').filter(x => x);
     let isOwned = ownedArray.includes(name);
 
-    // --- 【1】まだ持っていないアイテムの場合（購入処理） ---
     if (!isOwned) {
         let currentPt = parseInt(localStorage.getItem('purifyPoints')) || 0;
         if (currentPt < pt) {
             alert("ポイントが足りないっピ…！");
             return;
         }
-        // ポイントを消費して購入
         currentPt -= pt;
         localStorage.setItem('purifyPoints', currentPt);
         
@@ -187,22 +174,17 @@ window.equipItem = function(type, img, pt, name) {
         alert(`${name}をゲットしたっピ！🎉`);
     }
 
-    // --- 【2】すでに持っているアイテムの場合（着替え処理） ---
-    // 今選んだスロット（equipped-hat または equipped-body）の現在の装備を取得
     let currentEquipped = localStorage.getItem('equipped-' + type);
 
     if (currentEquipped === img) {
-        // すでに着ているものをもう一度押したら「脱ぐ」
         localStorage.removeItem('equipped-' + type);
     } else {
-        // 別のアイテムなら「着る」
         localStorage.setItem('equipped-' + type, img);
     }
 
-    // 画面の見た目を全部更新するっピ！
     if (typeof loadEquipped === 'function') loadEquipped();
     if (typeof updateDisplay === 'function') updateDisplay();
-    initCloset(); // クローゼットのボタン（「着替える」や「脱ぐ」）を再描画
+    initCloset();
 };
 
 // --- 初期化処理 ---

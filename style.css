@@ -27,17 +27,17 @@ h1 {
 }
 
 /* ==========================================
-   ステータスボード（1・2枚目の可愛さにクッキリ感をプラス！）
+   ステータスボード（クッキリ・読みやすく）
    ========================================== */
 .status-board {
-    background: rgba(241, 248, 255, 0.95) !important; /* 元の可愛い薄青をベースに透け防止 */
+    background: rgba(241, 248, 255, 0.95) !important; 
     border: 2px solid #b3e5fc;
     border-radius: 15px;
     padding: 15px;
     margin-bottom: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     color: #2c3e50; 
-    font-weight: bold; /* 文字をクッキリ読みやすく！ */
+    font-weight: bold; 
 }
 
 .progress-container {
@@ -58,7 +58,6 @@ h1 {
 /* ==========================================
    ペンペンのセリフ（安全なゲームウィンドウ風）
    ========================================== */
-/* クラス名ピンポイント指定にして、他の文字を巻き込まないように修正したっピ！ */
 .serif-text-element { 
     background: rgba(0, 0, 0, 0.5) !important; 
     color: #ffffff !important; 
@@ -70,39 +69,26 @@ h1 {
 }
 
 /* ==========================================
-   ボタンのデザイン（一番お気に入りだった丸くて可愛い形）
+   メイン画面のボタン（丸くて可愛い形）
    ========================================== */
-/* 「写真を撮る」と「体重」のボタンの枠組みをちょっとオシャレに */
 .btn-blue, .btn-pink {
     border: none;
     border-radius: 25px;
     padding: 14px 20px;
-    font-size: 1.05em; /* 文字を少し太くハッキリ */
+    font-size: 1.05em; 
     font-weight: bold;
     color: white;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 軽い影をつけて押しやすく */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
     transition: all 0.2s ease;
 }
 
-/* 決定ボタン（クローゼット内のボタンだけを狙い撃ち！） */
-#closet-screen .btn-blue { 
-    background: rgba(255, 255, 255, 0.95) !important;
-    border: 2px solid #b3e5fc !important;
-    color: #0277bd !important;
-    font-weight: bold;
-    padding: 12px 30px;
-    border-radius: 25px;
-    cursor: pointer;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.05);
-}
-
-/* 👗 クローゼットへ行くボタンを主役ボタンたちと馴染ませる */
+/* 👗 クローゼットへ行くボタン（メイン画面の下部） */
 .closet-button { 
     display: inline-block;
-    background: rgba(255, 255, 255, 0.85) !important; /* 背景に溶け込まない白 */
-    border: 2px solid #b3e5fc !important; /* 可愛い水色のフチ */
-    color: #0277bd !important; /* 押しやすい文字色 */
+    background: rgba(255, 255, 255, 0.85) !important; 
+    border: 2px solid #b3e5fc !important; 
+    color: #0277bd !important; 
     font-weight: bold;
     font-size: 0.9em;
     padding: 10px 24px;
@@ -110,24 +96,60 @@ h1 {
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     transition: all 0.2s ease;
-    width: 80%; /* 横幅を広げて、上のボタンとのバランスを取るっピ！ */
+    width: 80%; 
     margin-top: 10px;
 }
 
-/* ボタンの上にマウスが乗ったとき（スマホならタップしたとき）のぷにぷに感 */
-.btn-blue:hover, .btn-pink:hover, .closet-button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+/* ==========================================
+   おきがえルーム（クローゼット画面）専用のデザイン
+   ========================================== */
+
+/* 🌟 クローゼット内の「決定！」ボタンだけをピンポイント指定（これでバグらないっピ！） */
+#closet-screen .btn-blue { 
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 2px solid #b3e5fc !important;
+    color: #0277bd !important;
+    font-weight: bold;
+    padding: 12px 30px;
+    border-radius: 25px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    width: auto;
 }
 
-.btn-blue:active, .btn-pink:active, .closet-button:active { 
+/* 👒 クローゼットの衣装カード（並びをキレイにするおまけ付き！） */
+.item-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e0f2f1;
+    border-radius: 15px;
+    padding: 10px;
+    width: 80px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 🌟 衣装カードの中の「着替える」「脱ぐ」ボタン（JSの色指定を邪魔しない設定だっピ！） */
+.item-card button {
+    font-weight: bold;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 100%;
+}
+
+/* ==========================================
+   ボタンのぷにぷにアクション＆透過処理
+   ========================================== */
+.btn-blue:hover, .btn-pink:hover, .closet-button:hover, .item-card button:hover {
+    transform: translateY(-1px);
+}
+
+.btn-blue:active, .btn-pink:active, .closet-button:active, .item-card button:active { 
     transform: translateY(2px); 
     box-shadow: none; 
 }
 
-/* ==========================================
-   画面の切り替えと透過処理
-   ========================================== */
 .hidden {
     display: none !important;
 }

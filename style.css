@@ -1,5 +1,5 @@
 /* ==========================================
-   全体のデザインを整える
+   全体のデザインを整える（ペシャンコ防止版！）
    ========================================== */
 body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -11,18 +11,24 @@ body {
     margin: 0;
 }
 
-/* アプリ全体のコンテナ（まるで1枚の可愛いカードのように見せるっピ！） */
+/* 🌟 アプリ全体のコンテナ（どんな時も絶対に高さを潰さない設定だっピ！） */
 .container {
-    background: rgba(255, 255, 255, 0.4); /* ほんのり背景を透かす綺麗な白 */
-    backdrop-filter: blur(10px); /* 後ろの背景を少しぼかして高級感を出す */
+    background: rgba(255, 255, 255, 0.4); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px); /* 念のためSafari対策 */
     border: 2px solid rgba(255, 255, 255, 0.6);
     border-radius: 32px;
     padding: 24px;
     width: 90%;
     max-width: 380px;
+    
+    /* 🚨 ここが重要！ */
+    min-height: 580px; /* 縦幅の最低サイズをガッチリ固定して潰れを防ぐっピ！ */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 中身を上詰めで綺麗に並べる */
     box-sizing: border-box;
-    text-align: center;
-    box-shadow: 0 15px 35px rgba(2, 119, 189, 0.1); /* 優しい青い影 */
+    box-shadow: 0 15px 35px rgba(2, 119, 189, 0.1); 
 }
 
 h1 { 
@@ -31,6 +37,7 @@ h1 {
     margin: 5px 0 15px; 
     font-weight: bold;
     letter-spacing: 1px;
+    flex-shrink: 0; /* タイトルが潰れるのを防ぐ */
 }
 
 /* ==========================================

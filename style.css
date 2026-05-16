@@ -11,37 +11,33 @@ body {
     margin: 0;
 }
 
-/* アプリ全体のコンテナ（縦に伸びすぎないよう調整） */
+/* アプリ全体のコンテナ（縦潰れを完全に防ぐ） */
 .container {
-    border-radius: 30px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    padding: 25px;
+    background: transparent;
+    padding: 20px;
     width: 90%;
     max-width: 380px;
-    min-height: 550px; /* 縦幅に余裕を持たせて潰れを防止っピ！ */
-    text-align: center;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    text-align: center;
 }
 
 h1 { 
     color: #0277bd; 
     font-size: 1.6em; 
-    margin: 10px 0 15px; 
+    margin: 10px 0 20px; 
+    font-weight: bold;
 }
 
 /* ==========================================
-   ステータスボード（クッキリ・読みやすく）
+   ステータスボード（背景白で文字をクッキリ）
    ========================================== */
 .status-board {
-    background: rgba(241, 248, 255, 0.95) !important; 
+    background: rgba(255, 255, 255, 0.95) !important; 
     border: 2px solid #b3e5fc;
-    border-radius: 15px;
-    padding: 12px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-radius: 18px;
+    padding: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
     color: #2c3e50; 
     font-weight: bold; 
 }
@@ -51,63 +47,73 @@ h1 {
     height: 12px;
     border-radius: 6px;
     overflow: hidden;
-    margin: 8px 0;
+    margin: 10px 0;
 }
 
 .progress-bar {
     background: #4db6ac;
     height: 100%;
     width: 0%;
-    transition: width 0.5s;
+    transition: width 0.5s ease;
 }
 
 /* ==========================================
-   ペンペンのセリフ（安全なゲームウィンドウ風）
+   ペンペンスピーチバルーン風
    ========================================== */
 .serif-text-element { 
-    background: rgba(0, 0, 0, 0.6) !important; 
+    background: rgba(0, 0, 0, 0.65) !important; 
     color: #ffffff !important; 
-    padding: 8px 18px;
+    padding: 10px 20px;
     border-radius: 20px; 
     display: inline-block;
     font-weight: bold;
     margin: 15px 0;
     font-size: 0.95em;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 /* ==========================================
-   メイン画面のボタン（色をハッキリ大復活！）
+   メイン画面のボタン（縦並び・押しやすい黄金比）
    ========================================== */
+.main-action-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+}
+
 .btn-blue {
-    background: #0288d1 !important; /* 鮮やかな青を強制指定だっピ！ */
+    background: #0288d1 !important; /* 鮮やかな信頼の青 */
     border: none;
     border-radius: 25px;
-    padding: 14px 20px;
-    font-size: 1em; 
+    padding: 15px 20px;
+    font-size: 1.05em; 
     font-weight: bold;
-    color: white !important; /* 文字を白に！ */
+    color: white !important; 
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
+    box-shadow: 0 5px 15px rgba(2, 136, 209, 0.3); 
     transition: all 0.2s ease;
+    width: 100%;
 }
 
 .btn-pink {
-    background: #ec407a !important; /* 可愛いピンクを強制指定だっピ！ */
+    background: #ec407a !important; /* 目立つ可愛いピンク */
     border: none;
     border-radius: 25px;
-    padding: 14px 20px;
-    font-size: 1em; 
+    padding: 15px 20px;
+    font-size: 1.05em; 
     font-weight: bold;
-    color: white !important; /* 文字を白に！ */
+    color: white !important; 
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
+    box-shadow: 0 5px 15px rgba(236, 64, 122, 0.3); 
     transition: all 0.2s ease;
+    width: 100%;
 }
 
-/* 👗 クローゼットへ行くボタン（メイン画面の最下部） */
+/* 👗 クローゼットへ行くボタン（最下部で引き締める） */
 .closet-button { 
     display: inline-block;
-    background: rgba(255, 255, 255, 0.9) !important; 
+    background: rgba(255, 255, 255, 0.95) !important; 
     border: 2px solid #b3e5fc !important; 
     color: #0277bd !important; 
     font-weight: bold;
@@ -115,79 +121,81 @@ h1 {
     padding: 12px 24px;
     border-radius: 25px;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     transition: all 0.2s ease;
-    width: 90%; 
-    margin-top: 15px;
+    width: 100%; 
 }
 
 /* ==========================================
-   おきがえルーム（クローゼット画面）専用のデザイン
+   おきがえルーム（クローゼット）専用
    ========================================== */
 #closet-screen h2 {
     color: #0277bd;
-    font-size: 1.5em;
-    margin: 10px 0;
-}
-
-/* 🌟 クローゼット内の「決定！」ボタンが巨大化するのを防ぐ */
-#closet-screen .btn-blue { 
-    background: rgba(255, 255, 255, 0.95) !important;
-    border: 2px solid #b3e5fc !important;
-    color: #0277bd !important;
+    font-size: 1.6em;
+    margin: 10px 0 20px;
     font-weight: bold;
-    padding: 10px 40px !important; /* 縦幅をシュッと細く */
-    border-radius: 25px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    width: auto !important; /* 横幅いっぱいに広がらないように固定！ */
-    display: inline-block;
-    margin-top: 15px;
 }
 
-/* 衣装カードを並べるエリア */
+/* 「決定！」ボタンが巨大化するのを防ぐ */
+#closet-screen .btn-blue { 
+    background: #0288d1 !important;
+    color: white !important;
+    font-weight: bold;
+    padding: 12px 50px !important; 
+    border-radius: 25px;
+    box-shadow: 0 5px 15px rgba(2, 136, 209, 0.3);
+    width: auto !important; 
+    display: inline-block;
+    margin-top: 20px;
+}
+
+/* 衣装カード一覧エリア */
 #item-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
     justify-content: center;
-    margin: 15px 0;
-    max-height: 200px; /* カードエリアが広がりすぎないように制限 */
-    overflow-y: auto; /* 衣装が増えてもスクロールできるように */
+    margin: 20px 0;
+    max-height: 220px; 
+    overflow-y: auto; 
 }
 
 /* 衣装カード自体のデザイン */
 .item-card {
     background: rgba(255, 255, 255, 0.95);
     border: 2px solid #e0f2f1;
-    border-radius: 12px;
-    padding: 8px;
-    width: 80px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-radius: 16px;
+    padding: 10px;
+    width: 85px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
     align-items: center;
     font-size: 0.8em;
+    font-weight: bold;
 }
 
 .item-card button {
     font-weight: bold;
-    border-radius: 8px !important;
-    padding: 4px 8px;
-    margin-top: 5px;
+    border-radius: 10px !important;
+    padding: 6px 8px;
+    margin-top: 8px;
     width: 100%;
     font-size: 0.85em;
+    border: none;
+    color: white;
+    cursor: pointer;
 }
 
 /* ==========================================
-   共通アクション ＆ 画面切り替え
+   共通アニメーションと画面切り替え
    ========================================== */
 .btn-blue:hover, .btn-pink:hover, .closet-button:hover, .item-card button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
 }
 
 .btn-blue:active, .btn-pink:active, .closet-button:active, .item-card button:active { 
-    transform: translateY(2px); 
+    transform: translateY(1px); 
     box-shadow: none; 
 }
 
@@ -198,7 +206,4 @@ h1 {
 #main-screen, #closet-screen {
     background: transparent !important;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }

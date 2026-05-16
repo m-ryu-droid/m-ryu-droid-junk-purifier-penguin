@@ -40,34 +40,44 @@ function updateDisplay() {
 }
 
 /**
- * 2. 装備（着せ替え）を画像に反映する
+ * 2. 装備（着せ替え）をパーツごとに重ねて反映する
  */
 function loadEquipped() {
-    const mainEl = document.getElementById('main-penguin-img');
-    const closetEl = document.getElementById('closet-penguin-img');
+    // HTMLの要素をIDの通りにしっかりつかまえるっピ！
+    const mainImg = document.getElementById('main-penguin-img');
+    const mainHat = document.getElementById('main-hat');
+    const mainBody = document.getElementById('main-body');
     
-    let hat = localStorage.getItem('equipped-hat');
-    let body = localStorage.getItem('equipped-body');
+    const closetImg = document.getElementById('closet-penguin-img');
+    const closetHat = document.getElementById('closet-hat');
+    const closetBody = document.getElementById('closet-body');
+    
+    // 土台のペンギンは常に「何も着ていない画像（penguin.png）」で固定！
+    if (mainImg) mainImg.src = "assets/penguin.png";
+    if (closetImg) closetImg.src = "assets/penguin.png";
 
-    let imgSrc = "assets/penguin.png"; 
+    // localStorage から今の装備（単品の画像パス）を取得
+    let equippedHat = localStorage.getItem('equipped-hat');
+    let equippedBody = localStorage.getItem('equipped-body');
 
-    if (hat === 'assets/hat_straw.png') {
-        imgSrc = "assets/hat_straw.png"; 
-    } 
-    else if (hat === 'assets/hat_knit.png' || hat === 'penguin.png') {
-        imgSrc = "assets/penguin.png"; 
-    } 
-    else if (body === 'assets/mantle.png') {
-        imgSrc = "assets/penguin_mantle.png";
+    // === 👒 帽子の重ね着処理 ===
+    if (equippedHat) {
+        if (mainHat) { mainHat.src = equippedHat; mainHat.style.display = "block"; }
+        if (closetHat) { closetHat.src = equippedHat; closetHat.style.display = "block"; }
+    } else {
+        if (mainHat) mainHat.style.display = "none";
+        if (closetHat) closetHat.style.display = "none";
     }
 
-    if (mainEl) mainEl.src = imgSrc;
-    if (closetEl) closetEl.src = imgSrc;
-
-    const mainHatTag = document.getElementById('main-hat');
-    if (mainHatTag) mainHatTag.style.display = "none";
+    // === 👗 服（マントなど）の重ね着処理 ===
+    if (equippedBody) {
+        if (mainBody) { mainBody.src = equippedBody; mainBody.style.display = "block"; }
+        if (closetBody) { closetBody.src = equippedBody; closetBody.style.display = "block"; }
+    } else {
+        if (mainBody) mainBody.style.display = "none";
+        if (closetBody) closetBody.style.display = "none";
+    }
 }
-
 /**
  * 3. 画面の切り替え
  */

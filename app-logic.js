@@ -87,8 +87,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     clearInterval(loadingInterval); 
 
                     const data = await response.json();
-                    if (data.candidates && data.candidates[0].content.parts[0].text) {
-                        const rawText = data.candidates[0].content.parts[0].text;
+                    console.log("AIからの生の返事だっピ:", data); // 🌟念のため開発者ツールで見れるように
+
+                    // 💡 AIの返事の形が多少ズレてても、執念深くテキストを探し出す処理
+                    let rawText = "";
+                    try {
+                        if (data.candidates && data.candidates[0]) {
+                            const cand = data.candidates[0];
+                            // content だったり、メッセージ直下だったり、あり得るルートを全部探索！
+                            if (cand.content && cand.content.parts && cand.content.parts[0]) {
+                                rawText = cand.content.parts[0].text;
+                            } else if (cand.text) {
+                                rawText = cand.text;
+                            } else if (cand.parts && cand.parts[0]) {
+                                rawText = cand.parts[0].text;
+                            }
+                        }
+                    } catch (e) {
+                        console.log("テキスト抽出失敗", e);
+                    }
+
+                    // 🌟 テキストが見つかったら、JSONを引っこ抜く！
+                    if (rawText) {
                         const jsonMatch = rawText.match(/\{.*\}/s);
                         if (jsonMatch) {
                             showConfirmation(JSON.parse(jsonMatch[0]));
@@ -96,13 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             messageText.innerText = "🐧「AIの返事からデータがうまく読めなかったっピ…」";
                         }
                     } else {
-                        messageText.innerText = "🐧「AIからの返事が空っぽだったっピ…」";
+                        // もしこれでもダメなら、AIの返事全体の文字をそのまま出してみる
+                        messageText.innerText = "🐧「データ構造が違ったっピ…今度こそ確認してみて！」";
+                        console.error("想定外のデータ構造:", data);
                     }
-                } catch (error) {
-                    clearInterval(loadingInterval);
-                    messageText.innerText = "🐧「通信エラーになっちゃったっピ...」";
-                    console.error("Gemini Error:", error);
-                }
             };
             reader.readAsDataURL(file);
         });

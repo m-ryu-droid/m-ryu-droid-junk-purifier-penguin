@@ -70,26 +70,26 @@ h1 {
 }
 
 /* ==========================================
-   ペンペンスピーチバルーン風（左側吹き出し化！）
+   ペンペンスピーチバルーン風（左側固定・安全版）
    ========================================== */
 .serif-text-element { 
     background: rgba(44, 62, 80, 0.85) !important; 
     color: #ffffff !important; 
-    padding: 10px 14px;
+    padding: 10px 12px;
     border-radius: 16px; 
-    display: block; /* 横長指定を解除っピ */
+    display: block; 
     font-weight: bold;
-    font-size: 0.85em; /* 文字を少しだけ小さくして収まりを良く */
+    font-size: 0.85em; 
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 
-    /* 🌟 ここからが左側に吹き出しを浮かせる魔法の設定だっピ！ */
+    /* 🌟 ペンギンに絶対に被らせない設定 */
     position: absolute;
-    left: 20px;         /* 画面の左端からの距離 */
-    top: 240px;         /* 上からの位置（ペンギンの胸あたりの高さに調整） */
-    width: 110px;       /* 横幅を細くして、ペンギンに被らないように固定！ */
-    word-break: break-all; /* ボックスの端で綺麗に自動改行させる */
-    text-align: left;   /* 文字を左詰めに */
-    z-index: 10;        /* ペンギンより手前に表示 */
+    left: 15px;         /* 左端にしっかり寄せる */
+    top: 240px;         /* ペンギンの胸の高さ */
+    width: 105px;       /* 横幅を少しスマートにしてぶつかりを回避 */
+    word-break: break-all; 
+    text-align: left;   
+    z-index: 10;        
 }
 
 /* ==========================================
@@ -232,4 +232,10 @@ h1 {
 #main-screen, #closet-screen {
     background: transparent !important;
     width: 100%;
+}
+
+/* 🐧 ペンギンの表示エリアを右側にグイッと寄せる！ */
+#main-screen div[style*="position: relative"] {
+    margin: -10px -20px 10px auto !important; /* 右側に寄せる魔法の数値だっピ */
+    transform: translateX(30px); /* さらに右側へ30ピクセル微調整 */
 }

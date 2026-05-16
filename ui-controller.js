@@ -153,34 +153,45 @@ function initCloset() {
 }
 
 /**
- * 5. アイテムを装備・購入・脱ぐ処理
+ * 5. アイテムの購入・着替え処理（追加・修正）
  */
-window.equipItem = function(type, imgPath, requiredPt, itemName) {
+window.equipItem = function(type, img, pt, name) {
     let ownedItems = localStorage.getItem('owned-items') || "";
     let ownedArray = ownedItems.split(',').filter(x => x);
-    let currentEquipped = localStorage.getItem('equipped-' + type);
+    let isOwned = ownedArray.includes(name);
 
-    if (currentEquipped === imgPath) {
-        localStorage.removeItem('equipped-' + type);
-        alert(itemName + "を脱いだっピ！");
-    } else if (ownedArray.includes(itemName)) {
-        localStorage.setItem('equipped-' + type, imgPath);
-        alert(itemName + "に着替えたっピ！");
-    } else {
-        if (totalPoints < requiredPt) {
-            alert("ポイントが足りないっピ！");
+    // --- 【1】まだ持っていないアイテムの場合（購入処理） ---
+    if (!isOwned) {
+        let currentPt = parseInt(localStorage.getItem('purifyPoints')) || 0;
+        if (currentPt < pt) {
+            alert("ポイントが足りないっピ…！");
             return;
         }
-        totalPoints -= requiredPt;
-        localStorage.setItem('purifyPoints', totalPoints);
-        ownedArray.push(itemName);
+        // ポイントを消費して購入
+        currentPt -= pt;
+        localStorage.setItem('purifyPoints', currentPt);
+        
+        ownedArray.push(name);
         localStorage.setItem('owned-items', ownedArray.join(','));
-        localStorage.setItem('equipped-' + type, imgPath);
-        alert(itemName + "をゲットしたっピ！✨");
+        alert(`${name}をゲットしたっピ！🎉`);
     }
 
-    updateDisplay();
-    initCloset();
+    // --- 【2】すでに持っているアイテムの場合（着替え処理） ---
+    // 今選んだスロット（equipped-hat または equipped-body）の現在の装備を取得
+    let currentEquipped = localStorage.getItem('equipped-' + type);
+
+    if (currentEquipped === img) {
+        // すでに着ているものをもう一度押したら「脱ぐ」
+        localStorage.removeItem('equipped-' + type);
+    } else {
+        // 別のアイテムなら「着る」
+        localStorage.setItem('equipped-' + type, img);
+    }
+
+    // 画面の見た目を全部更新するっピ！
+    if (typeof loadEquipped === 'function') loadEquipped();
+    if (typeof updateDisplay === 'function') updateDisplay();
+    initCloset(); // クローゼットのボタン（「着替える」や「脱ぐ」）を再描画
 };
 
 // --- 初期化処理 ---

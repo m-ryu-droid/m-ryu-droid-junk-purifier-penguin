@@ -1,11 +1,13 @@
-// ==========================================
-// ui-controller.js: 画面表示・着せ替え・更新担当
-// ==========================================
-
 /**
- * 1. 画面全体の表示を最新状態に更新する
+ * 1. 画面全体の表示を最新状態に更新する（完全修正版だっピ！）
  */
 function updateDisplay() {
+    // 🌟【超重要】行方不明になっていた変数を、ここでLocalStorageからしっかり救出するっピ！
+    // お手元の変数名（'purifyPoints'など）や初期値に合わせて調整してね！
+    const totalPoints = parseInt(localStorage.getItem('purifyPoints')) || 0;
+    const currentWeight = parseFloat(localStorage.getItem('currentWeight')) || 60.0;
+    const targetWeight = parseFloat(localStorage.getItem('targetWeight')) || 55.0;
+
     // スコア表示の更新
     const ptDisp = document.getElementById('total-pt-display');
     if (ptDisp) ptDisp.innerText = totalPoints;
@@ -35,14 +37,14 @@ function updateDisplay() {
         diffDisp.innerText = diff <= 0 ? "目標達成！✨" : "あと " + diff.toFixed(1) + "kg";
     }
 
-    // 着せ替え状態を反映
+    // 👗 着せ替え状態を反映（これで途切れることなく電気が届くっピ！）
     loadEquipped();
 
-    // 🌟【ここが正しい位置！】関数の「内側」で背景を呼び出すっピ！
+    // 🌌 背景を呼び出す
     if (typeof updateAppBackground === 'function') {
         updateAppBackground();
     }
-} // 👈 ちゃんと最後をここで閉じるっピ！
+}
 
 /**
  * 2. 装備（着せ替え）を正しく画面に反映する

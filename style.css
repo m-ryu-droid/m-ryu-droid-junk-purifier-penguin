@@ -66,3 +66,7 @@ h1 { color: #0277bd; font-size: 1.8em; margin-bottom: 20px; }
 .hidden {
     display: none !important;
 }
+
+#main-screen, #closet-screen {
+    background: transparent !important;
+}

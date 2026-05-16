@@ -72,24 +72,17 @@ h1 {
 /* ==========================================
    ボタンのデザイン（一番お気に入りだった丸くて可愛い形）
    ========================================== */
+/* 「写真を撮る」と「体重」のボタンの枠組みをちょっとオシャレに */
 .btn-blue, .btn-pink {
     border: none;
     border-radius: 25px;
-    padding: 15px 25px;
-    font-size: 1em;
+    padding: 14px 20px;
+    font-size: 1.05em; /* 文字を少し太くハッキリ */
     font-weight: bold;
     color: white;
     cursor: pointer;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
-    transition: transform 0.1s;
-}
-
-.btn-blue { background-color: #42a5f5; }
-.btn-pink { background-color: #ec407a; }
-
-.btn-blue:active, .btn-pink:active { 
-    transform: translateY(2px); 
-    box-shadow: none; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 軽い影をつけて押しやすく */
+    transition: all 0.2s ease;
 }
 
 /* 決定ボタン（クローゼット内のボタン）のデザイン調整 */
@@ -102,6 +95,34 @@ button[onclick*="toggleScreen"] {
     border-radius: 25px;
     cursor: pointer;
     box-shadow: 0 4px 0 rgba(0,0,0,0.05);
+}
+
+/* 👗 クローゼットへ行くボタンを主役ボタンたちと馴染ませる */
+.closet-button { 
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.85) !important; /* 背景に溶け込まない白 */
+    border: 2px solid #b3e5fc !important; /* 可愛い水色のフチ */
+    color: #0277bd !important; /* 押しやすい文字色 */
+    font-weight: bold;
+    font-size: 0.9em;
+    padding: 10px 24px;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    width: 80%; /* 横幅を広げて、上のボタンとのバランスを取るっピ！ */
+    margin-top: 10px;
+}
+
+/* ボタンの上にマウスが乗ったとき（スマホならタップしたとき）のぷにぷに感 */
+.btn-blue:hover, .btn-pink:hover, .closet-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.btn-blue:active, .btn-pink:active, .closet-button:active { 
+    transform: translateY(2px); 
+    box-shadow: none; 
 }
 
 /* ==========================================

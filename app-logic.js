@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             contents: [{
                                 parts: [
                                     { text: "写真の食材をリストアップして、最後に以下のJSON形式だけで出力して。形式: {\"ingredients\": [\"食材1\"], \"score\": 10, \"story\": \"物語\"}" },
-                                    { inlineData: { mimeType: file.type, data: base64Image } } // 🌟 inline_data から inlineData へ修正！
+                                    { inlineData: { mime_Type: file.type, data: base64Image } } // 🌟 inline_data から inlineData へ修正！
                                 ]
                             }]
                         })
@@ -132,17 +132,17 @@ document.addEventListener('DOMContentLoaded', () => {
                             console.log("パースできなかった生テキスト:", rawText);
                         }
                     } else {
-                        messageText.innerText = "🐧「データ構造が違ったっピ…コンソールを確認してみて！」";
+                        messageText.innerText = "...";
                         console.error("想定外のデータ構造:", data);
                     }
 
                 } catch (error) {
-                    // 🌟【修復】消えてしまっていたエラーキャッチ処理を完全復活！
-                    if (loadingInterval) clearInterval(loadingInterval);
-                    messageText.innerText = "🐧「通信エラーになっちゃったっピ...」";
-                    console.error("Gemini Error:", error);
+                    // ✅ fetch失敗時の catch を追加
+                    clearInterval(loadingInterval);
+                    messageText.innerText = "🐧「通信エラーだっピ…」";
+                    console.error(error);
                 }
-            };
+            };  // reader.onload の閉じ括弧
             reader.readAsDataURL(file);
         });
     }

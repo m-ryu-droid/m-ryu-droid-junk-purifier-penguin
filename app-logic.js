@@ -77,28 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             contents: [{
                                 parts: [
                                    parts: [
-                                    { text: `写真の食材を分析して、最後に以下のJSON形式だけで出力して。
-                                    
-【重要ルール】
-写真の中に見つけた食材が、以下の【図鑑食材リスト】のいずれかに該当する場合は、その「ID」を必ず zukan_ids 配列に入れてだっピ！
-（複数あれば全部入れて、該当するものが全くない場合は空っぽの [] にしてね）
-
-【図鑑食材リスト】
-・pancake (スフレパンケーキ)
-・tomato (トマト)
-・salmon (サーモン)
-・banana (バナナ)
-・egg (たまご)
-・broccoli (ブロッコリー)
-・chicken_breast (鶏むね肉)
-・chicken_tender (鶏ささみ)
-・yogurt (ヨーグルト)
-・avocado (アボカド)
-
-【出力JSON形式】
-{"ingredients": ["見つけた食材名"], "zukan_ids": ["該当したID"], "score": 10, "story": "ペンギンが喜んでいる30文字以内の短いセリフ"} ` },
+                                    parts: [
+                                    { text: "写真の食材を分析して、最後に以下のJSON形式だけで出力して。\n\n【重要ルール】\n写真の中に見つけた食材が、以下の【図鑑食材リスト】のいずれかに該当する場合は、その「ID」を必ず zukan_ids 配列に入れてだっピ！\n（複数あれば全部入れて、該当するものが全くない場合は空っぽの [] にしてね）\n\n【図鑑食材リスト】\n・pancake (スフレパンケーキ)\n・tomato (トマト)\n・salmon (サーモン)\n・banana (バナナ)\n・egg (たまご)\n・broccoli (ブロッコリー)\n・chicken_breast (鶏むね肉)\n・chicken_tender (鶏ささみ)\n・yogurt (ヨーグルト)\n・avocado (アボカド)\n\n【出力JSON形式】\n{\"ingredients\": [\"見つけた食材名\"], \"zukan_ids\": [\"該当したID\"], \"score\": 10, \"story\": \"ペンギンが喜んでいる30文字以内の短いセリフ\"}" },
                                     { inlineData: { mimeType: file.type, data: base64Image } }
-                                ]
                                 ]
                             }]
                         })

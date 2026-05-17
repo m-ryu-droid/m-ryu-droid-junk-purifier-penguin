@@ -18,7 +18,7 @@ var targetWeight = parseFloat(localStorage.getItem('targetWeight')) || 70;
 const items = [
     { name: '麦わら帽子', pt: 10, img: 'assets/hat_straw.png', type: 'hat' },
     { name: 'サングラス', pt: 30, img: 'assets/glasses.png', type: 'hat' },    
-    { name: '赤ちゃん', pt: 10, img: 'assets/babypenguin.png', type: 'body' }, 
+    { name: '赤ちゃん', pt: 10, img: 'assets/babypenguin01.png', type: 'body' }, 
     { name: '夏服', pt: 10, img: 'assets/summerpenguin.pmg', type: 'body' }, 
     {
         name: "ピカピカの王冠",

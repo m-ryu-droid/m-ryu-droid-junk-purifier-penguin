@@ -69,16 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const base64Image = reader.result.split(',')[1];
                 try {
                     // API_KEY は config.js から読み込まれるっピ
-                    // 🌟 Gemini 2.5 の最新画像リクエスト形式に美しく修正したっピ！
+                    // 🌟 壊れていた parts: [ の重なりを美しく修正したっピ！
                     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             contents: [{
                                 parts: [
-                                   parts: [
-                                    parts: [
-                                    { text: "写真の食材を分析して、最後に以下のJSON形式だけで出力して。\n\n【重要ルール】\n写真の中に見つけた食材が、以下の【図鑑食材リスト】のいずれかに該当する場合は、その「ID」を必ず zukan_ids 配列に入れてだっピ！\n（複数あれば全部入れて、該当するものが全くない場合は空っぽの [] にしてね）\n\n【図鑑食材リスト】\n・pancake (スフレパンケーキ)\n・tomato (トマト)\n・salmon (サーモン)\n・banana (バナナ)\n・egg (たまご)\n・broccoli (ブロッコリー)\n・chicken_breast (鶏むね肉)\n・chicken_tender (鶏ささみ)\n・yogurt (ヨーグルト)\n・avocado (アボカド)\n\n【出力JSON形式】\n{\"ingredients\": [\"見つけた食材名\"], \"zukan_ids\": [\"該当したID\"], \"score\": 10, \"story\": \"ペンギンが喜んでいる30文字以内の短いセリフ\"}" },
+                                    { text: "写真の食材を分析して、最後に以下のJSON形式だけで出力して。\n\n【重要ルール】\n写真の中に見つけた食材が、以下の【図鑑食材リスト】のいずれかに該当する場合は、その「ID」を必ず zukan_ids 配列に入れてだっピ！\n（複数あれば全部入れて、該当するものが全くない場合は空っぽの [] にしてね）\n\n【図鑑食材リスト】\n・pancake (スフレパンケーキ)\n・tomato (トマト)\n・salmon (サーモン)\n・banana (バナナ)\n・egg (たまご)\n・broccoli (ブロッコリー)\n・chicken_breast (鶏むね肉)\n・chicken_tender (鶏ささみ)\n・yogurt (ヨーグルト)\n・avocado (アボカド)\n\n【出力JSON形式】\n{\"ingredients\": [\"見つけた食材名\"], \"zukan_ids\": [\"該当したID\"], \"score\": 10, \"story\": \"ペンギンが喜んでいる30文字い内の短いセリフ\"}" },
                                     { inlineData: { mimeType: file.type, data: base64Image } }
                                 ]
                             }]
@@ -88,10 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const data = await response.json();
                     console.log("AIからの生の返事だっピ:", data);
 
-                    // 🌟【大復活】解析が終わったので、まず真っ先にタイマーアニメーションを止める！
+                    // 🌟 解析が終わったのでタイマーアニメーションを止める
                     if (loadingInterval) clearInterval(loadingInterval); 
 
-                    // 💡 AIの返事の形が多少ズレてても、執念深くテキストを探し出す処理
                     let rawText = "";
                     try {
                         if (data.candidates && data.candidates[0]) {
@@ -108,20 +105,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         console.log("テキスト抽出失敗", e);
                     }
 
-// 🌟 テキストが見つかったら、あらゆるノイズ（```json等）を削ぎ落としてJSONを引っこ抜く！
+                    // 🌟 テキストが見つかったらノイズを削ぎ落としてJSONを引っこ抜く
                     if (rawText) {
-                        // 前後の余計な空白や、AIが勝手につける「```json」や「```」を徹底的にトリミングするっピ！
                         let cleanedText = rawText.trim();
-                        cleanedText = cleanedText.replace(/^```json\s*/i, ''); // 先頭の ```json を消す
-                        cleanedText = cleanedText.replace(/^```\s*/, '');     // 先頭の ``` を消す
-                        cleanedText = cleanedText.replace(/```$/, '');         // 末尾の ``` を消す
+                        cleanedText = cleanedText.replace(/^```json\s*/i, ''); 
+                        cleanedText = cleanedText.replace(/^```\s*/, '');     
+                        cleanedText = cleanedText.replace(/```$/, '');         
                         cleanedText = cleanedText.trim();
 
-                        // それでもダメな時のために、一番外側の { } を力づくで見つけるっピ
                         const firstBracket = cleanedText.indexOf('{');
                         const lastBracket = cleanedText.lastIndexOf('}');
 
-                       if (firstBracket !== -1 && lastBracket !== -1 && lastBracket > firstBracket) {
+                        if (firstBracket !== -1 && lastBracket !== -1 && lastBracket > firstBracket) {
                             const jsonString = cleanedText.substring(firstBracket, lastBracket + 1);
                             try {
                                 const parsedData = JSON.parse(jsonString);
@@ -132,11 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 messageText.innerText = "🐧「データの形が壊れていて読めなかったっピ…」";
                             }
                         } else {
-                            messageText.innerText = "🐧「返事の中にデータが見つからなかったっピ…」";
-                            console.log("パースできなかった生テキスト:", rawText);
-                        }
-                        } else {
-                            messageText.innerText = "🐧「返事の中にデータが見つからなかったっピ…」";
+                            messageText.innerText = "🐧 blackout「返事の中にデータが見つからなかったっピ…」";
                             console.log("パースできなかった生テキスト:", rawText);
                         }
                     } else {
@@ -145,7 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                 } catch (error) {
-                    // ✅ fetch失敗時の catch を追加
                     clearInterval(loadingInterval);
                     messageText.innerText = "🐧「通信エラーだっピ…」";
                     console.error(error);
@@ -188,10 +178,6 @@ window.completePurify = function(score, story) {
     // 📖 新要素：今回AIが見つけた図鑑IDを、実際に図鑑に登録・カウントするっピ！
     let zukanMessage = "";
     try {
-        // 直前のAIの返事（resultエリアの裏側など）から、今回該当したIDを引っこ抜く仕掛け
-        // ※簡易的に、現在画面に写っているパーツやデータから連動させるために、
-        // 直前の確認画面のデータに仕込まれたzukan_ids（もしあれば）を処理します。
-        // ここではグローバルに一時保存されたデータ、または今回新しく見つかったIDを処理！
         if (window.lastAiData && window.lastAiData.zukan_ids) {
             window.lastAiData.zukan_ids.forEach(id => {
                 if (typeof window.addFoodToZukan === 'function') {
@@ -219,6 +205,7 @@ window.completePurify = function(score, story) {
     document.getElementById('message').innerText = story + zukanMessage;
     document.getElementById('result').innerHTML = `<button onclick="resetUI()" style="margin-top:10px; padding:10px 25px; border-radius:20px; border:none; background:#81d4fa; color:white; font-weight:bold; cursor:pointer;">次へ進むっピ！</button>`;
 };
+
 /**
  * 5. 全てをリセットして最初に戻る
  */

@@ -140,14 +140,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         const firstBracket = cleanedText.indexOf('{');
                         const lastBracket = cleanedText.lastIndexOf('}');
 
-                        if (firstBracket !== -1 && lastBracket !== -1 && lastBracket > firstBracket) {
+                       if (firstBracket !== -1 && lastBracket !== -1 && lastBracket > firstBracket) {
                             const jsonString = cleanedText.substring(firstBracket, lastBracket + 1);
                             try {
-                                showConfirmation(JSON.parse(jsonString));
+                                const parsedData = JSON.parse(jsonString);
+                                window.lastAiData = parsedData; // 🌟 ここでバッチリ一時記憶！
+                                showConfirmation(parsedData);
                             } catch (parseError) {
                                 console.error("JSONパース失敗:", parseError, "対象文字列:", jsonString);
                                 messageText.innerText = "🐧「データの形が壊れていて読めなかったっピ…」";
                             }
+                        } else {
+                            messageText.innerText = "🐧「返事の中にデータが見つからなかったっピ…」";
+                            console.log("パースできなかった生テキスト:", rawText);
+                        }
                         } else {
                             messageText.innerText = "🐧「返事の中にデータが見つからなかったっピ…」";
                             console.log("パースできなかった生テキスト:", rawText);

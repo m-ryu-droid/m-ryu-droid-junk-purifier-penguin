@@ -17,10 +17,9 @@ var targetWeight = parseFloat(localStorage.getItem('targetWeight')) || 70;
 // 4. アイテムリストの設定（カッコとコンマを完璧に繋ぎ直したっピ✨）
 const items = [
     { name: '麦わら帽子', pt: 10, img: 'assets/hat_straw.png', type: 'hat' },
-    { name: 'サングラス', pt: 30, img: 'assets/glasses.png', type: 'hat' },
-    { name: '勇者のマント', pt: 50, img: 'assets/mantle.png', type: 'body' }, // 🌟ここにコンマを打ちました！
-    { name: '赤ちゃん', pt: 10, img: 'assets/babypenguin', type: 'body' }, 
-    { name: '夏服', pt: 10, img: 'assets/summerpenguin', type: 'body' }, 
+    { name: 'サングラス', pt: 30, img: 'assets/glasses.png', type: 'hat' },    
+    { name: '赤ちゃん', pt: 10, img: 'assets/babypenguin.png', type: 'body' }, 
+    { name: '夏服', pt: 10, img: 'assets/summerpenguin.pmg', type: 'body' }, 
     {
         name: "ピカピカの王冠",
         type: "hat",

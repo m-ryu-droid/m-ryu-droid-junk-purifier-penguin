@@ -11,7 +11,7 @@
     <div class="container">
         
         <div id="main-screen">
-            <h1>テスト17</h1>
+            <h1>テスト18</h1>
             
             <div class="status-board">
                 <div style="display: flex; justify-content: space-around; margin-bottom: 5px;">
@@ -43,24 +43,33 @@
                 <button onclick="openWeightInput()" class="btn-pink">⚖️ 体重を記録する</button>
             </div>
             
-            <div style="margin-top: 15px;">
-                <button onclick="toggleScreen('closet')" class="closet-button">👗 クローゼットでおきがえ</button>
-            </div>
-        </div> <div id="closet-screen" class="hidden">
-            <h2 style="color: #0277bd;">おきがえルーム</h2>
-            
-            <div style="position: relative; width: 220px; margin: 0 auto 20px;">
-                <img src="assets/penguin.png" id="closet-penguin-img" style="width: 100%; height: auto; position: relative; z-index: 1;">
-                
-                <img id="closet-body" src="" style="position: absolute; width: 100%; height: auto; z-index: 2; top: 0; left: 0; pointer-events: none; display: none;">
-                
-                <img id="closet-hat" src="" style="position: absolute; width: 70%; height: auto; z-index: 3; top: 33%; left: 50%; transform: translateX(-50%); pointer-events: none; display: none;">
-            </div>
+            <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 350px;">
+        <button onclick="goToRoom()" style="padding: 12px; border-radius: 25px; border: none; background: #ffffff; color: #0288d1; font-weight: bold; cursor: pointer; font-size: 1em; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; gap: 8px;">
+            🏠 ペンギンのお部屋へいく
+        </button>
+    </div>
 
-            <div id="item-grid" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px;"></div>
+    <div id="penguin-room" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('YOUR_ROOM_IMAGE.png') no-repeat center center; background-size: cover; z-index: 100; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 40px; box-sizing: border-box;">
+        
+        <div style="position: absolute; top: 20px; background: rgba(255,255,255,0.85); padding: 6px 16px; border-radius: 20px; font-weight: bold; color: #0288d1; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            🐧 ペンギンのお部屋
+        </div>
+
+        <button onclick="leaveRoom()" style="position: absolute; top: 20px; left: 20px; padding: 8px 12px; border-radius: 15px; border: none; background: #333; color: #fff; font-weight: bold; cursor: pointer; font-size: 0.85em; opacity: 0.8;">
+            ◀ もどる
+        </button>
+
+        <div style="display: flex; gap: 20px; width: 90%; max-width: 320px; margin-bottom: 20px;">
+            <button onclick="openClosetFromRoom()" style="flex: 1; padding: 20px 10px; border-radius: 15px; border: 3px solid #81d4fa; background: rgba(255,255,255,0.9); color: #0288d1; font-weight: bold; cursor: pointer; box-shadow: 0 6px 12px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                <span style="font-size: 1.8em;">👗</span>
+                クローゼット
+            </button>
             
-            <button onclick="toggleScreen('main')" class="btn-blue">決定！</button>
-        </div> 
+            <button onclick="openZukanFromRoom()" style="flex: 1; padding: 20px 10px; border-radius: 15px; border: 3px solid #81d4fa; background: rgba(255,255,255,0.9); color: #0288d1; font-weight: bold; cursor: pointer; box-shadow: 0 6px 12px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; gap: 8px;">
+                <span style="font-size: 1.8em;">📖</span>
+                食材図鑑
+            </button>
+        </div>
 
     </div> 
     

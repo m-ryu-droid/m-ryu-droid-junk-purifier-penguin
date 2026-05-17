@@ -226,3 +226,21 @@ window.openClosetFromRoom = function() {
     // 今あるおきがえモーダル（ダイアログ）を開く関数が別にあれば、ここにそれを繋ぐっピ！
     alert("🐧「クローゼットを開くっピ！おきがえ画面へレッツゴー！」");
 };
+
+/**
+ * ⚖️ 体重入力ポップアップを開く関数（復活版！）
+ */
+window.openWeightInput = function() {
+    // もし元々のポップアップを開くID名が違っていたら調整してね
+    const modal = document.getElementById('weight-modal') || document.getElementById('weight-input-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        console.log("体重入力画面を開いたっピ！");
+    } else {
+        // 万が一モーダルのID名が不明な場合は一時的にプロンプトで対応
+        const weight = prompt("今日の体重を入力してね(kg):");
+        if (weight && typeof window.updateWeightDisplay === 'function') {
+            window.updateWeightDisplay(weight);
+        }
+    }
+};

@@ -19,7 +19,7 @@ window.openWeightInput = function() {
     currentWeight = parseFloat(w);
     localStorage.setItem('currentWeight', currentWeight);
 
-    let changeTarget = window.confirm(`今の目標は ${targetWeight}kg だっピ！目標も変更する？`);
+    let changeTarget = window.confirm(`今の目標は ${targetWeight}kg だよ！目標も変更する？`);
     if (changeTarget) {
         let t = window.prompt("新しい目標体重は？(kg)", targetWeight);
         if (t) {
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         body: JSON.stringify({
                             contents: [{
                                 parts: [
-                                    { text: "写真の食材をリストアップして、最後に以下のJSON形式だけで出力して。story（お食事へのコメント）は、ペンギンが喜んでいる様子を30文字以内で短く可愛く出力して。形式: {\"ingredients\": [\"食材1\"], \"score\": 10, \"story\": \"物語\"}" },
+                                    { text: "写真の食材をリストアップして、最後に以下のJSON形式だけで出力して。story（お食事へのコメント）は、ペンギンが喜んでいる様子を40文字程度で短く可愛く出力して。形式: {\"ingredients\": [\"食材1\"], \"score\": 10, \"story\": \"物語\"}" },
                                     { inline_data: { mime_type: file.type, data: base64Image } }
                                 ]
                             }]

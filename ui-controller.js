@@ -192,3 +192,44 @@ window.addEventListener('DOMContentLoaded', () => {
     initCloset();
     updateDisplay();
 });
+
+// ==========================================
+// 🏠 新要素：お部屋画面への移動・切り替えロジック
+// ==========================================
+
+/**
+ * メイン画面からお部屋へ移動するっピ！
+ */
+window.goToRoom = function() {
+    const room = document.getElementById('penguin-room');
+    if (room) {
+        room.style.display = 'flex'; // お部屋画面をパッと表示！
+        console.log("ペンギンのお部屋に遊びにきたっピ！");
+    }
+};
+
+/**
+ * お部屋画面からもとのメイン画面に戻るっピ！
+ */
+window.leaveRoom = function() {
+    const room = document.getElementById('penguin-room');
+    if (room) {
+        room.style.display = 'none'; // お部屋画面を非表示にして戻る！
+        console.log("メイン画面に戻ったっピ！");
+    }
+};
+
+/**
+ * お部屋からクローゼットを開く（今後の拡張用だっピ）
+ */
+window.openClosetFromRoom = function() {
+    // 今あるおきがえモーダル（ダイアログ）を開く関数が別にあれば、ここにそれを繋ぐっピ！
+    alert("🐧「クローゼットを開くっピ！おきがえ画面へレッツゴー！」");
+};
+
+/**
+ * お部屋から食材図鑑を開く（次のステップで中身を作るっピ！）
+ */
+window.openZukanFromRoom = function() {
+    alert("🐧「食材図鑑を開くっピ！今まで食べたお食事が載ってるよ！」");
+};

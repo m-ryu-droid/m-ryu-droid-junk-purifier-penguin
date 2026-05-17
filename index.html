@@ -71,6 +71,35 @@
             </button>
         </div>
 
+        <div id="zukan-modal" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; align-items: center; justify-content: center; box-sizing: border-box; padding: 20px;">
+        
+        <div style="background: #ffffff; width: 100%; max-width: 340px; height: 85%; border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; border: 4px solid #81d4fa; box-shadow: 0 8px 24px rgba(0,0,0,0.3);">
+            
+            <div style="background: #81d4fa; color: #0288d1; padding: 12px; text-align: center; font-weight: bold; font-size: 1.1em; display: flex; justify-content: space-between; align-items: center;">
+                <span>📖 しょくざい図鑑</span>
+                <button onclick="closeZukan()" style="border: none; background: #0288d1; color: white; border-radius: 50%; width: 26px; height: 26px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;">×</button>
+            </div>
+
+            <div id="zukan-badge-area" style="background: #e1f5fe; padding: 8px 15px; font-size: 0.85em; color: #0277bd; font-weight: bold; border-bottom: 1px solid #b3e5fc; text-align: center;">
+                見つけた食材: <span id="zukan-progress-count">0</span> / 10 種類
+            </div>
+
+            <div id="zukan-grid" style="flex: 1; padding: 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; overflow-y: auto; background: #fafafa;">
+                </div>
+
+        </div>
+    </div>
+
+    <div id="zukan-detail-modal" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 300; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;">
+        <div style="background: white; border-radius: 15px; width: 85%; max-width: 280px; padding: 20px; text-align: center; box-shadow: 0 4px 16px rgba(0,0,0,0.2); position: relative; border: 3px solid #0288d1;">
+            <div id="detail-image" style="font-size: 3em; margin-bottom: 10px;">🥑</div>
+            <h3 id="detail-name" style="margin: 0 0 10px 0; color: #0288d1;">食材名</h3>
+            <p id="detail-count" style="margin: 0 0 10px 0; font-size: 0.85em; font-weight: bold; color: #ff5252; background: #ffebee; display: inline-block; padding: 2px 10px; border-radius: 10px;">食べた回数: 0回</p>
+            <p id="detail-desc" style="margin: 0; font-size: 0.85em; color: #555; text-align: left; line-height: 1.4; background: #f9f9f9; padding: 8px; border-radius: 8px;">ここに解説文が入るっピ！</p>
+            <button onclick="closeZukanDetail()" style="margin-top: 15px; padding: 8px 20px; border-radius: 15px; border: none; background: #0288d1; color: white; font-weight: bold; cursor: pointer;">とじる</button>
+        </div>
+    </div>
+
     </div> 
     
     <input type="file" id="camera-input" accept="image/*" capture="environment" style="display:none;">

@@ -76,8 +76,29 @@ document.addEventListener('DOMContentLoaded', () => {
                         body: JSON.stringify({
                             contents: [{
                                 parts: [
-                                    { text: "写真の食材をリストアップして、最後に以下のJSON形式だけで出力して。story（お食事へのコメント）は、ペンギンが喜んでいる様子を40文字程度で短く可愛く出力して。形式: {\"ingredients\": [\"食材1\"], \"score\": 10, \"story\": \"物語\"}" },
-                                    { inline_data: { mime_type: file.type, data: base64Image } }
+                                   parts: [
+                                    { text: `写真の食材を分析して、最後に以下のJSON形式だけで出力して。
+                                    
+【重要ルール】
+写真の中に見つけた食材が、以下の【図鑑食材リスト】のいずれかに該当する場合は、その「ID」を必ず zukan_ids 配列に入れてだっピ！
+（複数あれば全部入れて、該当するものが全くない場合は空っぽの [] にしてね）
+
+【図鑑食材リスト】
+・pancake (スフレパンケーキ)
+・tomato (トマト)
+・salmon (サーモン)
+・banana (バナナ)
+・egg (たまご)
+・broccoli (ブロッコリー)
+・chicken_breast (鶏むね肉)
+・chicken_tender (鶏ささみ)
+・yogurt (ヨーグルト)
+・avocado (アボカド)
+
+【出力JSON形式】
+{"ingredients": ["見つけた食材名"], "zukan_ids": ["該当したID"], "score": 10, "story": "ペンギンが喜んでいる30文字以内の短いセリフ"} ` },
+                                    { inlineData: { mimeType: file.type, data: base64Image } }
+                                ]
                                 ]
                             }]
                         })

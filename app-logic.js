@@ -194,16 +194,44 @@ window.showConfirmation = function(data) {
  * 4. 浄化完了処理
  */
 window.completePurify = function(score, story) {
-    // 🌟 ui-controller.js から安全に現在のポイントを読み込む
     let totalPoints = parseInt(localStorage.getItem('purifyPoints')) || 0;
     totalPoints += score;
     localStorage.setItem('purifyPoints', totalPoints);
+    
+    // 📖 新要素：今回AIが見つけた図鑑IDを、実際に図鑑に登録・カウントするっピ！
+    let zukanMessage = "";
+    try {
+        // 直前のAIの返事（resultエリアの裏側など）から、今回該当したIDを引っこ抜く仕掛け
+        // ※簡易的に、現在画面に写っているパーツやデータから連動させるために、
+        // 直前の確認画面のデータに仕込まれたzukan_ids（もしあれば）を処理します。
+        // ここではグローバルに一時保存されたデータ、または今回新しく見つかったIDを処理！
+        if (window.lastAiData && window.lastAiData.zukan_ids) {
+            window.lastAiData.zukan_ids.forEach(id => {
+                if (typeof window.addFoodToZukan === 'function') {
+                    let res = window.addFoodToZukan(id);
+                    if (res && res.isNew) {
+                        zukanMessage += `\n✨新しい食材【${id}】を図鑑に登録したっピ！`;
+                        
+                        // 🎁 やりこみ要素：もし10種類コンプリートしたらボーナス50pt！
+                        if (res.totalUnlocked === 10) {
+                            totalPoints += 50;
+                            localStorage.setItem('purifyPoints', totalPoints);
+                            zukanMessage += `\n🎉すごーーいっピ！10種類コンプリート特典で【50pt】ゲット＆おきがえ衣装が解放されたっピ！！👑`;
+                        }
+                    }
+                }
+            });
+        }
+    } catch(e) {
+        console.error("図鑑登録エラー:", e);
+    }
+
     if (typeof updateDisplay === 'function') updateDisplay();
     
-    document.getElementById('message').innerText = story;
+    // AIのストーリーのあとに、図鑑の解放ニュースをドッキングして表示するっピ！
+    document.getElementById('message').innerText = story + zukanMessage;
     document.getElementById('result').innerHTML = `<button onclick="resetUI()" style="margin-top:10px; padding:10px 25px; border-radius:20px; border:none; background:#81d4fa; color:white; font-weight:bold; cursor:pointer;">次へ進むっピ！</button>`;
 };
-
 /**
  * 5. 全てをリセットして最初に戻る
  */

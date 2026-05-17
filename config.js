@@ -20,12 +20,7 @@ const items = [
     { name: 'サングラス', pt: 30, img: 'assets/glasses.png', type: 'hat' },    
     { name: '赤ちゃん', pt: 10, img: 'assets/babypanguin01.png', type: 'body' }, 
     { name: '夏服', pt: 10, img: 'assets/summerpenguin.png', type: 'body' }, 
-    {
-        name: "ピカピカの王冠",
-        type: "hat",
-        img: "assets/hat_crown.png",
-        pt: 20
-    }, // 🌟ここも綺麗に繋げました！
+    { name: "ピカピカの王冠",type: "hat",img: "assets/hat_crown.png", pt: 20},
     {
         name: "かっこいい緑の服",
         type: "body",

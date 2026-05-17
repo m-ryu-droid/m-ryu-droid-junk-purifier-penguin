@@ -70,26 +70,28 @@ h1 {
 }
 
 /* ==========================================
-   ペンペンスピーチバルーン風（左側固定・安全版）
+   ペンペンスピーチバルーン風（左側吹き出し化・被り防止）
    ========================================== */
 .serif-text-element { 
     background: rgba(44, 62, 80, 0.85) !important; 
     color: #ffffff !important; 
-    padding: 10px 12px;
+    padding: 10px 14px;
     border-radius: 16px; 
     display: block; 
     font-weight: bold;
     font-size: 0.85em; 
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 
-    /* 🌟 ペンギンに絶対に被らせない設定 */
+    /* 🌟 横幅を「110px」から「130px」へ少し広げて横にゆとりを持たせるっピ！ */
     position: absolute;
-    left: 15px;         /* 左端にしっかり寄せる */
-    top: 240px;         /* ペンギンの胸の高さ */
-    width: 105px;       /* 横幅を少しスマートにしてぶつかりを回避 */
+    left: 20px;         
+    top: 240px;         
+    width: 130px;       /* 👈 20px広げて、3行くらいに収まりやすく！ */
     word-break: break-all; 
     text-align: left;   
     z-index: 10;        
+    max-height: 180px;  /* 万が一長文になっても、縦に伸びすぎないようストッパーをかけるっピ */
+    overflow-y: auto;   /* 枠をはみ出したら中でスクロールできるように */
 }
 
 /* ==========================================

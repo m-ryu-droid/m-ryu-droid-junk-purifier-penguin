@@ -50,14 +50,15 @@ function updateDisplay() {
 }
 
 /**
- * 2. 装備（着せ替え）を正しく画面に反映する（超・網羅版！）
+ * 2. 装備（着せ替え）を正しく画面に反映する（メイン画面 ＆ クローゼット両方対応！）
  */
 function loadEquipped() {
-    // 💡 メイン画面のペンギン本体と服のタグを、あり得る名前すべてで探すっピ！
+    // 💡 メイン画面のペンギン
     const mainImg = document.getElementById('main-penguin-img') || document.getElementById('penguin-img');
     const mainBody = document.getElementById('main-body') || document.getElementById('main-mantle') || document.getElementById('penguin-body');
     
-    const closetImg = document.getElementById('closet-penguin-img');
+    // 💡 クローゼットのポップアップ内のプレビュー用ペンギン
+    const closetImg = document.getElementById('closet-penguin-preview') || document.getElementById('closet-penguin-img');
     const closetBody = document.getElementById('closet-body') || document.getElementById('closet-mantle');
     
     // localStorage から今の装備を取得
@@ -70,7 +71,7 @@ function loadEquipped() {
         baseSrc = hat; 
     }
     if (mainImg) mainImg.src = baseSrc;
-    if (closetImg) closetImg.src = baseSrc;
+    if (closetImg) closetImg.src = baseSrc; // プレビュー画像も連動して変わるっピ！
 
     // --- 👗 服・重ね着の処理 ---
     if (body) {
@@ -89,39 +90,26 @@ function loadEquipped() {
 }
 
 /**
- * 3. 画面の切り替え
- */
-window.toggleScreen = function(screenName) {
-    const mainScreen = document.getElementById('main-screen');
-    const closetScreen = document.getElementById('closet-screen');
-
-    if (screenName === 'closet') {
-        mainScreen.classList.add('hidden');
-        closetScreen.classList.remove('hidden');
-        if (typeof loadEquipped === 'function') loadEquipped();
-        updateDisplay();
-    } else {
-        closetScreen.classList.add('hidden');
-        mainScreen.classList.remove('hidden');
-        
-        if (typeof loadEquipped === 'function') loadEquipped(); 
-        updateDisplay();
-    }
-};
-
-/**
- * 4. クローゼットのボタン表示
+ * 3. クローゼットのボタン・中身をポップアップ用に自動生成するっピ！
  */
 function initCloset() {
-    const grid = document.getElementById('item-grid');
+    // ポップアップの中にあるグリッドを取得
+    const grid = document.getElementById('closet-grid') || document.getElementById('item-grid');
     if (!grid) return;
 
     let ownedItems = localStorage.getItem('owned-items') || "";
     let ownedArray = ownedItems.split(',').filter(x => x);
 
+    // テスト用のアイテムデータ（もし items が別ファイルになければここで安全に定義）
+    const myItems = (typeof items !== 'undefined') ? items : [
+        { name: "初期スカーフ", type: "body", img: "assets/scarf.png", pt: 0 },
+        { name: "王冠（10種特典）", type: "hat", img: "assets/crown.png", pt: 10 },
+        { name: "ひみつのリボン", type: "body", img: "assets/ribbon.png", pt: 20 }
+    ];
+
     grid.innerHTML = "";
-    items.forEach(item => {
-        let isOwned = ownedArray.includes(item.name);
+    myItems.forEach(item => {
+        let isOwned = ownedArray.includes(item.name) || item.pt === 0; // 0ptは最初から所持
         let isEquipped = localStorage.getItem('equipped-' + item.type) === item.img;
         
         let buttonText = "";
@@ -129,22 +117,21 @@ function initCloset() {
 
         if (isEquipped) {
             buttonText = "脱ぐ";
-            buttonStyle = "background: #ef5350; color: white;";
+            buttonStyle = "background: #ef5350; color: white; padding: 6px; border-radius: 6px; border: none; font-size: 0.75em; cursor: pointer;";
         } else if (isOwned) {
-            buttonText = "着替える";
-            buttonStyle = "background: #4caf50; color: white;";
+            buttonText = "着る";
+            buttonStyle = "background: #4caf50; color: white; padding: 6px; border-radius: 6px; border: none; font-size: 0.75em; cursor: pointer;";
         } else {
-            buttonText = item.pt + "ptでゲット";
-            buttonStyle = "background: #0288d1; color: white;";
+            buttonText = item.pt + "pt";
+            buttonStyle = "background: #0288d1; color: white; padding: 6px; border-radius: 6px; border: none; font-size: 0.75em; cursor: pointer;";
         }
 
         const div = document.createElement('div');
-        div.className = 'item-card';
+        div.style = "background: #ffffff; border: 2px solid #ffe082; border-radius: 12px; padding: 10px 5px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 4px;";
         div.innerHTML = `
-            <img src="${item.img}" style="width:50px; height:50px; object-fit: contain;">
-            <p style="font-size:12px; margin:5px 0;">${item.name}</p>
-            <button onclick="equipItem('${item.type}', '${item.img}', ${item.pt}, '${item.name}')" 
-                    style="font-size:10px; padding:8px; cursor:pointer; border:none; border-radius:5px; ${buttonStyle}">
+            <div style="font-size: 1.5em;">${item.name.includes("冠") ? "👑" : item.name.includes("リボン") ? "🎀" : "🧣"}</div>
+            <div style="font-size: 0.7em; font-weight: bold; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%;">${item.name}</div>
+            <button onclick="equipItem('${item.type}', '${item.img}', ${item.pt}, '${item.name}')" style="${buttonStyle}">
                 ${buttonText}
             </button>
         `;
@@ -153,12 +140,12 @@ function initCloset() {
 }
 
 /**
- * 5. アイテムの購入・着替え処理
+ * 4. アイテムの購入・着替え処理
  */
 window.equipItem = function(type, img, pt, name) {
     let ownedItems = localStorage.getItem('owned-items') || "";
     let ownedArray = ownedItems.split(',').filter(x => x);
-    let isOwned = ownedArray.includes(name);
+    let isOwned = ownedArray.includes(name) || pt === 0;
 
     if (!isOwned) {
         let currentPt = parseInt(localStorage.getItem('purifyPoints')) || 0;
@@ -178,13 +165,19 @@ window.equipItem = function(type, img, pt, name) {
 
     if (currentEquipped === img) {
         localStorage.removeItem('equipped-' + type);
+        // プレビュー下のテキストをリセット
+        const txt = document.getElementById('closet-item-name');
+        if (txt) txt.innerText = "なにも着てないっピ";
     } else {
         localStorage.setItem('equipped-' + type, img);
+        // プレビュー下のテキストを変更
+        const txt = document.getElementById('closet-item-name');
+        if (txt) txt.innerText = `✨ ${name} を着用中！`;
     }
 
     if (typeof loadEquipped === 'function') loadEquipped();
     if (typeof updateDisplay === 'function') updateDisplay();
-    initCloset();
+    initCloset(); // ボタンの「着る/脱ぐ」表示をリアルタイム更新！
 };
 
 // --- 初期化処理 ---
@@ -194,50 +187,48 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// 🏠 新要素：お部屋画面への移動・切り替えロジック
+// 🏠 お部屋画面 ＆ 各種ポップアップのコントロールロジック
 // ==========================================
 
-/**
- * メイン画面からお部屋へ移動するっピ！
- */
 window.goToRoom = function() {
     const room = document.getElementById('penguin-room');
-    if (room) {
-        room.style.display = 'flex'; // お部屋画面をパッと表示！
-        console.log("ペンギンのお部屋に遊びにきたっピ！");
-    }
+    if (room) room.style.display = 'flex';
 };
 
-/**
- * お部屋画面からもとのメイン画面に戻るっピ！
- */
 window.leaveRoom = function() {
     const room = document.getElementById('penguin-room');
-    if (room) {
-        room.style.display = 'none'; // お部屋画面を非表示にして戻る！
-        console.log("メイン画面に戻ったっピ！");
+    if (room) room.style.display = 'none';
+};
+
+/**
+ * 【クローゼットを開く】ポップアップを表示して、中身のボタンを最新にするっピ！
+ */
+window.openClosetFromRoom = function() {
+    const modal = document.getElementById('closet-modal');
+    if (modal) {
+        modal.style.display = 'flex';
+        initCloset(); // 開いた瞬間に最新のポイントや所持状況でボタンを作る！
+        console.log("クローゼットを開いたっピ！");
     }
 };
 
 /**
- * お部屋からクローゼットを開く（今後の拡張用だっピ）
+ * 【クローゼットを閉じる】
  */
-window.openClosetFromRoom = function() {
-    // 今あるおきがえモーダル（ダイアログ）を開く関数が別にあれば、ここにそれを繋ぐっピ！
-    alert("🐧「クローゼットを開くっピ！おきがえ画面へレッツゴー！」");
+window.closeCloset = function() {
+    const modal = document.getElementById('closet-modal');
+    if (modal) modal.style.display = 'none';
 };
 
 /**
- * ⚖️ 体重入力ポップアップを開く関数（復活版！）
+ * ⚖️ 体重入力ポップアップを開く関数
  */
 window.openWeightInput = function() {
-    // もし元々のポップアップを開くID名が違っていたら調整してね
     const modal = document.getElementById('weight-modal') || document.getElementById('weight-input-modal');
     if (modal) {
         modal.style.display = 'flex';
         console.log("体重入力画面を開いたっピ！");
     } else {
-        // 万が一モーダルのID名が不明な場合は一時的にプロンプトで対応
         const weight = prompt("今日の体重を入力してね(kg):");
         if (weight && typeof window.updateWeightDisplay === 'function') {
             window.updateWeightDisplay(weight);
